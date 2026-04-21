@@ -68,15 +68,13 @@ export default function Navbar() {
           <a href="#home" className="flex items-center gap-3 flex-shrink-0">
             <Image
               src="/logo.png"
-              width={120}
-              height={120}
+              width={130}
+              height={130}
               alt="MMT Logo"
-              style={{ borderRadius: "6px" }}
+              className="w-[80px] h-[80px] sm:w-[130px] sm:h-[130px]"
+              style={{ borderRadius: "6px", objectFit: "contain" }}
             />
-            <span
-              className="hidden sm:block"
-              style={{ color: "#ffffff", fontSize: "26px", fontWeight: 500 }}
-            >
+            <span className="text-white font-medium text-[18px] sm:text-[26px]">
               max machine tools™
             </span>
           </a>

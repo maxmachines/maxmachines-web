@@ -270,10 +270,10 @@ export default function Hero() {
           </p>
 
           {/* Buttons */}
-          <div className="animate-fade-in-up-delay-3 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+          <div className="animate-fade-in-up-delay-3 flex flex-row gap-3 justify-center lg:justify-start flex-wrap">
             <a
               href="#products"
-              className="px-8 py-4 rounded-xl font-bold text-base transition-all duration-200 hover:scale-105"
+              className="px-5 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-sm sm:text-base transition-all duration-200 hover:scale-105"
               style={{
                 background: "var(--gold)",
                 color: "#0f0f0f",
@@ -284,7 +284,7 @@ export default function Hero() {
             </a>
             <a
               href="#contact"
-              className="px-8 py-4 rounded-xl font-bold text-base border text-white transition-all duration-200 hover:bg-white/5"
+              className="px-5 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-sm sm:text-base border text-white transition-all duration-200 hover:bg-white/5"
               style={{ borderColor: "rgba(255,255,255,0.25)" }}
             >
               Enquire Now
