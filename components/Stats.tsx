@@ -15,17 +15,17 @@ export default function Stats() {
       }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0"
+        <div className="grid grid-cols-2 lg:grid-cols-4 lg:divide-x"
           style={{ borderColor: "rgba(234,179,8,0.1)" }}>
           {stats.map((s) => (
-            <div key={s.label} className="py-10 px-8 text-center">
+            <div key={s.label} className="py-10 px-6 text-center">
               <p
                 className="text-3xl lg:text-4xl font-black mb-2 leading-none"
                 style={{ color: "var(--gold)" }}
               >
                 {s.value}
               </p>
-              <p className="text-sm font-medium tracking-wide uppercase" style={{ color: "#737373" }}>
+              <p className="text-sm font-medium tracking-wide uppercase" style={{ color: "#ffffff" }}>
                 {s.label}
               </p>
             </div>

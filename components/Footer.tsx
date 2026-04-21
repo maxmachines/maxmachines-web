@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Footer() {
   const year = new Date().getFullYear();
 
@@ -12,18 +14,16 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Brand */}
         <div className="flex items-center gap-3">
-          <div
-            className="w-9 h-9 rounded-lg flex items-center justify-center font-black text-xs tracking-wide"
-            style={{ background: "var(--gold)", color: "#0f0f0f" }}
-          >
-            MMT
-          </div>
-          <div>
-            <p className="text-white font-bold text-sm leading-none">MAX MACHINE TOOLS</p>
-            <p className="text-xs" style={{ color: "#525252" }}>
-              Group Est. 1963 · MMT Est. 2012 · Chennai · Ahmedabad
-            </p>
-          </div>
+          <Image
+            src="/logo.png"
+            width={120}
+            height={120}
+            alt="MMT Logo"
+            style={{ borderRadius: "6px" }}
+          />
+          <span style={{ color: "#ffffff", fontSize: "26px", fontWeight: 500 }}>
+            max machine tools™
+          </span>
         </div>
 
         {/* Links */}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const LinkedInIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
@@ -62,23 +63,22 @@ export default function Navbar() {
       }}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between" style={{ height: "80px" }}>
           {/* Logo */}
           <a href="#home" className="flex items-center gap-3 flex-shrink-0">
-            <div
-              className="w-10 h-10 rounded-lg flex items-center justify-center font-black text-sm tracking-wider"
-              style={{ background: "var(--gold)", color: "#0f0f0f" }}
+            <Image
+              src="/logo.png"
+              width={120}
+              height={120}
+              alt="MMT Logo"
+              style={{ borderRadius: "6px" }}
+            />
+            <span
+              className="hidden sm:block"
+              style={{ color: "#ffffff", fontSize: "26px", fontWeight: 500 }}
             >
-              MMT
-            </div>
-            <div className="hidden sm:block">
-              <p className="text-white font-bold text-sm leading-none tracking-wide">
-                MAX MACHINE TOOLS
-              </p>
-              <p className="text-xs tracking-widest" style={{ color: "var(--gold)" }}>
-                Group Est. 1963
-              </p>
-            </div>
+              max machine tools™
+            </span>
           </a>
 
           {/* Desktop nav */}
@@ -87,7 +87,8 @@ export default function Navbar() {
               <a
                 key={l.label}
                 href={l.href}
-                className="text-xs font-medium text-neutral-400 hover:text-white transition-colors duration-200 tracking-wide uppercase whitespace-nowrap"
+                className="font-medium text-neutral-400 hover:text-white transition-colors duration-200 tracking-wide uppercase whitespace-nowrap"
+                style={{ fontSize: "15px" }}
               >
                 {l.label}
               </a>

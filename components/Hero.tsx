@@ -1,186 +1,180 @@
-const MachineSilhouettes = () => (
+const TechnicalDrawingBackground = () => (
   <svg
-    viewBox="0 0 1200 220"
-    className="absolute bottom-0 left-0 right-0 w-full"
-    preserveAspectRatio="xMidYMax meet"
-    style={{ opacity: 0.07 }}
-    fill="#eab308"
+    className="absolute inset-0 w-full h-full pointer-events-none"
+    viewBox="0 0 1440 900"
+    preserveAspectRatio="xMidYMid slice"
+    fill="none"
+    stroke="#eab308"
+    strokeWidth="1.5"
+    style={{ opacity: 0.1 }}
     aria-hidden="true"
   >
-    {/* LATHE MACHINE — left */}
-    <g transform="translate(30, 20)">
-      {/* Base/bed */}
-      <rect x="0" y="150" width="220" height="18" rx="2" />
+    {/* ── LARGE GEAR — bottom right ── */}
+    <circle cx="1300" cy="860" r="200" />
+    <circle cx="1300" cy="860" r="148" />
+    <circle cx="1300" cy="860" r="36" />
+    {/* Spokes */}
+    {[0, 60, 120, 180, 240, 300].map((a, i) => (
+      <line
+        key={`lg-spoke-${i}`}
+        x1="1300" y1="824" x2="1300" y2="714"
+        transform={`rotate(${a} 1300 860)`}
+      />
+    ))}
+    {/* Teeth */}
+    {Array.from({ length: 24 }).map((_, i) => (
+      <rect
+        key={`lg-tooth-${i}`}
+        x="1294" y="648"
+        width="12" height="28"
+        rx="2"
+        transform={`rotate(${i * 15} 1300 860)`}
+      />
+    ))}
+
+    {/* ── SMALL GEAR — top left ── */}
+    <circle cx="160" cy="110" r="108" />
+    <circle cx="160" cy="110" r="78" />
+    <circle cx="160" cy="110" r="20" />
+    {[0, 72, 144, 216, 288].map((a, i) => (
+      <line
+        key={`sg-spoke-${i}`}
+        x1="160" y1="90" x2="160" y2="32"
+        transform={`rotate(${a} 160 110)`}
+      />
+    ))}
+    {Array.from({ length: 16 }).map((_, i) => (
+      <rect
+        key={`sg-tooth-${i}`}
+        x="155" y="-4"
+        width="10" height="20"
+        rx="2"
+        transform={`rotate(${i * 22.5} 160 110)`}
+      />
+    ))}
+
+    {/* ── LATHE MACHINE — left side ── */}
+    <g transform="translate(30, 340)">
+      {/* Bed */}
+      <rect x="0" y="200" width="340" height="22" rx="3" />
       {/* Headstock */}
-      <rect x="0" y="90" width="60" height="60" rx="3" />
-      {/* Spindle nose */}
-      <rect x="55" y="110" width="25" height="20" rx="2" />
-      {/* Chuck body */}
-      <circle cx="90" cy="120" r="18" />
-      <circle cx="90" cy="120" r="10" />
+      <rect x="0" y="120" width="80" height="82" rx="4" />
+      {/* Spindle boss */}
+      <rect x="75" y="148" width="30" height="26" rx="2" />
+      {/* Chuck rings */}
+      <circle cx="128" cy="161" r="28" />
+      <circle cx="128" cy="161" r="16" />
+      <circle cx="128" cy="161" r="6" />
       {/* Chuck jaws */}
-      <rect x="88" y="102" width="4" height="8" />
-      <rect x="88" y="130" width="4" height="8" />
-      <rect x="72" y="118" width="8" height="4" />
-      <rect x="100" y="118" width="8" height="4" />
+      <rect x="126" y="133" width="4" height="10" />
+      <rect x="126" y="179" width="4" height="10" />
+      <rect x="100" y="159" width="10" height="4" />
+      <rect x="146" y="159" width="10" height="4" />
       {/* Carriage */}
-      <rect x="100" y="120" width="70" height="30" rx="2" />
+      <rect x="148" y="152" width="90" height="48" rx="3" />
       {/* Tool post */}
-      <rect x="130" y="105" width="20" height="20" rx="1" />
-      <rect x="145" y="100" width="8" height="12" />
+      <rect x="182" y="134" width="26" height="24" rx="2" />
+      <rect x="200" y="126" width="10" height="14" />
       {/* Tailstock */}
-      <rect x="175" y="100" width="45" height="50" rx="3" />
-      <rect x="195" y="90" width="15" height="15" rx="7" />
+      <rect x="255" y="132" width="62" height="68" rx="4" />
+      <rect x="278" y="118" width="20" height="20" rx="10" />
       {/* Ways */}
-      <rect x="60" y="145" width="155" height="5" rx="1" />
+      <rect x="82" y="195" width="235" height="6" rx="1" />
       {/* Leadscrew */}
-      <rect x="60" y="148" width="155" height="2" />
+      <rect x="82" y="198" width="235" height="3" strokeDasharray="8 4" />
       {/* Legs */}
-      <rect x="10" y="168" width="18" height="30" rx="2" />
-      <rect x="180" y="168" width="18" height="30" rx="2" />
+      <rect x="14" y="222" width="22" height="38" rx="3" />
+      <rect x="288" y="222" width="22" height="38" rx="3" />
       {/* Control panel */}
-      <rect x="2" y="70" width="30" height="25" rx="2" />
-      <circle cx="10" cy="78" r="3" />
-      <circle cx="22" cy="78" r="3" />
-      <rect x="8" y="85" width="18" height="4" rx="1" />
+      <rect x="2" y="88" width="38" height="36" rx="3" />
+      <circle cx="12" cy="100" r="4" />
+      <circle cx="28" cy="100" r="4" />
+      <rect x="8" y="112" width="24" height="5" rx="2" />
     </g>
 
-    {/* DRILLING / DRILL PRESS — centre-left */}
-    <g transform="translate(310, 10)">
+    {/* ── DRILL PRESS — right side ── */}
+    <g transform="translate(1090, 120)">
       {/* Column */}
-      <rect x="55" y="30" width="22" height="185" rx="3" />
+      <rect x="62" y="20" width="26" height="560" rx="4" />
       {/* Base */}
-      <rect x="10" y="200" width="112" height="15" rx="3" />
-      {/* Worktable */}
-      <rect x="15" y="150" width="100" height="12" rx="2" />
-      <rect x="30" y="162" width="72" height="25" rx="2" />
-      {/* Table support arm */}
-      <rect x="60" y="145" width="12" height="42" rx="2" />
-      {/* Head housing */}
-      <rect x="25" y="45" width="82" height="60" rx="4" />
-      {/* Motor on top */}
-      <rect x="38" y="10" width="56" height="38" rx="4" />
-      <rect x="50" y="5" width="32" height="12" rx="2" />
-      {/* Spindle */}
-      <rect x="60" y="105" width="12" height="45" rx="2" />
-      {/* Chuck */}
-      <rect x="55" y="145" width="22" height="16" rx="3" />
-      <rect x="62" y="161" width="8" height="18" rx="1" />
-      {/* Drill bit tip */}
-      <polygon points="66,179 70,179 68,198" />
-      {/* Feed handles */}
-      <circle cx="28" cy="75" r="8" />
-      <rect x="18" y="73" width="20" height="4" rx="2" />
-      <circle cx="16" cy="75" r="5" />
-      {/* Belt guard */}
-      <rect x="42" y="42" width="48" height="8" rx="2" />
-    </g>
-
-    {/* MILLING MACHINE — centre */}
-    <g transform="translate(530, 5)">
-      {/* Base */}
-      <rect x="0" y="190" width="180" height="20" rx="3" />
-      {/* Column */}
-      <rect x="10" y="60" width="55" height="135" rx="3" />
-      {/* Knee */}
-      <rect x="10" y="150" width="160" height="35" rx="3" />
-      {/* Saddle */}
-      <rect x="20" y="125" width="140" height="30" rx="2" />
+      <rect x="0" y="560" width="150" height="20" rx="4" />
       {/* Table */}
-      <rect x="15" y="105" width="155" height="22" rx="2" />
-      {/* T-slots on table */}
-      <rect x="25" y="109" width="135" height="3" rx="1" />
-      <rect x="25" y="116" width="135" height="3" rx="1" />
-      <rect x="25" y="123" width="135" height="3" rx="1" />
-      {/* Overarm */}
-      <rect x="60" y="35" width="110" height="28" rx="3" />
-      {/* Arbor support */}
-      <rect x="148" y="60" width="22" height="50" rx="2" />
-      {/* Spindle head */}
-      <rect x="55" y="55" width="50" height="55" rx="4" />
-      {/* Cutter */}
-      <circle cx="80" cy="105" r="16" />
-      <circle cx="80" cy="105" r="8" />
-      {/* Cutter teeth */}
-      {[0,45,90,135,180,225,270,315].map((a, i) => (
-        <rect
-          key={i}
-          x="78"
-          y="89"
-          width="4"
-          height="8"
-          rx="1"
-          transform={`rotate(${a} 80 105)`}
-        />
-      ))}
-      {/* Handwheels */}
-      <circle cx="5" cy="140" r="12" />
-      <circle cx="5" cy="140" r="5" />
-      <circle cx="175" cy="115" r="10" />
-      <circle cx="175" cy="115" r="4" />
-    </g>
-
-    {/* POWER PRESS — centre-right */}
-    <g transform="translate(760, 15)">
-      {/* Frame uprights */}
-      <rect x="0" y="30" width="25" height="175" rx="3" />
-      <rect x="135" y="30" width="25" height="175" rx="3" />
-      {/* Crown (top) */}
-      <rect x="0" y="10" width="160" height="28" rx="4" />
-      {/* Bed (bottom) */}
-      <rect x="0" y="178" width="160" height="27" rx="3" />
-      {/* Bolster plate */}
-      <rect x="15" y="165" width="130" height="14" rx="2" />
-      {/* Slide/ram */}
-      <rect x="30" y="80" width="100" height="55" rx="3" />
-      {/* Ram guides */}
-      <rect x="22" y="75" width="12" height="65" rx="2" />
-      <rect x="126" y="75" width="12" height="65" rx="2" />
-      {/* Punch */}
-      <rect x="68" y="135" width="24" height="30" rx="1" />
-      <polygon points="68,165 92,165 80,182" />
-      {/* Flywheel */}
-      <circle cx="80" cy="45" r="22" />
-      <circle cx="80" cy="45" r="8" />
-      <rect x="78" y="23" width="4" height="44" />
-      <rect x="58" y="43" width="44" height="4" />
+      <rect x="8" y="420" width="134" height="16" rx="3" />
+      <rect x="20" y="436" width="110" height="32" rx="3" />
+      {/* Table arm */}
+      <rect x="74" y="408" width="14" height="60" rx="2" />
+      {/* Head housing */}
+      <rect x="18" y="52" width="114" height="80" rx="6" />
       {/* Motor */}
-      <rect x="108" y="20" width="30" height="22" rx="3" />
-      {/* Control buttons */}
-      <circle cx="15" cy="120" r="6" />
-      <circle cx="15" cy="140" r="6" />
+      <rect x="30" y="10" width="90" height="46" rx="5" />
+      <rect x="46" y="4" width="58" height="14" rx="2" />
+      {/* Spindle */}
+      <rect x="72" y="132" width="14" height="60" rx="2" />
+      {/* Chuck */}
+      <rect x="65" y="190" width="28" height="22" rx="4" />
+      <rect x="74" y="212" width="10" height="24" rx="2" />
+      {/* Drill tip */}
+      <polygon points="74,236 84,236 79,264" />
+      {/* Feed handles */}
+      <circle cx="22" cy="100" r="12" />
+      <rect x="10" y="98" width="24" height="4" rx="2" />
+      <circle cx="8" cy="100" r="7" />
+      {/* Belt guard */}
+      <rect x="32" y="50" width="86" height="10" rx="2" />
     </g>
 
-    {/* BANDSAW — right */}
-    <g transform="translate(980, 20)">
-      {/* Frame */}
-      <rect x="30" y="0" width="60" height="110" rx="4" />
-      {/* Upper wheel housing */}
-      <circle cx="60" cy="20" r="28" />
-      <circle cx="60" cy="20" r="18" />
-      <circle cx="60" cy="20" r="6" />
-      {/* Lower wheel housing */}
-      <circle cx="60" cy="90" r="28" />
-      <circle cx="60" cy="90" r="18" />
-      <circle cx="60" cy="90" r="6" />
-      {/* Blade guides visible section */}
-      <rect x="57" y="48" width="6" height="42" />
-      {/* Blade guides brackets */}
-      <rect x="25" y="52" width="35" height="8" rx="1" />
-      <rect x="25" y="56" width="8" height="20" rx="1" />
-      {/* Worktable */}
-      <rect x="0" y="118" width="120" height="14" rx="2" />
-      <rect x="10" y="132" width="100" height="28" rx="2" />
-      {/* Column/base */}
-      <rect x="35" y="155" width="50" height="40" rx="3" />
-      <rect x="10" y="182" width="100" height="16" rx="3" />
-      {/* Fence */}
-      <rect x="78" y="118" width="4" height="14" />
-      <rect x="78" y="110" width="30" height="8" rx="1" />
-      {/* Vise */}
-      <rect x="10" y="124" width="22" height="8" rx="1" />
-      <rect x="0" y="126" width="12" height="5" rx="1" />
-    </g>
+    {/* ── CROSSHAIR / TARGET — centre ── */}
+    <circle cx="640" cy="460" r="55" />
+    <circle cx="640" cy="460" r="28" />
+    <circle cx="640" cy="460" r="6" />
+    <line x1="585" y1="460" x2="550" y2="460" />
+    <line x1="695" y1="460" x2="730" y2="460" />
+    <line x1="640" y1="405" x2="640" y2="370" />
+    <line x1="640" y1="515" x2="640" y2="550" />
+
+    {/* Second crosshair — upper right area */}
+    <circle cx="980" cy="220" r="38" />
+    <circle cx="980" cy="220" r="18" />
+    <line x1="942" y1="220" x2="916" y2="220" />
+    <line x1="1018" y1="220" x2="1044" y2="220" />
+    <line x1="980" y1="182" x2="980" y2="156" />
+    <line x1="980" y1="258" x2="980" y2="284" />
+
+    {/* ── HORIZONTAL MEASUREMENT LINES ── */}
+    {/* Top span */}
+    <line x1="340" y1="60" x2="780" y2="60" strokeDasharray="6 5" />
+    <line x1="340" y1="50" x2="340" y2="70" />
+    <line x1="780" y1="50" x2="780" y2="70" />
+    {/* Arrow heads */}
+    <polygon points="340,60 354,55 354,65" fill="#eab308" stroke="none" />
+    <polygon points="780,60 766,55 766,65" fill="#eab308" stroke="none" />
+
+    {/* Mid span */}
+    <line x1="500" y1="800" x2="900" y2="800" strokeDasharray="6 5" />
+    <line x1="500" y1="790" x2="500" y2="810" />
+    <line x1="900" y1="790" x2="900" y2="810" />
+    <polygon points="500,800 514,795 514,805" fill="#eab308" stroke="none" />
+    <polygon points="900,800 886,795 886,805" fill="#eab308" stroke="none" />
+
+    {/* ── VERTICAL MEASUREMENT LINES ── */}
+    <line x1="460" y1="140" x2="460" y2="580" strokeDasharray="6 5" />
+    <line x1="450" y1="140" x2="470" y2="140" />
+    <line x1="450" y1="580" x2="470" y2="580" />
+    <polygon points="460,140 455,154 465,154" fill="#eab308" stroke="none" />
+    <polygon points="460,580 455,566 465,566" fill="#eab308" stroke="none" />
+
+    {/* Right vertical */}
+    <line x1="1050" y1="300" x2="1050" y2="700" strokeDasharray="6 5" />
+    <line x1="1040" y1="300" x2="1060" y2="300" />
+    <line x1="1040" y1="700" x2="1060" y2="700" />
+
+    {/* ── ENGINEERING ANNOTATIONS — scattered dots ── */}
+    <circle cx="340" cy="60" r="3" fill="#eab308" stroke="none" />
+    <circle cx="780" cy="60" r="3" fill="#eab308" stroke="none" />
+    <circle cx="500" cy="800" r="3" fill="#eab308" stroke="none" />
+    <circle cx="900" cy="800" r="3" fill="#eab308" stroke="none" />
+    <circle cx="460" cy="140" r="3" fill="#eab308" stroke="none" />
+    <circle cx="460" cy="580" r="3" fill="#eab308" stroke="none" />
   </svg>
 );
 
@@ -218,92 +212,8 @@ export default function Hero() {
         }}
       />
 
-      {/* Gear / circuit decoration SVG */}
-      <svg
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        style={{ opacity: 0.04 }}
-        viewBox="0 0 1200 800"
-        preserveAspectRatio="xMidYMid slice"
-        fill="none"
-        stroke="#eab308"
-        strokeWidth="1"
-        aria-hidden="true"
-      >
-        {/* Large gear — top right */}
-        <circle cx="1050" cy="140" r="110" />
-        <circle cx="1050" cy="140" r="70" />
-        <circle cx="1050" cy="140" r="20" />
-        {[0,18,36,54,72,90,108,126,144,162,180,198,216,234,252,270,288,306,324,342].map((a, i) => (
-          <rect
-            key={i}
-            x="1045"
-            y="22"
-            width="10"
-            height="22"
-            rx="2"
-            transform={`rotate(${a} 1050 140)`}
-          />
-        ))}
-        {/* Spokes */}
-        {[0,60,120,180,240,300].map((a, i) => (
-          <line
-            key={i}
-            x1="1050"
-            y1="160"
-            x2="1050"
-            y2="90"
-            transform={`rotate(${a} 1050 140)`}
-          />
-        ))}
-
-        {/* Small gear — bottom left */}
-        <circle cx="120" cy="680" r="60" />
-        <circle cx="120" cy="680" r="38" />
-        <circle cx="120" cy="680" r="12" />
-        {[0,30,60,90,120,150,180,210,240,270,300,330].map((a, i) => (
-          <rect
-            key={i}
-            x="116"
-            y="614"
-            width="8"
-            height="15"
-            rx="1"
-            transform={`rotate(${a} 120 680)`}
-          />
-        ))}
-
-        {/* Circuit lines — top left */}
-        <polyline points="0,80 60,80 60,120 180,120 180,80 300,80" />
-        <circle cx="60" cy="80" r="4" fill="#eab308" />
-        <circle cx="180" cy="120" r="4" fill="#eab308" />
-        <circle cx="60" cy="120" r="4" fill="#eab308" />
-        <polyline points="0,200 40,200 40,160 140,160 140,220 240,220" />
-        <circle cx="40" cy="200" r="4" fill="#eab308" />
-        <circle cx="140" cy="160" r="4" fill="#eab308" />
-        <circle cx="140" cy="220" r="4" fill="#eab308" />
-
-        {/* Circuit lines — right side */}
-        <polyline points="1200,300 1140,300 1140,350 1020,350 1020,280 900,280" />
-        <circle cx="1140" cy="300" r="4" fill="#eab308" />
-        <circle cx="1020" cy="350" r="4" fill="#eab308" />
-        <circle cx="1020" cy="280" r="4" fill="#eab308" />
-
-        {/* Cross-hairs / targeting */}
-        <circle cx="350" cy="600" r="40" />
-        <circle cx="350" cy="600" r="20" />
-        <line x1="310" y1="600" x2="290" y2="600" />
-        <line x1="390" y1="600" x2="410" y2="600" />
-        <line x1="350" y1="560" x2="350" y2="540" />
-        <line x1="350" y1="640" x2="350" y2="660" />
-
-        {/* Diagonal measurement lines */}
-        <line x1="500" y1="50" x2="700" y2="50" strokeDasharray="4 4" />
-        <line x1="500" y1="44" x2="500" y2="56" />
-        <line x1="700" y1="44" x2="700" y2="56" />
-        <line x1="800" y1="700" x2="1000" y2="700" strokeDasharray="4 4" />
-        <line x1="800" y1="694" x2="800" y2="706" />
-        <line x1="1000" y1="694" x2="1000" y2="706" />
-      </svg>
+      {/* Technical drawing background */}
+      <TechnicalDrawingBackground />
 
       {/* Gold glow blobs */}
       <div
@@ -319,19 +229,8 @@ export default function Hero() {
         }}
       />
 
-      {/* Machine silhouettes at bottom */}
-      <MachineSilhouettes />
-
-      {/* Dark fade at bottom so silhouettes blend */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none"
-        style={{
-          background: "linear-gradient(to top, rgba(15,15,15,0.7) 0%, transparent 100%)",
-        }}
-      />
-
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-32 pb-48 text-center lg:text-left">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-32 text-center lg:text-left">
         <div className="max-w-4xl">
           {/* Badge */}
           <div className="animate-fade-in-up mb-8 flex justify-center lg:justify-start">
@@ -348,10 +247,9 @@ export default function Hero() {
           </div>
 
           {/* Heading */}
-          <h1 className="animate-fade-in-up-delay-1 text-6xl lg:text-8xl font-black text-white leading-none tracking-tight mb-8">
-            Legacy of
-            <br />
-            <span className="gradient-text">Precision</span>
+          <h1 className="animate-fade-in-up-delay-1 font-black leading-none tracking-tight mb-8">
+            <span className="block whitespace-nowrap text-white" style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)" }}>Legacy of Precision</span>
+            <span className="block whitespace-nowrap" style={{ fontSize: "clamp(2rem, 5vw, 4.5rem)", color: "#eab308" }}>Max Machine Tools</span>
           </h1>
 
           {/* Subtext */}
@@ -393,14 +291,6 @@ export default function Hero() {
             </a>
           </div>
         </div>
-      </div>
-
-      {/* Scroll indicator */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10">
-        <span className="text-xs tracking-widest uppercase" style={{ color: "#404040" }}>
-          Scroll
-        </span>
-        <div className="w-px h-8 animate-pulse" style={{ background: "var(--gold)" }} />
       </div>
     </section>
   );
