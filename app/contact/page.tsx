@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import SocialStrip from "@/components/SocialStrip";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
@@ -250,6 +251,8 @@ export default function ContactPage() {
           </p>
         </div>
       </section>
+
+      <SocialStrip />
 
       {/* ── CONTACT CARDS ────────────────────────────────────── */}
       <section className="py-16 lg:py-20" style={{ background: "var(--bg-primary)" }}>
