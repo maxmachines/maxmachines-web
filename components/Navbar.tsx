@@ -40,7 +40,7 @@ const navLinks = [
   { label: "Products", href: "#products" },
   { label: "Blog", href: "#blog" },
   { label: "Our Clients", href: "#clients" },
-  { label: "Contact Us", href: "#contact" },
+  { label: "Contact Us", href: "/contact" },
 ];
 
 export default function Navbar() {

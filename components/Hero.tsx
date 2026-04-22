@@ -283,7 +283,9 @@ export default function Hero() {
               Explore Machines
             </a>
             <a
-              href="#contact"
+              href="https://forms.gle/TXjAGS67M1Nnb2Ye9"
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-5 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-sm sm:text-base border text-white transition-all duration-200 hover:bg-white/5"
               style={{ borderColor: "rgba(255,255,255,0.25)" }}
             >
