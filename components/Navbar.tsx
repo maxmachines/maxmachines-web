@@ -35,7 +35,7 @@ const socials = [
 ];
 
 const navLinks = [
-  { label: "Home", href: "#home" },
+  { label: "Home", href: "/" },
   { label: "About", href: "#about" },
   { label: "Products", href: "#products" },
   { label: "Blog", href: "#blog" },
@@ -65,7 +65,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center justify-between" style={{ height: "80px" }}>
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-3 flex-shrink-0">
+          <a href="/" className="flex items-center gap-3 flex-shrink-0">
             <Image
               src="/logo.png"
               width={130}
