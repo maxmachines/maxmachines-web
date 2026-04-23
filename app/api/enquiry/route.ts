@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const BREVO_API_KEY = process.env.BREVO_API_KEY;
-  if (!BREVO_API_KEY) {
+  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  if (!RESEND_API_KEY) {
     return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
   }
 
@@ -75,17 +75,17 @@ export async function POST(req: NextRequest) {
 </body>
 </html>`;
 
-  const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+  const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
-      "api-key": BREVO_API_KEY,
+      Authorization: `Bearer ${RESEND_API_KEY}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      sender: { name: "Max Machine Tools", email: "max@maxmachines.in" },
-      to: [{ email: "max@maxmachines.in", name: "Max Machine Tools" }],
+      from: "Max Machine Tools <max@maxmachines.in>",
+      to: ["max@maxmachines.in"],
       subject,
-      htmlContent: html,
+      html,
     }),
   });
 
