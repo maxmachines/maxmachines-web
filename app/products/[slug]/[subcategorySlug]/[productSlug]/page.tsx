@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -17,6 +17,7 @@ interface SpecRow { parameter: string; value: string }
 interface Variant { name: string; price?: number; availability?: string }
 interface FaqItem { question: string; answer: string }
 interface Download { title: string; url: string }
+interface VideoItem { title?: string; videoType?: string; youtubeUrl?: string; fileUrl?: string }
 
 interface ProductDetail {
   _id: string;
@@ -34,6 +35,7 @@ interface ProductDetail {
   variants?: Variant[];
   faqs?: FaqItem[];
   downloads?: Download[];
+  videos?: VideoItem[];
   seo?: { metaTitle?: string; metaDescription?: string };
   subcategory: {
     _id: string;
@@ -70,8 +72,14 @@ const availabilityLabel: Record<string, { label: string; color: string }> = {
   discontinued: { label: "Discontinued", color: "#ef4444" },
 };
 
-const TABS = ["Overview", "Specifications", "Variants & Pricing", "FAQs"] as const;
+const TABS = ["Overview", "Specifications", "Variants & Pricing", "Videos", "FAQs"] as const;
 type Tab = typeof TABS[number];
+
+function getYouTubeId(url: string): string | null {
+  if (!url || typeof url !== 'string') return null;
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([a-zA-Z0-9_-]{11})/);
+  return match ? match[1] : null;
+}
 
 /* ─── SVG Icons ──────────────────────────────────────────────────── */
 const ChevronRight = () => (
@@ -165,6 +173,7 @@ const ptComponents = {
 /* ─── Page ───────────────────────────────────────────────────────── */
 export default function ProductDetailPage() {
   const params = useParams();
+  const pathname = usePathname();
   const slug = params.slug as string;
   const subcategorySlug = params.subcategorySlug as string;
   const productSlug = params.productSlug as string;
@@ -194,6 +203,12 @@ export default function ProductDetailPage() {
           variants[]{name, price, availability},
           faqs[]{question, answer},
           "downloads": downloads[]{title, "url": file.asset->url},
+          "videos": videos[] {
+            title,
+            videoType,
+            youtubeUrl,
+            "fileUrl": videoFile.asset->url
+          },
           seo{metaTitle, metaDescription},
           "subcategory": subcategory->{
             _id, name, slug,
@@ -241,9 +256,11 @@ export default function ProductDetailPage() {
   const hasSpecs = (product?.specs?.length ?? 0) > 0;
   const hasVariants = (product?.variants?.length ?? 0) > 0;
   const hasFaqs = (product?.faqs?.length ?? 0) > 0;
+  const hasVideos = (product?.videos?.length ?? 0) > 0;
   const visibleTabs = TABS.filter((t) => {
     if (t === "Specifications") return hasSpecs;
     if (t === "Variants & Pricing") return hasVariants;
+    if (t === "Videos") return hasVideos;
     if (t === "FAQs") return hasFaqs;
     return true;
   });
@@ -435,9 +452,16 @@ export default function ProductDetailPage() {
                           />
                         </div>
                       ) : (
-                        <p className="text-sm" style={{ color: "#525252" }}>
-                          No description available. Contact us for full product details.
-                        </p>
+                        <div>
+                          {product?.shortDescription && (
+                            <p className="text-base leading-relaxed mb-4" style={{ color: "#d4d4d4" }}>
+                              {product.shortDescription}
+                            </p>
+                          )}
+                          <p className="text-sm" style={{ color: "#525252" }}>
+                            Full product details coming soon. Contact us for specifications.
+                          </p>
+                        </div>
                       )}
                       {/* PDF Downloads */}
                       {(product?.downloads?.length ?? 0) > 0 && (
@@ -567,6 +591,42 @@ export default function ProductDetailPage() {
                     </div>
                   )}
 
+                  {/* ── Videos ── */}
+                  {activeTab === "Videos" && (
+                    <div className="flex flex-col gap-6">
+                      {console.log('Videos data:', product.videos)}
+                      {product!.videos!.map((item, i) => {
+                        if (item.youtubeUrl) {
+                          const videoId = getYouTubeId(item.youtubeUrl ?? "");
+                          if (!videoId) return null;
+                          return (
+                            <iframe
+                              key={i}
+                              width="100%"
+                              height="400"
+                              src={`https://www.youtube.com/embed/${videoId}`}
+                              frameBorder="0"
+                              allowFullScreen
+                              className="rounded-lg"
+                            />
+                          );
+                        }
+                        if (item.fileUrl) {
+                          return (
+                            <video
+                              key={i}
+                              src={item.fileUrl}
+                              controls
+                              className="w-full rounded-lg"
+                              style={{ maxHeight: "400px" }}
+                            />
+                          );
+                        }
+                        return null;
+                      })}
+                    </div>
+                  )}
+
                   {/* ── FAQs ── */}
                   {activeTab === "FAQs" && (
                     <div className="flex flex-col gap-3">
@@ -604,7 +664,10 @@ export default function ProductDetailPage() {
                     <div className="h-12 rounded-xl animate-pulse" style={{ background: "rgba(234,179,8,0.1)" }} />
                   ) : (
                     <button
-                      onClick={() => openEnquiryModal(product?.name)}
+                      onClick={() => openEnquiryModal(
+                        product?.name,
+                        `I am interested in: ${product?.name}. Page: https://www.maxmachines.in${pathname}`
+                      )}
                       className="w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 hover:scale-[1.02] hover:brightness-110 mb-3"
                       style={{ background: "var(--gold)", color: "#0f0f0f" }}
                     >

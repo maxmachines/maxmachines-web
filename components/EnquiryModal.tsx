@@ -5,7 +5,7 @@ import { useEnquiryModal } from "@/context/EnquiryModalContext";
 import EnquiryForm from "./EnquiryForm";
 
 export default function EnquiryModal() {
-  const { isOpen, machineName, closeEnquiryModal } = useEnquiryModal();
+  const { isOpen, machineName, defaultMessage, closeEnquiryModal } = useEnquiryModal();
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export default function EnquiryModal() {
 
         {/* Form */}
         <div className="px-8 pb-8 pt-6">
-          <EnquiryForm initialMachine={machineName} />
+          <EnquiryForm initialMachine={machineName} initialMessage={defaultMessage} />
         </div>
       </div>
 

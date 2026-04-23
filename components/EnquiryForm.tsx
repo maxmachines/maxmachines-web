@@ -72,14 +72,14 @@ function validate(form: FormState): Errors {
 }
 
 /* ── Component ───────────────────────────────────────────────── */
-export default function EnquiryForm({ initialMachine = "" }: { initialMachine?: string }) {
+export default function EnquiryForm({ initialMachine = "", initialMessage = "" }: { initialMachine?: string; initialMessage?: string }) {
   const [form, setForm] = useState<FormState>({
     fullName: "",
     companyName: "",
     phone: "",
     email: "",
     machine: initialMachine,
-    message: "",
+    message: initialMessage,
     website: "",
   });
   const [errors, setErrors] = useState<Errors>({});
@@ -97,10 +97,12 @@ export default function EnquiryForm({ initialMachine = "" }: { initialMachine?: 
   }, []);
 
   useEffect(() => {
-    if (initialMachine) {
-      setForm((prev) => ({ ...prev, machine: initialMachine }));
-    }
-  }, [initialMachine]);
+    setForm((prev) => ({
+      ...prev,
+      ...(initialMachine ? { machine: initialMachine } : {}),
+      ...(initialMessage ? { message: initialMessage } : {}),
+    }));
+  }, [initialMachine, initialMessage]);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
