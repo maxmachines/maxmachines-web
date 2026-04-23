@@ -10,8 +10,8 @@ export const product = defineType({
     { name: 'basic', title: 'Basic Info', default: true },
     { name: 'media', title: 'Media' },
     { name: 'specs', title: 'Specifications' },
-    { name: 'variants', title: 'Variants & Accessories' },
-    { name: 'support', title: 'FAQs & Downloads' },
+    { name: 'variants', title: 'Variants & Pricing' },
+    { name: 'faqs', title: 'FAQs' },
     { name: 'seo', title: 'SEO & Visibility' },
   ],
   fields: [
@@ -157,7 +157,7 @@ export const product = defineType({
       title: 'FAQs',
       type: 'array',
       of: [defineArrayMember({ type: 'faqItem' })],
-      group: 'support',
+      group: 'faqs',
     }),
     defineField({
       name: 'downloads',
@@ -165,7 +165,7 @@ export const product = defineType({
       description: 'Datasheets, manuals, brochures',
       type: 'array',
       of: [defineArrayMember({ type: 'pdfDownload' })],
-      group: 'support',
+      group: 'faqs',
     }),
 
     // ── SEO & Visibility ─────────────────────────────────────────────────────
