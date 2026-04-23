@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import SocialStrip from "@/components/SocialStrip";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import EnquiryForm from "@/components/EnquiryForm";
 
 /* ─── SVG Background ─────────────────────────────────────────── */
 const TechnicalDrawingBackground = () => (
@@ -96,16 +97,6 @@ const MapPinIcon = () => (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
     <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
     <circle cx="12" cy="10" r="3" />
-  </svg>
-);
-
-const FormIcon = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-    <polyline points="14 2 14 8 20 8" />
-    <line x1="16" y1="13" x2="8" y2="13" />
-    <line x1="16" y1="17" x2="8" y2="17" />
-    <polyline points="10 9 9 9 8 9" />
   </svg>
 );
 
@@ -376,21 +367,6 @@ export default function ContactPage() {
           {/* CTA Buttons — above the form */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
             <a
-              href="https://forms.gle/TXjAGS67M1Nnb2Ye9"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-7 py-4 rounded-xl font-bold text-sm transition-all duration-200 hover:scale-105 hover:brightness-110"
-              style={{
-                background: "var(--gold)",
-                color: "#0f0f0f",
-                boxShadow: "0 0 32px rgba(234,179,8,0.2)",
-              }}
-            >
-              <FormIcon />
-              Fill Enquiry Form
-            </a>
-
-            <a
               href="tel:+919382861514"
               className="inline-flex items-center gap-2.5 px-7 py-4 rounded-xl font-bold text-sm border text-white transition-all duration-200 hover:bg-white/5 hover:scale-105"
               style={{ borderColor: "rgba(255,255,255,0.2)" }}
@@ -415,25 +391,8 @@ export default function ContactPage() {
             </a>
           </div>
 
-          {/* Embedded Google Form */}
-          <div
-            className="w-full overflow-hidden"
-            style={{
-              borderRadius: "16px",
-              border: "1px solid rgba(234,179,8,0.15)",
-              boxShadow: "0 0 60px rgba(234,179,8,0.05)",
-            }}
-          >
-            <iframe
-              src="https://forms.gle/TXjAGS67M1Nnb2Ye9"
-              width="100%"
-              height="600"
-              style={{ border: 0, borderRadius: "16px", display: "block" }}
-              title="Max Machine Tools Enquiry Form"
-            >
-              Loading enquiry form…
-            </iframe>
-          </div>
+          {/* Custom Enquiry Form */}
+          <EnquiryForm />
         </div>
       </section>
 
