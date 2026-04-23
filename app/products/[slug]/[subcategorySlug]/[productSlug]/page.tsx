@@ -594,8 +594,7 @@ export default function ProductDetailPage() {
                   {/* ── Videos ── */}
                   {activeTab === "Videos" && (
                     <div className="flex flex-col gap-6">
-                      {console.log('Videos data:', product.videos)}
-                      {product!.videos!.map((item, i) => {
+{product!.videos!.map((item, i) => {
                         if (item.youtubeUrl) {
                           const videoId = getYouTubeId(item.youtubeUrl ?? "");
                           if (!videoId) return null;
