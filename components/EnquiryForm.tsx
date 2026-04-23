@@ -51,14 +51,17 @@ const Spinner = () => (
 );
 
 /* ── Validation ──────────────────────────────────────────────── */
+function normalizePhone(raw: string): string {
+  let p = raw.replace(/[\s\-+]/g, "");
+  if (p.length === 12 && p.startsWith("91")) p = p.slice(2);
+  if (p.length === 11 && p.startsWith("0")) p = p.slice(1);
+  return p;
+}
+
 function validate(form: FormState): Errors {
   const errs: Errors = {};
   if (!form.fullName.trim()) errs.fullName = "Full name is required.";
-  if (!form.phone.trim()) {
-    errs.phone = "Phone number is required.";
-  } else if (!/^\d{10}$/.test(form.phone.replace(/\s+/g, ""))) {
-    errs.phone = "Enter a valid 10-digit Indian phone number.";
-  }
+  if (!form.phone.trim()) errs.phone = "Phone number is required.";
   if (!form.email.trim()) {
     errs.email = "Email address is required.";
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
@@ -126,28 +129,42 @@ export default function EnquiryForm({ initialMachine = "" }: { initialMachine?: 
 
     setStatus("submitting");
 
-    try {
-      const body = new URLSearchParams({
-        [ENTRY.fullName]:    form.fullName.trim(),
-        [ENTRY.companyName]: form.companyName.trim(),
-        [ENTRY.phone]:       form.phone.trim(),
-        [ENTRY.email]:       form.email.trim(),
-        [ENTRY.machine]:     form.machine,
-        [ENTRY.message]:     form.message.trim(),
-      });
+    const normalizedPhone = normalizePhone(form.phone);
 
-      // Google Forms blocks CORS on formResponse — use no-cors to fire-and-forget
-      await fetch(FORM_ACTION_URL, {
+    const googleBody = new URLSearchParams({
+      [ENTRY.fullName]:    form.fullName.trim(),
+      [ENTRY.companyName]: form.companyName.trim(),
+      [ENTRY.phone]:       normalizedPhone,
+      [ENTRY.email]:       form.email.trim(),
+      [ENTRY.machine]:     form.machine,
+      [ENTRY.message]:     form.message.trim(),
+    });
+
+    const results = await Promise.allSettled([
+      // Google Forms — fire-and-forget (no-cors always resolves)
+      fetch(FORM_ACTION_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: body.toString(),
-      });
+        body: googleBody.toString(),
+      }),
+      // Brevo email via our API route
+      fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name:            form.fullName.trim(),
+          company:         form.companyName.trim(),
+          phone:           normalizedPhone,
+          email:           form.email.trim(),
+          machineInterest: form.machine,
+          message:         form.message.trim(),
+        }),
+      }).then((r) => { if (!r.ok) throw new Error("brevo failed"); }),
+    ]);
 
-      setStatus("success");
-    } catch {
-      setStatus("error");
-    }
+    const anySuccess = results.some((r) => r.status === "fulfilled");
+    setStatus(anySuccess ? "success" : "error");
   }
 
   /* ── Input style helpers ─────────────────────────────────────── */
@@ -277,10 +294,8 @@ export default function EnquiryForm({ initialMachine = "" }: { initialMachine?: 
             id="phone"
             name="phone"
             type="tel"
-            placeholder="98765 43210"
+            placeholder="+91 9962061514 or international number"
             autoComplete="tel"
-            maxLength={10}
-            inputMode="numeric"
             value={form.phone}
             onChange={handleChange}
             className={`${baseInput} ${inputBorder("phone")}`}

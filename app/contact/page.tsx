@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import SocialStrip from "@/components/SocialStrip";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import ContactEnquiryCTA from "@/components/ContactEnquiryCTA";
+import EnquiryForm from "@/components/EnquiryForm";
 
 /* ─── SVG Background ─────────────────────────────────────────── */
 const TechnicalDrawingBackground = () => (
@@ -344,8 +344,28 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ── ENQUIRY CTA SECTION ──────────────────────────────── */}
-      <ContactEnquiryCTA />
+      {/* ── ENQUIRY FORM SECTION ─────────────────────────────── */}
+      <section className="py-16 lg:py-24" style={{ background: "var(--bg-secondary)" }}>
+        <div className="max-w-3xl mx-auto px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <span
+              className="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-6 border"
+              style={{ color: "var(--gold)", borderColor: "var(--gold-border)", background: "var(--gold-dim)" }}
+            >
+              Catalogue &amp; Enquiry
+            </span>
+            <h2 className="text-3xl lg:text-4xl font-black text-white mb-4">
+              Get Your Catalogue in 10 Seconds
+            </h2>
+            <p className="text-lg max-w-xl mx-auto" style={{ color: "#a3a3a3" }}>
+              Fill our quick form and receive your catalogue instantly on WhatsApp &amp; Email.
+              Our team will call you within{" "}
+              <span className="text-white font-medium">4 business hours</span>.
+            </p>
+          </div>
+          <EnquiryForm />
+        </div>
+      </section>
 
       {/* ── CHENNAI MAP SECTION ──────────────────────────────── */}
       <section className="py-16 lg:py-24" style={{ background: "var(--bg-primary)" }}>
