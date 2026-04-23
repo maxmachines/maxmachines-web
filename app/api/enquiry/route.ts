@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BREVO_API_KEY = process.env.BREVO_API_KEY;
-
 export async function POST(req: NextRequest) {
+  const BREVO_API_KEY = process.env.BREVO_API_KEY;
+  if (!BREVO_API_KEY) {
+    return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
+  }
+
   const { name, company, phone, email, machineInterest, message } =
     await req.json();
 
