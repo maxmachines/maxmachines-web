@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { useEnquiryModal } from "@/context/EnquiryModalContext";
 
 const WhatsAppNavIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
@@ -51,6 +52,7 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { openEnquiryModal } = useEnquiryModal();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -115,15 +117,13 @@ export default function Navbar() {
               ))}
             </div>
             <div className="w-px h-5 bg-neutral-700" />
-            <a
-              href="https://forms.gle/TXjAGS67M1Nnb2Ye9"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => openEnquiryModal()}
               className="px-5 py-2 rounded-lg text-sm font-bold transition-all duration-200 hover:scale-105"
               style={{ background: "var(--gold)", color: "#0f0f0f" }}
             >
               Enquire Now
-            </a>
+            </button>
           </div>
 
           {/* Mobile hamburger */}
@@ -178,13 +178,13 @@ export default function Navbar() {
               </a>
             ))}
           </div>
-          <a
-            href="#contact"
-            className="mt-1 px-5 py-3 rounded-lg text-sm font-bold text-center"
+          <button
+            onClick={() => { openEnquiryModal(); setMenuOpen(false); }}
+            className="mt-1 px-5 py-3 rounded-lg text-sm font-bold text-center w-full"
             style={{ background: "var(--gold)", color: "#0f0f0f" }}
           >
             Enquire Now
-          </a>
+          </button>
         </div>
       )}
     </nav>

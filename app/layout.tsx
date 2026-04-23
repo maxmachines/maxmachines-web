@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
+import { EnquiryModalProvider } from "@/context/EnquiryModalContext";
+import EnquiryModal from "@/components/EnquiryModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,7 +44,10 @@ export default function RootLayout({
             gtag('config', 'G-3H083HF63Q');
           `}
         </Script>
-        {children}
+        <EnquiryModalProvider>
+          {children}
+          <EnquiryModal />
+        </EnquiryModalProvider>
       </body>
     </html>
   );

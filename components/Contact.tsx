@@ -1,3 +1,7 @@
+"use client";
+
+import { useEnquiryModal } from "@/context/EnquiryModalContext";
+
 const offices = [
   {
     label: "CH",
@@ -47,6 +51,8 @@ const offices = [
 ];
 
 export default function Contact() {
+  const { openEnquiryModal } = useEnquiryModal();
+
   return (
     <section
       id="contact"
@@ -159,15 +165,13 @@ export default function Contact() {
             >
               💬 WhatsApp Us
             </a>
-            <a
-              href="https://forms.gle/TXjAGS67M1Nnb2Ye9"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => openEnquiryModal()}
               className="px-6 py-3.5 rounded-xl font-bold text-sm border text-white text-center transition-all duration-200 hover:bg-white/5"
               style={{ borderColor: "rgba(255,255,255,0.2)" }}
             >
               📋 Fill Form
-            </a>
+            </button>
           </div>
         </div>
       </div>

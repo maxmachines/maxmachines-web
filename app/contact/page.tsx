@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import SocialStrip from "@/components/SocialStrip";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import EnquiryForm from "@/components/EnquiryForm";
+import ContactEnquiryCTA from "@/components/ContactEnquiryCTA";
 
 /* ─── SVG Background ─────────────────────────────────────────── */
 const TechnicalDrawingBackground = () => (
@@ -344,57 +344,8 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ── ENQUIRY FORM SECTION ─────────────────────────────── */}
-      <section className="py-16 lg:py-24" style={{ background: "var(--bg-secondary)" }}>
-        <div className="max-w-5xl mx-auto px-6 lg:px-8">
-          {/* Heading */}
-          <div className="text-center mb-10">
-            <span
-              className="inline-block px-4 py-1.5 rounded-full text-xs font-bold tracking-widest uppercase mb-5 border"
-              style={{ color: "var(--gold)", borderColor: "var(--gold-border)", background: "var(--gold-dim)" }}
-            >
-              Catalogue &amp; Enquiry
-            </span>
-            <h2 className="text-3xl lg:text-4xl font-black text-white mb-4">
-              Get Your Catalogue in 10 Seconds
-            </h2>
-            <p className="text-lg max-w-xl mx-auto" style={{ color: "#a3a3a3" }}>
-              Fill the form below and receive your catalogue instantly. Our team will call you within{" "}
-              <span className="text-white font-medium">4 business hours</span>.
-            </p>
-          </div>
-
-          {/* CTA Buttons — above the form */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
-            <a
-              href="tel:+919382861514"
-              className="inline-flex items-center gap-2.5 px-7 py-4 rounded-xl font-bold text-sm border text-white transition-all duration-200 hover:bg-white/5 hover:scale-105"
-              style={{ borderColor: "rgba(255,255,255,0.2)" }}
-            >
-              <PhoneIcon />
-              Call Sales
-            </a>
-
-            <a
-              href="https://wa.me/919962061514"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-7 py-4 rounded-xl font-bold text-sm border transition-all duration-200 hover:scale-105"
-              style={{
-                color: "#25d366",
-                borderColor: "#25d366",
-                background: "rgba(37,211,102,0.06)",
-              }}
-            >
-              <WhatsAppIcon />
-              WhatsApp Us
-            </a>
-          </div>
-
-          {/* Custom Enquiry Form */}
-          <EnquiryForm />
-        </div>
-      </section>
+      {/* ── ENQUIRY CTA SECTION ──────────────────────────────── */}
+      <ContactEnquiryCTA />
 
       {/* ── CHENNAI MAP SECTION ──────────────────────────────── */}
       <section className="py-16 lg:py-24" style={{ background: "var(--bg-primary)" }}>

@@ -69,13 +69,13 @@ function validate(form: FormState): Errors {
 }
 
 /* ── Component ───────────────────────────────────────────────── */
-export default function EnquiryForm() {
+export default function EnquiryForm({ initialMachine = "" }: { initialMachine?: string }) {
   const [form, setForm] = useState<FormState>({
     fullName: "",
     companyName: "",
     phone: "",
     email: "",
-    machine: "",
+    machine: initialMachine,
     message: "",
     website: "",
   });
@@ -92,6 +92,12 @@ export default function EnquiryForm() {
       .catch(() => setCategories([]))
       .finally(() => setLoadingCategories(false));
   }, []);
+
+  useEffect(() => {
+    if (initialMachine) {
+      setForm((prev) => ({ ...prev, machine: initialMachine }));
+    }
+  }, [initialMachine]);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>

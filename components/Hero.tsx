@@ -1,3 +1,7 @@
+"use client";
+
+import { useEnquiryModal } from "@/context/EnquiryModalContext";
+
 const TechnicalDrawingBackground = () => (
   <svg
     className="absolute inset-0 w-full h-full pointer-events-none"
@@ -179,6 +183,8 @@ const TechnicalDrawingBackground = () => (
 );
 
 export default function Hero() {
+  const { openEnquiryModal } = useEnquiryModal();
+
   return (
     <section
       id="home"
@@ -282,15 +288,13 @@ export default function Hero() {
             >
               Explore Machines
             </a>
-            <a
-              href="https://forms.gle/TXjAGS67M1Nnb2Ye9"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => openEnquiryModal()}
               className="px-5 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-sm sm:text-base border text-white transition-all duration-200 hover:bg-white/5"
               style={{ borderColor: "rgba(255,255,255,0.25)" }}
             >
               Enquire Now
-            </a>
+            </button>
           </div>
         </div>
       </div>
