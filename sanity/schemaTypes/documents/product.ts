@@ -10,6 +10,7 @@ export const product = defineType({
     { name: 'basic', title: 'Basic Info', default: true },
     { name: 'media', title: 'Media' },
     { name: 'specs', title: 'Specifications' },
+    { name: 'features', title: 'Features & Accessories' },
     { name: 'variants', title: 'Variants & Pricing' },
     { name: 'faqs', title: 'FAQs' },
     { name: 'seo', title: 'SEO & Visibility' },
@@ -124,30 +125,98 @@ export const product = defineType({
       of: [defineArrayMember({ type: 'videoItem' })],
       group: 'media',
     }),
+    defineField({
+      name: 'audioFiles',
+      title: 'Audio Files',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          fields: [
+            defineField({ name: 'title', title: 'Title', type: 'string' }),
+            defineField({ name: 'audioFile', title: 'Audio File', type: 'file' }),
+          ],
+          preview: {
+            select: { title: 'title' },
+            prepare({ title }) {
+              return { title: title || 'Untitled Audio' }
+            },
+          },
+        }),
+      ],
+      group: 'media',
+    }),
 
     // ── Specs ────────────────────────────────────────────────────────────────
     defineField({
       name: 'specs',
-      title: 'Specification Table',
+      title: 'General Specs (Fallback)',
       type: 'array',
-      description: 'Key-value pairs e.g. "Swing Over Bed → 500mm"',
+      description: 'Used only when no per-variant specs are set. For per-model specs, add them inside each Variant below.',
       of: [defineArrayMember({ type: 'specRow' })],
       group: 'specs',
     }),
 
-    // ── Variants & Accessories ───────────────────────────────────────────────
+    // ── Features & Accessories ───────────────────────────────────────────────
+    defineField({
+      name: 'highlights',
+      title: 'Special Highlights / Key Features',
+      type: 'array',
+      description: 'Key selling points — shown prominently on product page',
+      of: [defineArrayMember({ type: 'string' })],
+      options: { layout: 'tags' },
+      group: 'features',
+    }),
+    defineField({
+      name: 'accessories',
+      title: 'Accessories & Add-ons',
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'name',
+              title: 'Name',
+              type: 'string',
+              validation: (r) => r.required(),
+            }),
+            defineField({
+              name: 'description',
+              title: 'Description',
+              type: 'text',
+              rows: 2,
+            }),
+            defineField({
+              name: 'price',
+              title: 'Price',
+              type: 'string',
+              description: 'e.g. "₹2,500" or "Request Quote"',
+            }),
+            defineField({
+              name: 'link',
+              title: 'Product Page Link',
+              type: 'url',
+              description: 'Optional — link to another product page',
+            }),
+          ],
+          preview: {
+            select: { title: 'name', subtitle: 'price' },
+            prepare({ title, subtitle }) {
+              return { title: title || 'Unnamed Accessory', subtitle }
+            },
+          },
+        }),
+      ],
+      group: 'features',
+    }),
+
+    // ── Variants ─────────────────────────────────────────────────────────────
     defineField({
       name: 'variants',
       title: 'Variants / Sizes',
       type: 'array',
       of: [defineArrayMember({ type: 'productVariant' })],
-      group: 'variants',
-    }),
-    defineField({
-      name: 'accessories',
-      title: 'Accessories',
-      type: 'array',
-      of: [defineArrayMember({ type: 'accessoryItem' })],
       group: 'variants',
     }),
 

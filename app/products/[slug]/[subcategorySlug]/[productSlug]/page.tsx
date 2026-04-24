@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams, usePathname } from "next/navigation";
+import { useParams } from "next/navigation";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -14,10 +14,12 @@ import { useEnquiryModal } from "@/context/EnquiryModalContext";
 
 /* ─── Types ──────────────────────────────────────────────────────── */
 interface SpecRow { parameter: string; value: string }
-interface Variant { name: string; price?: number; availability?: string }
+interface Variant { name: string; size?: string; price?: string; availability?: string; specs?: SpecRow[] }
 interface FaqItem { question: string; answer: string }
-interface Download { title: string; url: string }
 interface VideoItem { title?: string; videoType?: string; youtubeUrl?: string; fileUrl?: string }
+interface AudioItem { title?: string; fileUrl?: string }
+interface PdfItem { label?: string; fileUrl?: string }
+interface AccessoryItem { name: string; description?: string; price?: string; link?: string }
 
 interface ProductDetail {
   _id: string;
@@ -31,32 +33,34 @@ interface ProductDetail {
   active?: boolean;
   fullDescription?: unknown[];
   images?: { url: string; alt?: string }[];
+  videos?: VideoItem[];
+  audioFiles?: AudioItem[];
+  pdfs?: PdfItem[];
   specs?: SpecRow[];
+  highlights?: string[];
+  accessories?: AccessoryItem[];
   variants?: Variant[];
   faqs?: FaqItem[];
-  downloads?: Download[];
-  videos?: VideoItem[];
-  seo?: { metaTitle?: string; metaDescription?: string };
+  seo?: { seoTitle?: string; metaDescription?: string };
   subcategory: {
-    _id: string;
     name: string;
     slug: { current: string };
-    parentCategory: {
-      _id: string;
+    category: {
       name: string;
       slug: { current: string };
     };
   };
 }
 
-interface RelatedProduct {
+interface SiblingProduct {
   _id: string;
   name: string;
   slug: { current: string };
   brand?: string;
   price?: number;
+  featured?: boolean;
   imageUrl?: string;
-  variantCount?: number;
+  specs?: SpecRow[];
 }
 
 /* ─── Helpers ────────────────────────────────────────────────────── */
@@ -72,18 +76,15 @@ const availabilityLabel: Record<string, { label: string; color: string }> = {
   discontinued: { label: "Discontinued", color: "#ef4444" },
 };
 
-const TABS = ["Overview", "Specifications", "Variants & Pricing", "Videos", "FAQs"] as const;
-type Tab = typeof TABS[number];
-
 function getYouTubeId(url: string): string | null {
-  if (!url || typeof url !== 'string') return null;
+  if (!url || typeof url !== "string") return null;
   const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([a-zA-Z0-9_-]{11})/);
   return match ? match[1] : null;
 }
 
-/* ─── SVG Icons ──────────────────────────────────────────────────── */
+/* ─── Icons ──────────────────────────────────────────────────────── */
 const ChevronRight = () => (
-  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5">
+  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 flex-shrink-0">
     <path d="M7 4l6 6-6 6" />
   </svg>
 );
@@ -92,7 +93,7 @@ const ChevronDown = ({ open }: { open: boolean }) => (
   <svg
     viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2"
     strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 flex-shrink-0"
-    style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}
+    style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}
   >
     <path d="M4 7l6 6 6-6" />
   </svg>
@@ -109,7 +110,20 @@ const GearIcon = () => (
   </svg>
 );
 
-/* ─── FAQ Accordion Item ─────────────────────────────────────────── */
+/* ─── Section Heading ─────────────────────────────────────────────── */
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="text-xl lg:text-2xl font-bold text-white flex items-center gap-3 mb-6">
+      <span
+        className="block rounded-full flex-shrink-0"
+        style={{ width: "4px", height: "24px", background: "var(--gold)" }}
+      />
+      {children}
+    </h2>
+  );
+}
+
+/* ─── FAQ Accordion ──────────────────────────────────────────────── */
 function FaqAccordion({ faq }: { faq: FaqItem }) {
   const [open, setOpen] = useState(false);
   return (
@@ -123,13 +137,19 @@ function FaqAccordion({ faq }: { faq: FaqItem }) {
         onClick={() => setOpen((v) => !v)}
       >
         <span className="font-semibold text-white text-sm leading-snug">{faq.question}</span>
-        <ChevronDown open={open} />
+        <span style={{ color: "var(--gold)" }}><ChevronDown open={open} /></span>
       </button>
-      {open && (
-        <div className="px-5 pb-5 pt-0" style={{ background: "var(--bg-secondary)" }}>
+      <div
+        style={{
+          maxHeight: open ? "600px" : "0",
+          overflow: "hidden",
+          transition: "max-height 0.35s ease",
+        }}
+      >
+        <div className="px-5 pb-5 pt-3" style={{ background: "var(--bg-secondary)" }}>
           <p className="text-sm leading-relaxed" style={{ color: "#a3a3a3" }}>{faq.answer}</p>
         </div>
-      )}
+      </div>
     </div>
   );
 }
@@ -162,7 +182,9 @@ const ptComponents = {
     ),
   },
   marks: {
-    strong: ({ children }: { children?: React.ReactNode }) => <strong className="font-bold text-white">{children}</strong>,
+    strong: ({ children }: { children?: React.ReactNode }) => (
+      <strong className="font-bold text-white">{children}</strong>
+    ),
     em: ({ children }: { children?: React.ReactNode }) => <em className="italic">{children}</em>,
     code: ({ children }: { children?: React.ReactNode }) => (
       <code className="px-1.5 py-0.5 rounded text-sm font-mono" style={{ background: "rgba(234,179,8,0.12)", color: "var(--gold)" }}>{children}</code>
@@ -173,7 +195,6 @@ const ptComponents = {
 /* ─── Page ───────────────────────────────────────────────────────── */
 export default function ProductDetailPage() {
   const params = useParams();
-  const pathname = usePathname();
   const slug = params.slug as string;
   const subcategorySlug = params.subcategorySlug as string;
   const productSlug = params.productSlug as string;
@@ -181,10 +202,9 @@ export default function ProductDetailPage() {
   const { openEnquiryModal } = useEnquiryModal();
 
   const [product, setProduct] = useState<ProductDetail | null>(null);
-  const [related, setRelated] = useState<RelatedProduct[]>([]);
+  const [siblings, setSiblings] = useState<SiblingProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [missing, setMissing] = useState(false);
-  const [activeTab, setActiveTab] = useState<Tab>("Overview");
   const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
@@ -193,27 +213,19 @@ export default function ProductDetailPage() {
     async function fetchData() {
       const prod = await client.fetch<ProductDetail | null>(
         `*[_type == "product" && slug.current == $productSlug][0] {
-          _id, name, slug, brand, countryOfManufacture, price, shortDescription, featured, active,
+          _id, name, slug, shortDescription, brand, countryOfManufacture, price, featured, active,
           fullDescription,
-          "images": images[]{
-            "url": asset->url,
-            alt
-          },
-          specs[]{parameter, value},
-          variants[]{name, price, availability},
-          faqs[]{question, answer},
-          "downloads": downloads[]{title, "url": file.asset->url},
-          "videos": videos[] {
-            title,
-            videoType,
-            youtubeUrl,
-            "fileUrl": videoFile.asset->url
-          },
-          seo{metaTitle, metaDescription},
-          "subcategory": subcategory->{
-            _id, name, slug,
-            "parentCategory": parentCategory->{_id, name, slug}
-          }
+          "images": images[] { "url": asset->url, alt },
+          "videos": videos[] { title, videoType, youtubeUrl, "fileUrl": videoFile.asset->url },
+          "audioFiles": audioFiles[] { title, "fileUrl": audioFile.asset->url },
+          "pdfs": downloads[] { "label": coalesce(label, title), "fileUrl": coalesce(file.asset->url, pdfFile.asset->url) },
+          specs[] { parameter, value },
+          highlights,
+          "accessories": accessories[] { name, description, price, link },
+          "variants": variants[] { name, size, price, availability, "specs": specs[] { parameter, value } },
+          "faqs": faqs[] { question, answer },
+          "seo": seo { seoTitle, metaDescription },
+          "subcategory": subcategory-> { name, slug, "category": parentCategory-> { name, slug } }
         }`,
         { productSlug }
       );
@@ -224,17 +236,17 @@ export default function ProductDetailPage() {
         return;
       }
 
-      const rel = await client.fetch<RelatedProduct[]>(
-        `*[_type == "product" && subcategory->slug.current == $subcategorySlug && active == true && slug.current != $productSlug] | order(featured desc)[0...8] {
-          _id, name, slug, brand, price,
+      const sibs = await client.fetch<SiblingProduct[]>(
+        `*[_type == "product" && subcategory->slug.current == $subcategorySlug && active == true] | order(featured desc, name asc) {
+          _id, name, slug, brand, price, featured,
           "imageUrl": images[0].asset->url,
-          "variantCount": count(variants)
+          specs[]{ parameter, value }
         }`,
-        { subcategorySlug, productSlug }
+        { subcategorySlug }
       );
 
       setProduct(prod);
-      setRelated(rel);
+      setSiblings(sibs);
       setLoading(false);
     }
 
@@ -243,686 +255,717 @@ export default function ProductDetailPage() {
 
   if (missing) notFound();
 
+  /* ── Derived values ── */
   const images = product?.images ?? [];
   const hasImages = images.length > 0;
-  const categorySlug = product?.subcategory?.parentCategory?.slug?.current ?? slug;
-  const categoryName = product?.subcategory?.parentCategory?.name;
+  const categorySlug = product?.subcategory?.category?.slug?.current ?? slug;
+  const categoryName = product?.subcategory?.category?.name;
   const subName = product?.subcategory?.name;
   const subSlug = product?.subcategory?.slug?.current ?? subcategorySlug;
   const flag = product?.countryOfManufacture ? countryFlags[product.countryOfManufacture] : null;
   const country = product?.countryOfManufacture ? countryLabels[product.countryOfManufacture] : null;
 
-  /* ── Tab visibility ── */
+  const hasHighlights = (product?.highlights?.length ?? 0) > 0;
+  const hasFullDesc = (product?.fullDescription?.length ?? 0) > 0;
   const hasSpecs = (product?.specs?.length ?? 0) > 0;
   const hasVariants = (product?.variants?.length ?? 0) > 0;
-  const hasFaqs = (product?.faqs?.length ?? 0) > 0;
   const hasVideos = (product?.videos?.length ?? 0) > 0;
-  const visibleTabs = TABS.filter((t) => {
-    if (t === "Specifications") return hasSpecs;
-    if (t === "Variants & Pricing") return hasVariants;
-    if (t === "Videos") return hasVideos;
-    if (t === "FAQs") return hasFaqs;
-    return true;
-  });
+  const hasAudio = (product?.audioFiles?.length ?? 0) > 0;
+  const hasPdfs = (product?.pdfs?.filter((p) => p.fileUrl).length ?? 0) > 0;
+  const hasAccessories = (product?.accessories?.length ?? 0) > 0;
+  const hasFaqs = (product?.faqs?.length ?? 0) > 0;
+
+  /* Per-variant spec derivation (component level so sections can render independently) */
+  const variants = product?.variants ?? [];
+  const hasPerVariantSpecs = variants.some((v) => (v.specs?.length ?? 0) > 0);
+  const variantSpecParams = Array.from(
+    new Set(variants.flatMap((v) => (v.specs ?? []).map((r) => r.parameter)))
+  );
+
+  /* Siblings excluding current product (for "More in" cards) */
+  const moreProducts = siblings.filter((s) => s.slug.current !== productSlug);
+
+  /* Comparison table: all unique spec params across all siblings */
+  const allSpecParams = Array.from(
+    new Set(siblings.flatMap((s) => (s.specs ?? []).map((r) => r.parameter)))
+  );
 
   return (
-    <>
-      {/* ── SEO ─────────────────────────────────────────────────── */}
-      {product?.seo?.metaTitle && (
-        <title>{product.seo.metaTitle}</title>
-      )}
+    <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
+      <Navbar />
 
-      <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
-        <Navbar />
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-24 lg:pt-28 pb-16 lg:pb-24">
 
-        {/* ── HERO ─────────────────────────────────────────────── */}
-        <section
-          className="relative pt-24 pb-8 lg:pt-28 lg:pb-10 overflow-hidden"
-          style={{ background: "linear-gradient(180deg, #181408 0%, var(--bg-primary) 100%)" }}
-        >
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              backgroundImage: "linear-gradient(rgba(234,179,8,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(234,179,8,0.05) 1px, transparent 1px)",
-              backgroundSize: "40px 40px",
-            }}
-          />
+        {/* ── 1. Breadcrumb ───────────────────────────────────────────── */}
+        <nav className="flex items-center flex-wrap gap-1.5 text-xs mb-7" aria-label="Breadcrumb">
+          <Link href="/products" className="transition-colors hover:text-yellow-300" style={{ color: "#737373" }}>
+            Catalog
+          </Link>
+          <ChevronRight />
+          {loading ? <span style={{ color: "#737373" }}>…</span> : (
+            <Link href={`/products/${categorySlug}`} className="transition-colors hover:text-yellow-300" style={{ color: "#737373" }}>
+              {categoryName}
+            </Link>
+          )}
+          <ChevronRight />
+          {loading ? <span style={{ color: "#737373" }}>…</span> : (
+            <Link href={`/products/${categorySlug}/${subSlug}`} className="transition-colors hover:text-yellow-300" style={{ color: "#737373" }}>
+              {subName}
+            </Link>
+          )}
+          <ChevronRight />
+          <span style={{ color: "var(--gold)" }}>
+            {loading ? "Loading…" : product?.name}
+          </span>
+        </nav>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
-            {/* Breadcrumb */}
-            <nav className="flex items-center flex-wrap gap-1.5 text-xs mb-5" aria-label="Breadcrumb">
-              <Link href="/products" className="transition-colors hover:text-yellow-300" style={{ color: "#737373" }}>
-                Catalog
-              </Link>
-              <ChevronRight />
-              {loading ? (
-                <span style={{ color: "#737373" }}>…</span>
-              ) : (
-                <Link href={`/products/${categorySlug}`} className="transition-colors hover:text-yellow-300" style={{ color: "#737373" }}>
-                  {categoryName}
-                </Link>
-              )}
-              <ChevronRight />
-              {loading ? (
-                <span style={{ color: "#737373" }}>…</span>
-              ) : (
-                <Link href={`/products/${categorySlug}/${subSlug}`} className="transition-colors hover:text-yellow-300" style={{ color: "#737373" }}>
-                  {subName}
-                </Link>
-              )}
-              <ChevronRight />
-              <span style={{ color: "var(--gold)" }}>
-                {loading ? "Loading…" : product?.name}
-              </span>
-            </nav>
-
-            {/* Title + badges */}
-            {loading ? (
-              <div className="space-y-3">
-                <div className="rounded-lg animate-pulse h-10 w-80" style={{ background: "rgba(234,179,8,0.1)" }} />
-                <div className="rounded-lg animate-pulse h-5 w-48" style={{ background: "rgba(255,255,255,0.05)" }} />
-              </div>
-            ) : (
-              <>
-                <h1 className="text-3xl lg:text-5xl font-black text-white leading-tight mb-4">
-                  {product?.name}
-                </h1>
-                <div className="flex flex-wrap gap-2 items-center">
-                  {product?.featured && (
-                    <span className="text-xs font-bold px-3 py-1 rounded-full" style={{ background: "var(--gold)", color: "#0f0f0f" }}>
-                      ★ Featured
-                    </span>
-                  )}
-                  {product?.brand && (
-                    <span className="text-xs font-semibold px-3 py-1 rounded-full border" style={{ color: "var(--gold)", borderColor: "rgba(234,179,8,0.35)", background: "rgba(234,179,8,0.07)" }}>
-                      {product.brand}
-                    </span>
-                  )}
-                  {flag && country && (
-                    <span className="text-xs font-semibold px-3 py-1 rounded-full border" style={{ color: "#a3a3a3", borderColor: "rgba(163,163,163,0.2)", background: "rgba(163,163,163,0.05)" }}>
-                      {flag} Made in {country}
-                    </span>
-                  )}
-                </div>
-                {product?.shortDescription && (
-                  <p className="mt-4 text-base max-w-2xl leading-relaxed" style={{ color: "#a3a3a3" }}>
-                    {product.shortDescription}
-                  </p>
-                )}
-              </>
-            )}
+        {/* ── 2. Product name + badges ────────────────────────────────── */}
+        {loading ? (
+          <div className="space-y-3 mb-6">
+            <div className="rounded-lg animate-pulse h-10 w-80" style={{ background: "rgba(234,179,8,0.1)" }} />
+            <div className="rounded-lg animate-pulse h-5 w-48" style={{ background: "rgba(255,255,255,0.05)" }} />
           </div>
-        </section>
-
-        {/* ── MAIN CONTENT ─────────────────────────────────────── */}
-        <section className="max-w-7xl mx-auto px-6 lg:px-8 pb-16 lg:pb-24">
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-
-            {/* ── LEFT COLUMN ────────────────────────────────────── */}
-            <div className="flex-1 min-w-0">
-
-              {/* Gallery */}
-              <div className="mb-8">
-                {/* Main image */}
-                <div
-                  className="relative w-full rounded-2xl overflow-hidden mb-3 border"
-                  style={{
-                    height: "380px",
-                    background: "var(--bg-secondary)",
-                    borderColor: "rgba(234,179,8,0.14)",
-                  }}
-                >
-                  {loading ? (
-                    <div className="w-full h-full animate-pulse" style={{ background: "rgba(234,179,8,0.06)" }} />
-                  ) : hasImages ? (
-                    <Image
-                      src={images[activeImage].url}
-                      alt={images[activeImage].alt ?? product?.name ?? ""}
-                      fill
-                      className="object-contain"
-                      sizes="(max-width: 1024px) 100vw, 60vw"
-                      priority
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full">
-                      <GearIcon />
-                    </div>
-                  )}
-                </div>
-
-                {/* Thumbnails */}
-                {!loading && images.length > 1 && (
-                  <div className="flex gap-2 flex-wrap">
-                    {images.map((img, i) => (
-                      <button
-                        key={i}
-                        onClick={() => setActiveImage(i)}
-                        className="relative rounded-xl overflow-hidden border-2 transition-all duration-200"
-                        style={{
-                          width: "72px",
-                          height: "72px",
-                          borderColor: i === activeImage ? "var(--gold)" : "rgba(234,179,8,0.15)",
-                          flexShrink: 0,
-                        }}
-                      >
-                        <Image
-                          src={img.url}
-                          alt={img.alt ?? `Image ${i + 1}`}
-                          fill
-                          className="object-cover"
-                          sizes="72px"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Tabs */}
-              {!loading && (
-                <>
-                  <div
-                    className="flex gap-1 mb-6 p-1 rounded-xl overflow-x-auto"
-                    style={{ background: "var(--bg-secondary)", border: "1px solid rgba(234,179,8,0.1)" }}
-                  >
-                    {visibleTabs.map((tab) => (
-                      <button
-                        key={tab}
-                        onClick={() => setActiveTab(tab)}
-                        className="px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap transition-all duration-200 flex-shrink-0"
-                        style={
-                          activeTab === tab
-                            ? { background: "var(--gold)", color: "#0f0f0f" }
-                            : { color: "#737373" }
-                        }
-                      >
-                        {tab}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* ── Overview ── */}
-                  {activeTab === "Overview" && (
-                    <div>
-                      {product?.fullDescription && product.fullDescription.length > 0 ? (
-                        <div className="prose-dark">
-                          <PortableText
-                            value={product.fullDescription as Parameters<typeof PortableText>[0]["value"]}
-                            components={ptComponents}
-                          />
-                        </div>
-                      ) : (
-                        <div>
-                          {product?.shortDescription && (
-                            <p className="text-base leading-relaxed mb-4" style={{ color: "#d4d4d4" }}>
-                              {product.shortDescription}
-                            </p>
-                          )}
-                          <p className="text-sm" style={{ color: "#525252" }}>
-                            Full product details coming soon. Contact us for specifications.
-                          </p>
-                        </div>
-                      )}
-                      {/* PDF Downloads */}
-                      {(product?.downloads?.length ?? 0) > 0 && (
-                        <div className="mt-8">
-                          <h3 className="text-white font-bold text-lg mb-3">Downloads</h3>
-                          <div className="flex flex-col gap-2">
-                            {product!.downloads!.map((dl, i) => (
-                              <a
-                                key={i}
-                                href={dl.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-3 px-4 py-3 rounded-xl border transition-all duration-200 hover:bg-white/5 text-sm font-medium"
-                                style={{ borderColor: "rgba(234,179,8,0.2)", color: "var(--gold)" }}
-                              >
-                                📄 {dl.title}
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* ── Specifications ── */}
-                  {activeTab === "Specifications" && (
-                    <div>
-                      {hasSpecs ? (
-                        <div className="rounded-xl overflow-hidden border" style={{ borderColor: "rgba(234,179,8,0.14)" }}>
-                          <table className="w-full text-sm">
-                            <thead>
-                              <tr style={{ background: "rgba(234,179,8,0.08)" }}>
-                                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--gold)", width: "45%" }}>
-                                  Parameter
-                                </th>
-                                <th className="text-left px-5 py-3 font-semibold text-white">
-                                  Value
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {product!.specs!.map((row, i) => (
-                                <tr
-                                  key={i}
-                                  style={{
-                                    background: i % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)",
-                                    borderTop: "1px solid rgba(234,179,8,0.07)",
-                                  }}
-                                >
-                                  <td className="px-5 py-3 font-medium" style={{ color: "#a3a3a3" }}>
-                                    {row.parameter}
-                                  </td>
-                                  <td className="px-5 py-3 text-white">
-                                    {row.value}
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      ) : (
-                        <p className="text-sm" style={{ color: "#525252" }}>No specifications listed.</p>
-                      )}
-                    </div>
-                  )}
-
-                  {/* ── Variants & Pricing ── */}
-                  {activeTab === "Variants & Pricing" && (
-                    <div>
-                      {hasVariants ? (
-                        <div className="rounded-xl overflow-hidden border" style={{ borderColor: "rgba(234,179,8,0.14)" }}>
-                          <table className="w-full text-sm">
-                            <thead>
-                              <tr style={{ background: "rgba(234,179,8,0.08)" }}>
-                                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--gold)" }}>Size / Variant</th>
-                                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--gold)" }}>Availability</th>
-                                <th className="text-left px-5 py-3 font-semibold" style={{ color: "var(--gold)" }}>Price</th>
-                                <th className="px-5 py-3" />
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {product!.variants!.map((v, i) => {
-                                const avail = v.availability ? availabilityLabel[v.availability] : null;
-                                return (
-                                  <tr
-                                    key={i}
-                                    style={{
-                                      background: i % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)",
-                                      borderTop: "1px solid rgba(234,179,8,0.07)",
-                                    }}
-                                  >
-                                    <td className="px-5 py-3 font-semibold text-white">{v.name}</td>
-                                    <td className="px-5 py-3">
-                                      {avail ? (
-                                        <span className="text-xs font-semibold" style={{ color: avail.color }}>
-                                          {avail.label}
-                                        </span>
-                                      ) : "—"}
-                                    </td>
-                                    <td className="px-5 py-3">
-                                      {v.price ? (
-                                        <span className="font-bold" style={{ color: "var(--gold)" }}>
-                                          ₹{v.price.toLocaleString("en-IN")}
-                                        </span>
-                                      ) : (
-                                        <span style={{ color: "#737373" }}>On Request</span>
-                                      )}
-                                    </td>
-                                    <td className="px-5 py-3">
-                                      <button
-                                        onClick={() => openEnquiryModal(`${product?.name} — ${v.name}`)}
-                                        className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all duration-200 hover:brightness-110"
-                                        style={{ background: "var(--gold)", color: "#0f0f0f" }}
-                                      >
-                                        Enquire
-                                      </button>
-                                    </td>
-                                  </tr>
-                                );
-                              })}
-                            </tbody>
-                          </table>
-                        </div>
-                      ) : (
-                        <p className="text-sm" style={{ color: "#525252" }}>No variants listed.</p>
-                      )}
-                    </div>
-                  )}
-
-                  {/* ── Videos ── */}
-                  {activeTab === "Videos" && (
-                    <div className="flex flex-col gap-6">
-{product!.videos!.map((item, i) => {
-                        if (item.youtubeUrl) {
-                          const videoId = getYouTubeId(item.youtubeUrl ?? "");
-                          if (!videoId) return null;
-                          return (
-                            <iframe
-                              key={i}
-                              width="100%"
-                              height="400"
-                              src={`https://www.youtube.com/embed/${videoId}`}
-                              frameBorder="0"
-                              allowFullScreen
-                              className="rounded-lg"
-                            />
-                          );
-                        }
-                        if (item.fileUrl) {
-                          return (
-                            <video
-                              key={i}
-                              src={item.fileUrl}
-                              controls
-                              className="w-full rounded-lg"
-                              style={{ maxHeight: "400px" }}
-                            />
-                          );
-                        }
-                        return null;
-                      })}
-                    </div>
-                  )}
-
-                  {/* ── FAQs ── */}
-                  {activeTab === "FAQs" && (
-                    <div className="flex flex-col gap-3">
-                      {hasFaqs ? (
-                        product!.faqs!.map((faq, i) => (
-                          <FaqAccordion key={i} faq={faq} />
-                        ))
-                      ) : (
-                        <p className="text-sm" style={{ color: "#525252" }}>No FAQs listed.</p>
-                      )}
-                    </div>
-                  )}
-                </>
+        ) : (
+          <div className="mb-3">
+            <h1 className="text-3xl lg:text-5xl font-black text-white leading-tight mb-4">
+              {product?.name}
+            </h1>
+            <div className="flex flex-wrap gap-2 items-center">
+              {product?.featured && (
+                <span className="text-xs font-bold px-3 py-1 rounded-full" style={{ background: "var(--gold)", color: "#0f0f0f" }}>
+                  ★ Featured
+                </span>
               )}
-            </div>
-
-            {/* ── RIGHT SIDEBAR ─────────────────────────────────── */}
-            <div className="lg:w-80 xl:w-96 flex-shrink-0">
-              <div className="lg:sticky lg:top-24 flex flex-col gap-4">
-
-                {/* Enquiry Panel */}
-                <div
-                  className="rounded-2xl border p-6"
-                  style={{
-                    background: "var(--bg-secondary)",
-                    borderColor: "rgba(234,179,8,0.2)",
-                  }}
-                >
-                  <h3 className="text-white font-bold text-lg mb-1">Get a Quote</h3>
-                  <p className="text-sm mb-4" style={{ color: "#737373" }}>
-                    We respond within the hour on business days.
-                  </p>
-
-                  {loading ? (
-                    <div className="h-12 rounded-xl animate-pulse" style={{ background: "rgba(234,179,8,0.1)" }} />
-                  ) : (
-                    <button
-                      onClick={() => openEnquiryModal(
-                        product?.name,
-                        `I am interested in: ${product?.name}. Page: https://www.maxmachines.in${pathname}`
-                      )}
-                      className="w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-200 hover:scale-[1.02] hover:brightness-110 mb-3"
-                      style={{ background: "var(--gold)", color: "#0f0f0f" }}
-                    >
-                      📋 Enquire About This Machine
-                    </button>
-                  )}
-
-                  <div className="flex gap-2">
-                    <a
-                      href="tel:+919962061514"
-                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold border transition-all duration-200 hover:bg-white/5"
-                      style={{ color: "white", borderColor: "rgba(255,255,255,0.2)" }}
-                    >
-                      📞 Call
-                    </a>
-                    <a
-                      href="https://wa.me/919382861514"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-semibold border transition-all duration-200 hover:bg-white/5"
-                      style={{ color: "#22c55e", borderColor: "#22c55e" }}
-                    >
-                      💬 WhatsApp
-                    </a>
-                  </div>
-                </div>
-
-                {/* Quick Info */}
-                {!loading && product && (
-                  <div
-                    className="rounded-2xl border p-5"
-                    style={{ background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.12)" }}
-                  >
-                    <h4 className="text-sm font-bold text-white mb-3 uppercase tracking-wider" style={{ fontSize: "11px", color: "#737373" }}>
-                      Quick Info
-                    </h4>
-                    <div className="flex flex-col gap-2.5 text-sm">
-                      {product.brand && (
-                        <div className="flex justify-between">
-                          <span style={{ color: "#737373" }}>Brand</span>
-                          <span className="font-semibold text-white">{product.brand}</span>
-                        </div>
-                      )}
-                      {flag && country && (
-                        <div className="flex justify-between">
-                          <span style={{ color: "#737373" }}>Origin</span>
-                          <span className="font-semibold text-white">{flag} {country}</span>
-                        </div>
-                      )}
-                      {product.subcategory?.name && (
-                        <div className="flex justify-between">
-                          <span style={{ color: "#737373" }}>Type</span>
-                          <span className="font-semibold text-white">{product.subcategory.name}</span>
-                        </div>
-                      )}
-                      {(product.variants?.length ?? 0) > 0 && (
-                        <div className="flex justify-between">
-                          <span style={{ color: "#737373" }}>Variants</span>
-                          <span className="font-semibold text-white">{product.variants!.length} sizes</span>
-                        </div>
-                      )}
-                      {product.price ? (
-                        <div className="flex justify-between">
-                          <span style={{ color: "#737373" }}>Base Price</span>
-                          <span className="font-bold" style={{ color: "var(--gold)" }}>
-                            ₹{product.price.toLocaleString("en-IN")}
-                          </span>
-                        </div>
-                      ) : (
-                        <div className="flex justify-between">
-                          <span style={{ color: "#737373" }}>Price</span>
-                          <span className="font-semibold" style={{ color: "var(--gold)" }}>Request Quote</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-              </div>
+              {product?.brand && (
+                <span className="text-xs font-semibold px-3 py-1 rounded-full border" style={{ color: "var(--gold)", borderColor: "rgba(234,179,8,0.35)", background: "rgba(234,179,8,0.07)" }}>
+                  {product.brand}
+                </span>
+              )}
+              {flag && country && (
+                <span className="text-xs font-semibold px-3 py-1 rounded-full border" style={{ color: "#a3a3a3", borderColor: "rgba(163,163,163,0.2)", background: "rgba(163,163,163,0.05)" }}>
+                  {flag} Made in {country}
+                </span>
+              )}
             </div>
           </div>
-        </section>
-
-        {/* ── RELATED PRODUCTS (COMPARISON TABLE) ──────────────── */}
-        {!loading && related.length > 0 && (
-          <section className="pb-20" style={{ background: "var(--bg-primary)" }}>
-            <div className="max-w-7xl mx-auto px-6 lg:px-8">
-              <div className="mb-6">
-                <h2 className="text-2xl font-black text-white">
-                  More in{" "}
-                  <span style={{ color: "var(--gold)" }}>{product?.subcategory?.name}</span>
-                </h2>
-                <p className="text-sm mt-1" style={{ color: "#737373" }}>
-                  Other machines in this range you might be interested in.
-                </p>
-              </div>
-
-              <div className="rounded-2xl overflow-hidden border" style={{ borderColor: "rgba(234,179,8,0.14)" }}>
-                {/* Desktop table */}
-                <div className="hidden md:block overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr style={{ background: "rgba(234,179,8,0.08)" }}>
-                        <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Machine</th>
-                        <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Brand</th>
-                        <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Variants</th>
-                        <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Price</th>
-                        <th className="px-5 py-3.5" />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {related.map((rel, i) => (
-                        <tr
-                          key={rel._id}
-                          style={{
-                            background: i % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)",
-                            borderTop: "1px solid rgba(234,179,8,0.07)",
-                          }}
-                        >
-                          <td className="px-5 py-4">
-                            <div className="flex items-center gap-3">
-                              <div
-                                className="relative rounded-lg overflow-hidden flex-shrink-0"
-                                style={{ width: "48px", height: "48px", background: "rgba(234,179,8,0.06)" }}
-                              >
-                                {rel.imageUrl ? (
-                                  <Image src={rel.imageUrl} alt={rel.name} fill className="object-cover" sizes="48px" />
-                                ) : (
-                                  <div className="flex items-center justify-center h-full">
-                                    <GearIcon />
-                                  </div>
-                                )}
-                              </div>
-                              <Link
-                                href={`/products/${categorySlug}/${subSlug}/${rel.slug.current}`}
-                                className="font-semibold text-white hover:text-yellow-300 transition-colors"
-                              >
-                                {rel.name}
-                              </Link>
-                            </div>
-                          </td>
-                          <td className="px-5 py-4" style={{ color: "#a3a3a3" }}>
-                            {rel.brand ?? "—"}
-                          </td>
-                          <td className="px-5 py-4" style={{ color: "#a3a3a3" }}>
-                            {(rel.variantCount ?? 0) > 0 ? `${rel.variantCount} sizes` : "—"}
-                          </td>
-                          <td className="px-5 py-4">
-                            {rel.price ? (
-                              <span className="font-bold" style={{ color: "var(--gold)" }}>
-                                ₹{rel.price.toLocaleString("en-IN")}
-                              </span>
-                            ) : (
-                              <span style={{ color: "#737373" }}>On Request</span>
-                            )}
-                          </td>
-                          <td className="px-5 py-4">
-                            <Link
-                              href={`/products/${categorySlug}/${subSlug}/${rel.slug.current}`}
-                              className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all duration-200 hover:brightness-110 whitespace-nowrap"
-                              style={{ background: "var(--gold)", color: "#0f0f0f" }}
-                            >
-                              View →
-                            </Link>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Mobile cards */}
-                <div className="md:hidden flex flex-col divide-y divide-yellow-900/20">
-                  {related.map((rel) => (
-                    <Link
-                      key={rel._id}
-                      href={`/products/${categorySlug}/${subSlug}/${rel.slug.current}`}
-                      className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors"
-                    >
-                      <div
-                        className="relative rounded-xl overflow-hidden flex-shrink-0"
-                        style={{ width: "60px", height: "60px", background: "rgba(234,179,8,0.06)" }}
-                      >
-                        {rel.imageUrl ? (
-                          <Image src={rel.imageUrl} alt={rel.name} fill className="object-cover" sizes="60px" />
-                        ) : (
-                          <div className="flex items-center justify-center h-full">
-                            <GearIcon />
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-white text-sm truncate">{rel.name}</p>
-                        <p className="text-xs mt-0.5" style={{ color: "#737373" }}>
-                          {rel.brand ?? ""}{rel.brand && rel.price ? " · " : ""}
-                          {rel.price ? `₹${rel.price.toLocaleString("en-IN")}` : "On Request"}
-                        </p>
-                      </div>
-                      <span className="text-xs font-bold flex-shrink-0" style={{ color: "var(--gold)" }}>View →</span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </section>
         )}
 
-        {/* ── BOTTOM CTA ────────────────────────────────────────── */}
-        <section className="py-16 lg:py-20" style={{ background: "var(--bg-secondary)" }}>
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* ── 3. Short description ────────────────────────────────────── */}
+        {loading ? (
+          <div className="rounded-lg animate-pulse h-5 w-full max-w-2xl mb-10" style={{ background: "rgba(255,255,255,0.05)" }} />
+        ) : product?.shortDescription ? (
+          <p className="text-base max-w-3xl leading-relaxed mb-10" style={{ color: "#a3a3a3" }}>
+            {product.shortDescription}
+          </p>
+        ) : (
+          <div className="mb-10" />
+        )}
+
+        {/* ── 4. 60/40: Image gallery | Highlights + CTA ──────────────── */}
+        <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-8 lg:gap-12 mb-16">
+
+          {/* LEFT — Image gallery */}
+          <div>
             <div
-              className="rounded-2xl p-10 flex flex-col lg:flex-row items-center justify-between gap-8 border"
-              style={{
-                background: "linear-gradient(135deg, rgba(234,179,8,0.07) 0%, var(--bg-secondary) 100%)",
-                borderColor: "rgba(234,179,8,0.2)",
-              }}
+              className="relative w-full rounded-2xl overflow-hidden mb-3 border"
+              style={{ height: "420px", background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.14)" }}
             >
-              <div>
-                <h3 className="text-white font-bold text-2xl lg:text-3xl mb-2">
-                  Ready to Order?
-                </h3>
-                <p style={{ color: "#737373" }}>
-                  Get pricing, availability, and lead times — we reply within the hour.
-                </p>
+              {loading ? (
+                <div className="w-full h-full animate-pulse" style={{ background: "rgba(234,179,8,0.06)" }} />
+              ) : hasImages ? (
+                <Image
+                  src={images[activeImage].url}
+                  alt={images[activeImage].alt ?? product?.name ?? ""}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  priority
+                />
+              ) : (
+                <div className="flex items-center justify-center h-full"><GearIcon /></div>
+              )}
+            </div>
+
+            {!loading && images.length > 1 && (
+              <div className="flex gap-2 flex-wrap">
+                {images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImage(i)}
+                    className="relative rounded-xl overflow-hidden border-2 transition-all duration-200 flex-shrink-0"
+                    style={{ width: "72px", height: "72px", borderColor: i === activeImage ? "var(--gold)" : "rgba(234,179,8,0.15)" }}
+                  >
+                    <Image src={img.url} alt={img.alt ?? `Image ${i + 1}`} fill className="object-cover" sizes="72px" />
+                  </button>
+                ))}
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 flex-shrink-0">
+            )}
+          </div>
+
+          {/* RIGHT — Highlights + CTA (scrollable if content overflows) */}
+          <div className="flex flex-col gap-5 lg:overflow-y-auto lg:max-h-screen">
+
+            {/* Special Highlights — hidden if no highlights */}
+            {!loading && hasHighlights && (
+              <div
+                className="rounded-2xl border p-5"
+                style={{ background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.22)" }}
+              >
+                <p className="text-xs font-bold uppercase tracking-widest mb-4" style={{ color: "var(--gold)" }}>
+                  Special Highlights
+                </p>
+                <ul className="flex flex-col gap-3">
+                  {product!.highlights!.map((h, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm leading-snug" style={{ color: "#d4d4d4" }}>
+                      <span className="text-base leading-none mt-0.5 flex-shrink-0" style={{ color: "var(--gold)" }}>★</span>
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* CTA: Enquire (50%) | Call (25%) | WhatsApp (25%) */}
+            {loading ? (
+              <div className="h-14 rounded-xl animate-pulse" style={{ background: "rgba(234,179,8,0.1)" }} />
+            ) : (
+              <div className="flex gap-2">
                 <button
-                  onClick={() => openEnquiryModal(product?.name)}
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-center transition-all duration-200 hover:scale-105 hover:brightness-110"
+                  onClick={() => openEnquiryModal(
+                    product?.name,
+                    `I am interested in: ${product?.name}. Page: ${typeof window !== "undefined" ? window.location.href : ""}`
+                  )}
+                  className="flex-[2] py-3.5 rounded-xl font-bold text-sm transition-all duration-200 hover:brightness-110 text-center leading-tight"
                   style={{ background: "var(--gold)", color: "#0f0f0f" }}
                 >
-                  📋 Send Enquiry
+                  📋 Enquire About This Machine
                 </button>
                 <a
                   href="tel:+919962061514"
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm text-center transition-all duration-200 hover:bg-white/5 border"
-                  style={{ color: "white", borderColor: "rgba(255,255,255,0.2)" }}
+                  className="flex-1 flex items-center justify-center py-3.5 rounded-xl text-sm font-bold border transition-all duration-200 hover:bg-white/5"
+                  style={{ color: "white", borderColor: "rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.04)" }}
                 >
-                  📞 Call Chennai
+                  📞 Call
                 </a>
                 <a
                   href="https://wa.me/919382861514"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-3.5 rounded-xl font-bold text-sm border text-center transition-all duration-200 hover:bg-white/5"
-                  style={{ color: "#22c55e", borderColor: "#22c55e" }}
+                  className="flex-1 flex items-center justify-center py-3.5 rounded-xl text-sm font-bold transition-all duration-200 hover:opacity-90"
+                  style={{ background: "#22c55e", color: "white" }}
                 >
-                  💬 WhatsApp
+                  💬 WA
                 </a>
               </div>
-            </div>
+            )}
           </div>
-        </section>
+        </div>
 
-        <Footer />
-        <WhatsAppButton />
-      </main>
-    </>
+        {/* ── 4. Specifications (per-variant comparison or fallback) ──── */}
+        {!loading && hasVariants && hasPerVariantSpecs && (
+          <section className="mb-14">
+            <SectionHeading>Specifications</SectionHeading>
+            <p className="text-xs mb-3 lg:hidden" style={{ color: "#737373" }}>← Swipe to compare models →</p>
+            <div
+              className="overflow-x-auto rounded-xl border"
+              style={{ borderColor: "rgba(234,179,8,0.14)", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+            >
+              <table className="text-sm" style={{ minWidth: `${Math.max(500, variants.length * 160 + 180)}px` }}>
+                <thead>
+                  <tr style={{ background: "rgba(234,179,8,0.08)" }}>
+                    <th
+                      className="text-left px-5 py-3.5 font-semibold sticky left-0"
+                      style={{ color: "var(--gold)", background: "rgba(30,24,8,0.98)", minWidth: "170px", zIndex: 10 }}
+                    >
+                      Parameter
+                    </th>
+                    {variants.map((v, i) => (
+                      <th key={i} className="text-left px-4 py-3.5 font-semibold" style={{ minWidth: "160px", width: `${100 / variants.length}%` }}>
+                        <span className="block text-white">{v.name}</span>
+                        {v.size && <span className="block text-xs font-normal mt-0.5" style={{ color: "#a3a3a3" }}>{v.size}</span>}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {variantSpecParams.map((param, rowIdx) => (
+                    <tr
+                      key={param}
+                      style={{
+                        background: rowIdx % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)",
+                        borderTop: "1px solid rgba(234,179,8,0.07)",
+                      }}
+                    >
+                      <td
+                        className="px-5 py-3 font-medium sticky left-0"
+                        style={{ color: "#a3a3a3", background: rowIdx % 2 === 0 ? "#1a1a1a" : "rgba(15,15,15,0.98)", minWidth: "170px" }}
+                      >
+                        {param}
+                      </td>
+                      {variants.map((v, colIdx) => {
+                        const spec = (v.specs ?? []).find((r) => r.parameter === param);
+                        return (
+                          <td
+                            key={colIdx}
+                            className="px-4 py-3 text-white"
+                            style={{
+                              background: colIdx % 2 === 0
+                                ? (rowIdx % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)")
+                                : (rowIdx % 2 === 0 ? "rgba(234,179,8,0.02)" : "var(--bg-secondary)"),
+                            }}
+                          >
+                            {spec?.value ?? <span style={{ color: "#525252" }}>—</span>}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {/* Fallback: top-level specs when no per-variant specs (or no variants) */}
+        {!loading && !hasPerVariantSpecs && hasSpecs && (
+          <section className="mb-14">
+            <SectionHeading>Specifications</SectionHeading>
+            <div
+              className="overflow-x-auto rounded-xl border"
+              style={{ borderColor: "rgba(234,179,8,0.14)", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+            >
+              <table className="w-full text-sm" style={{ minWidth: "400px" }}>
+                <thead>
+                  <tr style={{ background: "rgba(234,179,8,0.08)" }}>
+                    <th
+                      className="text-left px-5 py-3.5 font-semibold sticky left-0"
+                      style={{ color: "var(--gold)", background: "rgba(30,24,8,0.98)", minWidth: "160px", zIndex: 10 }}
+                    >
+                      Parameter
+                    </th>
+                    <th className="text-left px-5 py-3.5 font-semibold text-white">Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {product!.specs!.map((row, i) => (
+                    <tr
+                      key={i}
+                      style={{
+                        background: i % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)",
+                        borderTop: "1px solid rgba(234,179,8,0.07)",
+                      }}
+                    >
+                      <td
+                        className="px-5 py-3 font-medium sticky left-0"
+                        style={{ color: "#a3a3a3", background: i % 2 === 0 ? "#1a1a1a" : "rgba(15,15,15,0.98)", minWidth: "160px" }}
+                      >
+                        {row.parameter}
+                      </td>
+                      <td className="px-5 py-3 text-white">{row.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {/* ── 6. Overview ─────────────────────────────────────────────── */}
+        {!loading && hasFullDesc && (
+          <section className="mb-14">
+            <SectionHeading>Overview</SectionHeading>
+            <PortableText
+              value={product!.fullDescription as Parameters<typeof PortableText>[0]["value"]}
+              components={ptComponents}
+            />
+          </section>
+        )}
+
+        {/* ── 7. Videos — 3-col desktop, 1-col mobile, max-height 220px ── */}
+        {!loading && hasVideos && (
+          <section className="mb-14">
+            <SectionHeading>Videos</SectionHeading>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              {product!.videos!.map((item, i) => {
+                if (item.youtubeUrl) {
+                  const videoId = getYouTubeId(item.youtubeUrl);
+                  if (!videoId) return null;
+                  return (
+                    <div key={i} className="flex flex-col gap-2">
+                      {item.title && (
+                        <p className="text-xs font-semibold text-white truncate">{item.title}</p>
+                      )}
+                      <div className="rounded-xl overflow-hidden" style={{ height: "220px" }}>
+                        <iframe
+                          src={`https://www.youtube.com/embed/${videoId}`}
+                          width="100%"
+                          height="220"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          style={{ display: "block", border: "none" }}
+                        />
+                      </div>
+                    </div>
+                  );
+                }
+                if (item.fileUrl) {
+                  return (
+                    <div key={i} className="flex flex-col gap-2">
+                      {item.title && (
+                        <p className="text-xs font-semibold text-white truncate">{item.title}</p>
+                      )}
+                      <video
+                        src={item.fileUrl}
+                        controls
+                        className="rounded-xl w-full"
+                        style={{ height: "220px", objectFit: "cover" }}
+                      />
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* ── 7. Variants & Pricing ───────────────────────────────────── */}
+        {!loading && hasVariants && (
+          <section className="mb-14">
+            <SectionHeading>Variants &amp; Pricing</SectionHeading>
+            <div
+              className="overflow-x-auto rounded-xl border"
+              style={{ borderColor: "rgba(234,179,8,0.14)", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+            >
+              <table className="w-full text-sm" style={{ minWidth: "460px" }}>
+                <thead>
+                  <tr style={{ background: "rgba(234,179,8,0.08)" }}>
+                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Model</th>
+                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Size</th>
+                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Availability</th>
+                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Price</th>
+                    <th className="px-5 py-3.5" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {variants.map((v, i) => {
+                    const avail = v.availability ? availabilityLabel[v.availability] : null;
+                    return (
+                      <tr
+                        key={i}
+                        style={{
+                          background: i % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)",
+                          borderTop: "1px solid rgba(234,179,8,0.07)",
+                        }}
+                      >
+                        <td className="px-5 py-3.5 font-semibold text-white">{v.name}</td>
+                        <td className="px-5 py-3.5" style={{ color: "#a3a3a3" }}>
+                          {v.size ?? <span style={{ color: "#525252" }}>—</span>}
+                        </td>
+                        <td className="px-5 py-3.5">
+                          {avail
+                            ? <span className="text-xs font-semibold" style={{ color: avail.color }}>{avail.label}</span>
+                            : <span style={{ color: "#525252" }}>—</span>
+                          }
+                        </td>
+                        <td className="px-5 py-3.5">
+                          {v.price
+                            ? <span className="font-bold" style={{ color: "var(--gold)" }}>{v.price}</span>
+                            : <span style={{ color: "#737373" }}>Request Quote</span>
+                          }
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <button
+                            onClick={() => openEnquiryModal(
+                              `${product?.name} — ${v.name}${v.size ? ` (${v.size})` : ""}`,
+                              `I am interested in: ${product?.name} — ${v.name}${v.size ? ` (${v.size})` : ""}. Page: ${typeof window !== "undefined" ? window.location.href : ""}`
+                            )}
+                            className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all duration-200 hover:brightness-110 whitespace-nowrap"
+                            style={{ background: "var(--gold)", color: "#0f0f0f" }}
+                          >
+                            Enquire
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {/* ── 10. Audio ───────────────────────────────────────────────── */}
+        {!loading && hasAudio && (
+          <section className="mb-14">
+            <SectionHeading>Audio Files</SectionHeading>
+            <div className="flex flex-col gap-4">
+              {product!.audioFiles!.map((item, i) => (
+                <div
+                  key={i}
+                  className="rounded-xl border p-5"
+                  style={{ background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.14)" }}
+                >
+                  {item.title && (
+                    <p className="text-sm font-semibold text-white mb-3">{item.title}</p>
+                  )}
+                  {item.fileUrl
+                    ? <audio src={item.fileUrl} controls className="w-full" style={{ accentColor: "#eab308" }} />
+                    : <p className="text-xs" style={{ color: "#525252" }}>Audio file unavailable.</p>
+                  }
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── 11. PDF Downloads ───────────────────────────────────────── */}
+        {!loading && hasPdfs && (
+          <section className="mb-14">
+            <SectionHeading>PDF Downloads</SectionHeading>
+            <div className="flex flex-col gap-3">
+              {product!.pdfs!.filter((p) => p.fileUrl).map((pdf, i) => (
+                <a
+                  key={i}
+                  href={pdf.fileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-5 py-4 rounded-xl border transition-all duration-200 hover:bg-white/5"
+                  style={{ borderColor: "rgba(234,179,8,0.2)", color: "var(--gold)", background: "var(--bg-secondary)" }}
+                >
+                  <span className="text-base">📄</span>
+                  <span className="text-sm font-semibold flex-1">{pdf.label || "Download PDF"}</span>
+                  <span className="text-xs font-normal" style={{ color: "#737373" }}>↓ Download</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── 12. Accessories ─────────────────────────────────────────── */}
+        {!loading && hasAccessories && (
+          <section className="mb-14">
+            <SectionHeading>Accessories &amp; Add-ons</SectionHeading>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {product!.accessories!.map((acc, i) => (
+                <div
+                  key={i}
+                  className="rounded-xl border p-5 flex flex-col gap-3"
+                  style={{ background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.14)" }}
+                >
+                  <p className="font-bold text-white text-sm leading-snug">{acc.name}</p>
+                  {acc.description && (
+                    <p className="text-xs leading-relaxed flex-1" style={{ color: "#a3a3a3" }}>{acc.description}</p>
+                  )}
+                  <div className="flex items-center justify-between gap-2 pt-1">
+                    {acc.price
+                      ? <span className="text-sm font-bold" style={{ color: "var(--gold)" }}>{acc.price}</span>
+                      : <span className="text-xs" style={{ color: "#525252" }}>Price on request</span>
+                    }
+                    {acc.link && (
+                      <a
+                        href={acc.link}
+                        className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all duration-200 hover:brightness-110 flex-shrink-0"
+                        style={{ background: "var(--gold)", color: "#0f0f0f" }}
+                      >
+                        View →
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── 13. FAQs ────────────────────────────────────────────────── */}
+        {!loading && hasFaqs && (
+          <section className="mb-14">
+            <SectionHeading>FAQs</SectionHeading>
+            <div className="flex flex-col gap-3">
+              {product!.faqs!.map((faq, i) => (
+                <FaqAccordion key={i} faq={faq} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── 12. More in [subcategory] — horizontal scroll cards ─────── */}
+        {!loading && moreProducts.length > 0 && (
+          <section className="mb-14">
+            <SectionHeading>More in {subName}</SectionHeading>
+            <div
+              className="flex gap-4 overflow-x-auto pb-3"
+              style={{ WebkitOverflowScrolling: "touch", scrollbarWidth: "none" } as React.CSSProperties}
+            >
+              {moreProducts.map((s) => (
+                <Link
+                  key={s._id}
+                  href={`/products/${categorySlug}/${subSlug}/${s.slug.current}`}
+                  className="flex-shrink-0 rounded-2xl border overflow-hidden transition-all duration-200 hover:border-yellow-400/40 hover:bg-white/5 group"
+                  style={{
+                    width: "200px",
+                    background: "var(--bg-secondary)",
+                    borderColor: "rgba(234,179,8,0.14)",
+                  }}
+                >
+                  {/* Image */}
+                  <div
+                    className="relative w-full"
+                    style={{ height: "130px", background: "rgba(234,179,8,0.04)" }}
+                  >
+                    {s.imageUrl ? (
+                      <Image
+                        src={s.imageUrl}
+                        alt={s.name}
+                        fill
+                        className="object-cover"
+                        sizes="200px"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full opacity-40">
+                        <GearIcon />
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Info */}
+                  <div className="p-3 flex flex-col gap-1">
+                    <p className="text-xs font-bold text-white leading-snug line-clamp-2 group-hover:text-yellow-300 transition-colors">
+                      {s.name}
+                    </p>
+                    {s.brand && (
+                      <p className="text-xs" style={{ color: "#737373" }}>{s.brand}</p>
+                    )}
+                    <p className="text-xs font-semibold mt-1" style={{ color: "var(--gold)" }}>
+                      {s.price ? `₹${s.price.toLocaleString("en-IN")}` : "Request Quote"}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── 13. Compare all products in subcategory ─────────────────── */}
+        {!loading && siblings.length > 1 && (
+          <section className="mb-4">
+            <SectionHeading>Compare All {subName} Models</SectionHeading>
+            <div
+              className="overflow-x-auto rounded-xl border"
+              style={{ borderColor: "rgba(234,179,8,0.14)", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+            >
+              <table className="text-sm" style={{ minWidth: `${Math.max(600, siblings.length * 180 + 200)}px` }}>
+                <thead>
+                  <tr style={{ background: "rgba(234,179,8,0.08)" }}>
+                    <th
+                      className="text-left px-5 py-4 font-semibold sticky left-0"
+                      style={{ color: "var(--gold)", background: "rgba(30,24,8,0.98)", minWidth: "180px", zIndex: 10 }}
+                    >
+                      Specification
+                    </th>
+                    {siblings.map((s) => {
+                      const isCurrent = s.slug.current === productSlug;
+                      return (
+                        <th
+                          key={s._id}
+                          className="text-left px-4 py-4 font-semibold"
+                          style={{
+                            color: isCurrent ? "#0f0f0f" : "#d4d4d4",
+                            background: isCurrent ? "var(--gold)" : "rgba(234,179,8,0.08)",
+                            minWidth: "160px",
+                          }}
+                        >
+                          <Link href={`/products/${categorySlug}/${subSlug}/${s.slug.current}`} className="hover:underline block leading-snug">
+                            {s.name}
+                          </Link>
+                          {s.featured && <span className="block text-xs font-normal mt-0.5 opacity-70">★ Featured</span>}
+                        </th>
+                      );
+                    })}
+                  </tr>
+                  <tr style={{ borderTop: "1px solid rgba(234,179,8,0.1)" }}>
+                    <td
+                      className="px-5 py-3 font-medium sticky left-0"
+                      style={{ color: "#737373", background: "#1a1a1a", minWidth: "180px" }}
+                    >
+                      Price
+                    </td>
+                    {siblings.map((s, i) => (
+                      <td
+                        key={s._id}
+                        className="px-4 py-3 font-bold"
+                        style={{ color: "var(--gold)", background: i % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)" }}
+                      >
+                        {s.price
+                          ? `₹${s.price.toLocaleString("en-IN")}`
+                          : <span style={{ color: "#737373", fontWeight: 400 }}>Request Quote</span>
+                        }
+                      </td>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {allSpecParams.map((param, rowIdx) => (
+                    <tr
+                      key={param}
+                      style={{
+                        background: rowIdx % 2 === 0 ? "rgba(234,179,8,0.02)" : "var(--bg-secondary)",
+                        borderTop: "1px solid rgba(234,179,8,0.07)",
+                      }}
+                    >
+                      <td
+                        className="px-5 py-3 font-medium sticky left-0"
+                        style={{ color: "#a3a3a3", background: rowIdx % 2 === 0 ? "rgba(15,15,15,0.98)" : "#1a1a1a", minWidth: "180px" }}
+                      >
+                        {param}
+                      </td>
+                      {siblings.map((s, colIdx) => {
+                        const spec = (s.specs ?? []).find((r) => r.parameter === param);
+                        const isCurrent = s.slug.current === productSlug;
+                        return (
+                          <td
+                            key={s._id}
+                            className="px-4 py-3"
+                            style={{
+                              color: isCurrent ? "var(--gold)" : "white",
+                              fontWeight: isCurrent ? 600 : 400,
+                              background: colIdx % 2 === 0 ? "rgba(234,179,8,0.02)" : "var(--bg-secondary)",
+                            }}
+                          >
+                            {spec?.value ?? <span style={{ color: "#525252" }}>—</span>}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                  <tr style={{ borderTop: "1px solid rgba(234,179,8,0.14)", background: "rgba(234,179,8,0.03)" }}>
+                    <td className="px-5 py-4 sticky left-0" style={{ background: "rgba(15,15,15,0.98)", minWidth: "180px" }} />
+                    {siblings.map((s) => (
+                      <td key={s._id} className="px-4 py-4">
+                        {s.slug.current === productSlug ? (
+                          <span className="text-xs font-bold" style={{ color: "var(--gold)" }}>← Current</span>
+                        ) : (
+                          <Link
+                            href={`/products/${categorySlug}/${subSlug}/${s.slug.current}`}
+                            className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all duration-200 hover:brightness-110 inline-block whitespace-nowrap"
+                            style={{ background: "var(--gold)", color: "#0f0f0f" }}
+                          >
+                            View →
+                          </Link>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+      </div>
+
+      <Footer />
+      <WhatsAppButton />
+    </main>
   );
 }
