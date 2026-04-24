@@ -78,3 +78,27 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 4. Then git add . && git commit && git push
 5. Vercel auto deploys in 2 minutes
 6. Check live on www.maxmachines.in
+
+## Current Status (Last Updated: April 2026)
+
+### Completed
+- Homepage, Contact page, Products catalog
+- Sanity CMS setup with Google Sheet importer
+- Product detail pages with specs, videos, variants
+- Google Analytics, Search Console, Sitemap, Schema markup
+- Custom enquiry form with Brevo + Resend backup
+- Global enquiry modal
+
+### Pending Tasks
+- About page (/about)
+- Blog page (/blog)
+- Our Clients page (/our-clients)
+- Location landing pages (Chennai, Ahmedabad, Export, Government)
+- Google Business Profile setup
+- Brand logos in Sanity (currently text pills)
+- Category images upload in Sanity
+- GSheet importer — Highlights & Accessories tab testing
+- Video titles fix in importer
+- Mobile view testing of product pages
+- PDF download display on product pages
+- Audio file display on product pages
