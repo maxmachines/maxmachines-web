@@ -137,6 +137,10 @@ function countryValue(raw: string): string {
   return map[raw.toLowerCase().trim()] ?? ''
 }
 
+function parseBool(val: string): boolean {
+  return ['yes', 'true', '1'].includes((val || '').toLowerCase().trim())
+}
+
 // ── Main Import ──────────────────────────────────────────────────────────────
 
 async function main() {
@@ -264,17 +268,17 @@ async function main() {
     }))
 
     // Build videos
-    const youtubeURLs = splitCSVField(row['YouTube URLs'] || '')
-    console.log('YouTube URLs found:', youtubeURLs)
-    const videos = youtubeURLs.map((url, idx) => ({
+    const youtubeUrls = (row['YouTube URLs'] || '').split(',').map((u: string) => u.trim()).filter(Boolean)
+    console.log('YouTube URLs found:', youtubeUrls)
+    const videos = youtubeUrls.map((url, idx) => ({
       _type: 'videoItem',
       _key: `vid-${Math.random().toString(36).slice(2,8)}`,
       title: idx === 0 ? `${name} — Main Video` : `${name} — Video ${idx + 1}`,
       type: 'youtube',
-      youtubeUrl: url.trim(),
+      youtubeUrl: url,
     }))
 
-    console.log('Videos being saved:', videos)
+    console.log('Videos being saved:', JSON.stringify(videos, null, 2))
 
     // Build PDF downloads
     const pdfLabels = splitCSVField(row['PDF Labels'] || '')
@@ -311,8 +315,8 @@ async function main() {
       countryOfManufacture: countryValue(row['Country'] || ''),
       shortDescription: row['Short Description']?.trim() || undefined,
       fullDescription: fullDescription.length ? fullDescription : undefined,
-      featured: row['Featured']?.toLowerCase().trim() === 'yes',
-      active: row['Active']?.toLowerCase().trim() !== 'no',
+      featured: parseBool(row['Featured'] || ''),
+      active: row['Active'] ? parseBool(row['Active']) : true,
       variants: variants.length ? variants : undefined,
       highlights: highlights.length ? highlights : undefined,
       accessories: accessories.length ? accessories : undefined,
@@ -333,12 +337,13 @@ async function main() {
 
     // Check if product already exists by slug
     try {
-      const existing = await client.fetch<{ _id: string } | null>(
-        `*[_type == "product" && slug.current == $slug][0]{ _id }`,
+      const existing = await client.fetch<{ _id: string; name: string } | null>(
+        `*[_type == "product" && slug.current == $slug][0]{ _id, name }`,
         { slug: slugify(name) }
       )
 
       if (existing) {
+        console.log(`  Matched: "${name}" → "${existing.name}"`)
         await client.patch(existing._id).set(doc).commit()
         console.log(`  Updated existing product.`)
         updated++
