@@ -92,6 +92,9 @@ export const metadata: Metadata = {
   title: "Max Machines — Legacy of Precision Since 1963",
   description:
     "Max Machines is a leading industrial machinery supplier based in Chennai and Ahmedabad, supplying Lathe, Drilling, Milling, Power Press, Bandsaw, and Laser machines across India since 1963.",
+  verification: {
+    google: 'SE7m5urx14P8fAwG9CURoHItdyBrwzQ-9RYvZqdoP7A',
+  },
 };
 
 export default function RootLayout({
