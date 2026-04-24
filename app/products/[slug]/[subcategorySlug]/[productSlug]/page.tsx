@@ -9,6 +9,7 @@ import { PortableText } from "@portabletext/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import SchemaMarkup from "@/components/SchemaMarkup";
 import { client } from "@/sanity/lib/client";
 import { useEnquiryModal } from "@/context/EnquiryModalContext";
 
@@ -480,9 +481,9 @@ export default function ProductDetailPage() {
                       Parameter
                     </th>
                     {variants.map((v, i) => (
-                      <th key={i} className="text-left px-4 py-3.5 font-semibold" style={{ minWidth: "160px", width: `${100 / variants.length}%` }}>
-                        <span className="block text-white">{v.name}</span>
-                        {v.size && <span className="block text-xs font-normal mt-0.5" style={{ color: "#a3a3a3" }}>{v.size}</span>}
+                      <th key={i} className="text-left px-4 py-3.5" style={{ minWidth: "160px", width: `${100 / variants.length}%` }}>
+                        <div style={{ fontWeight: 600, color: "white" }}>{v.name}</div>
+                        <div style={{ fontSize: "12px", opacity: 0.7, color: "#a3a3a3" }}>{v.size}</div>
                       </th>
                     ))}
                   </tr>
@@ -929,6 +930,27 @@ export default function ProductDetailPage() {
 
       <Footer />
       <WhatsAppButton />
+      {product && (
+        <SchemaMarkup data={{
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": product.name,
+          ...(product.images?.[0]?.url ? { "image": product.images[0].url } : {}),
+          ...(product.shortDescription ? { "description": product.shortDescription } : {}),
+          ...(product.brand ? { "brand": { "@type": "Brand", "name": product.brand } } : {}),
+          "offers": {
+            "@type": "Offer",
+            "url": typeof window !== "undefined" ? window.location.href : `https://www.maxmachines.in/products/${categorySlug}/${subSlug}/${productSlug}`,
+            "priceCurrency": "INR",
+            "price": product.variants?.[0]?.price ?? "Contact for price",
+            "availability": "https://schema.org/InStock",
+            "seller": {
+              "@type": "Organization",
+              "name": "Max Machine Tools"
+            }
+          }
+        }} />
+      )}
     </main>
   );
 }
