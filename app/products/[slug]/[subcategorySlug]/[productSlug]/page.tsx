@@ -16,7 +16,7 @@ import { useEnquiryModal } from "@/context/EnquiryModalContext";
 interface SpecRow { parameter: string; value: string }
 interface Variant { name: string; size?: string; price?: string; availability?: string; specs?: SpecRow[] }
 interface FaqItem { question: string; answer: string }
-interface VideoItem { title?: string; videoType?: string; youtubeUrl?: string; fileUrl?: string }
+interface VideoItem { title?: string; type?: string; youtubeUrl?: string; fileUrl?: string }
 interface AudioItem { title?: string; fileUrl?: string }
 interface PdfItem { label?: string; fileUrl?: string }
 interface AccessoryItem { name: string; description?: string; price?: string; link?: string }
@@ -77,8 +77,8 @@ const availabilityLabel: Record<string, { label: string; color: string }> = {
 };
 
 function getYouTubeId(url: string): string | null {
-  if (!url || typeof url !== "string") return null;
-  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/))([a-zA-Z0-9_-]{11})/);
+  if (!url || typeof url !== 'string') return null;
+  const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/);
   return match ? match[1] : null;
 }
 
@@ -216,7 +216,7 @@ export default function ProductDetailPage() {
           _id, name, slug, shortDescription, brand, countryOfManufacture, price, featured, active,
           fullDescription,
           "images": images[] { "url": asset->url, alt },
-          "videos": videos[] { title, videoType, youtubeUrl, "fileUrl": videoFile.asset->url },
+          "videos": videos[] { title, type, youtubeUrl, "fileUrl": file.asset->url },
           "audioFiles": audioFiles[] { title, "fileUrl": audioFile.asset->url },
           "pdfs": downloads[] { "label": coalesce(label, title), "fileUrl": coalesce(file.asset->url, pdfFile.asset->url) },
           specs[] { parameter, value },
@@ -526,46 +526,24 @@ export default function ProductDetailPage() {
           </section>
         )}
 
-        {/* Fallback: top-level specs when no per-variant specs (or no variants) */}
-        {!loading && !hasPerVariantSpecs && hasSpecs && (
+        {/* No per-variant specs yet — show placeholder */}
+        {!loading && !hasPerVariantSpecs && (
           <section className="mb-14">
             <SectionHeading>Specifications</SectionHeading>
             <div
-              className="overflow-x-auto rounded-xl border"
-              style={{ borderColor: "rgba(234,179,8,0.14)", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+              className="rounded-xl border px-6 py-8 text-center"
+              style={{ borderColor: "rgba(234,179,8,0.14)", background: "var(--bg-secondary)" }}
             >
-              <table className="w-full text-sm" style={{ minWidth: "400px" }}>
-                <thead>
-                  <tr style={{ background: "rgba(234,179,8,0.08)" }}>
-                    <th
-                      className="text-left px-5 py-3.5 font-semibold sticky left-0"
-                      style={{ color: "var(--gold)", background: "rgba(30,24,8,0.98)", minWidth: "160px", zIndex: 10 }}
-                    >
-                      Parameter
-                    </th>
-                    <th className="text-left px-5 py-3.5 font-semibold text-white">Value</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {product!.specs!.map((row, i) => (
-                    <tr
-                      key={i}
-                      style={{
-                        background: i % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)",
-                        borderTop: "1px solid rgba(234,179,8,0.07)",
-                      }}
-                    >
-                      <td
-                        className="px-5 py-3 font-medium sticky left-0"
-                        style={{ color: "#a3a3a3", background: i % 2 === 0 ? "#1a1a1a" : "rgba(15,15,15,0.98)", minWidth: "160px" }}
-                      >
-                        {row.parameter}
-                      </td>
-                      <td className="px-5 py-3 text-white">{row.value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <p className="text-sm" style={{ color: "#a3a3a3" }}>
+                Detailed specifications coming soon.{" "}
+                <button
+                  onClick={() => openEnquiryModal(product?.name, `Please send me full specifications for: ${product?.name}`)}
+                  className="underline transition-colors hover:text-yellow-300"
+                  style={{ color: "var(--gold)" }}
+                >
+                  Contact us for full specs.
+                </button>
+              </p>
             </div>
           </section>
         )}
@@ -581,50 +559,35 @@ export default function ProductDetailPage() {
           </section>
         )}
 
-        {/* ── 7. Videos — 3-col desktop, 1-col mobile, max-height 220px ── */}
+        {/* ── 7. Videos ───────────────────────────────────────────────── */}
         {!loading && hasVideos && (
           <section className="mb-14">
             <SectionHeading>Videos</SectionHeading>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-              {product!.videos!.map((item, i) => {
-                if (item.youtubeUrl) {
-                  const videoId = getYouTubeId(item.youtubeUrl);
-                  if (!videoId) return null;
-                  return (
-                    <div key={i} className="flex flex-col gap-2">
-                      {item.title && (
-                        <p className="text-xs font-semibold text-white truncate">{item.title}</p>
-                      )}
-                      <div className="rounded-xl overflow-hidden" style={{ height: "220px" }}>
-                        <iframe
-                          src={`https://www.youtube.com/embed/${videoId}`}
-                          width="100%"
-                          height="220"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          style={{ display: "block", border: "none" }}
-                        />
-                      </div>
-                    </div>
-                  );
-                }
-                if (item.fileUrl) {
-                  return (
-                    <div key={i} className="flex flex-col gap-2">
-                      {item.title && (
-                        <p className="text-xs font-semibold text-white truncate">{item.title}</p>
-                      )}
-                      <video
-                        src={item.fileUrl}
-                        controls
-                        className="rounded-xl w-full"
-                        style={{ height: "220px", objectFit: "cover" }}
-                      />
-                    </div>
-                  );
-                }
-                return null;
-              })}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
+              {product!.videos!.map((item, i) => (
+                <div key={i}>
+                  {item.title && (
+                    <p style={{ color: "#9ca3af", fontSize: "12px", marginBottom: "8px" }}>{item.title}</p>
+                  )}
+                  {item.youtubeUrl && getYouTubeId(item.youtubeUrl) && (
+                    <iframe
+                      width="100%"
+                      height="200"
+                      src={`https://www.youtube.com/embed/${getYouTubeId(item.youtubeUrl)}`}
+                      frameBorder={0}
+                      allowFullScreen
+                      style={{ borderRadius: "8px", display: "block" }}
+                    />
+                  )}
+                  {item.fileUrl && !item.youtubeUrl && (
+                    <video
+                      src={item.fileUrl}
+                      controls
+                      style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "8px" }}
+                    />
+                  )}
+                </div>
+              ))}
             </div>
           </section>
         )}
