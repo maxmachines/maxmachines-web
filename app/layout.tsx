@@ -107,9 +107,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
-        <SchemaMarkup data={organizationSchema} />
-        <SchemaMarkup data={localBusinessSchema} />
+      <head>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-3H083HF63Q"
           strategy="afterInteractive"
@@ -122,6 +120,10 @@ export default function RootLayout({
             gtag('config', 'G-3H083HF63Q');
           `}
         </Script>
+      </head>
+      <body className="min-h-full flex flex-col">
+        <SchemaMarkup data={organizationSchema} />
+        <SchemaMarkup data={localBusinessSchema} />
         <EnquiryModalProvider>
           {children}
           <EnquiryModal />
