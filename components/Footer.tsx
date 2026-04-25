@@ -28,14 +28,21 @@ export default function Footer() {
 
         {/* Links */}
         <nav className="flex gap-6 flex-wrap justify-center">
-          {["Home", "About", "Products", "Blog", "Our Clients", "Contact Us"].map((l) => (
+          {[
+            { label: "Home", href: "/" },
+            { label: "About", href: "/about" },
+            { label: "Products", href: "/products" },
+            { label: "Blog", href: "/blog" },
+            { label: "Our Clients", href: "/our-clients" },
+            { label: "Contact Us", href: "/contact" },
+          ].map(({ label, href }) => (
             <a
-              key={l}
-              href={`#${l.toLowerCase().replace(/\s+/g, "-")}`}
+              key={label}
+              href={href}
               className="text-sm transition-colors hover:text-yellow-400"
               style={{ color: "#525252" }}
             >
-              {l}
+              {label}
             </a>
           ))}
         </nav>
