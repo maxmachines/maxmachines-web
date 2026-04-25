@@ -102,3 +102,22 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 - Mobile view testing of product pages
 - PDF download display on product pages
 - Audio file display on product pages
+
+### About Page Improvements (after products are complete)
+- Add real showroom/machine photo as hero background
+- Add real leadership photos (currently letter placeholders)
+- Add real client logos (currently text pills)
+- Add Google Maps embed for Chennai and Ahmedabad offices
+- Add dedicated section explaining own brands: HABA, PRG, VELSE, Airdass
+
+### Homepage Additions
+- Add MMT own brand logos section: HABA, PRG, VELSE, Airdass
+- Add brands we deal in logos section (currently text pills in BrandStrip)
+- Upload real brand logo images to replace text pills
+
+### Brand Logos Needed (collect these files)
+- HABA logo
+- PRG logo
+- VELSE logo
+- Airdass logo
+- All dealer brand logos (Elecon, Batliboi, HMT, Kirloskar etc)
