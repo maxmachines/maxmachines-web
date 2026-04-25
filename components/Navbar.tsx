@@ -42,7 +42,7 @@ const socials = [
 
 const navLinks = [
   { label: "Home", href: "/" },
-  { label: "About", href: "#about" },
+  { label: "About", href: "/about" },
   { label: "Products", href: "/products" },
   { label: "Blog", href: "#blog" },
   { label: "Our Clients", href: "#clients" },
