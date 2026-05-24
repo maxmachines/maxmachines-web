@@ -14,12 +14,9 @@ import { client } from "@/sanity/lib/client";
 import { useEnquiryModal } from "@/context/EnquiryModalContext";
 
 /* ─── Types ──────────────────────────────────────────────────────── */
-interface SpecRow { parameter: string; value: string }
-interface Variant { name: string; size?: string; price?: string; availability?: string; specs?: SpecRow[] }
+interface SpecRow { specName: string; specValue: string }
+interface Variant { modelNumber: string; size?: string; price?: string; availability?: string; specs?: SpecRow[] }
 interface FaqItem { question: string; answer: string }
-interface VideoItem { title?: string; type?: string; youtubeUrl?: string; fileUrl?: string }
-interface AudioItem { title?: string; fileUrl?: string }
-interface PdfItem { label?: string; fileUrl?: string }
 interface AccessoryItem { name: string; description?: string; price?: string; link?: string }
 
 interface ProductDetail {
@@ -27,17 +24,15 @@ interface ProductDetail {
   name: string;
   slug: { current: string };
   brand?: string;
-  countryOfManufacture?: string;
-  price?: number;
+  country?: string;
   shortDescription?: string;
   featured?: boolean;
   active?: boolean;
   fullDescription?: unknown[];
   images?: { url: string; alt?: string }[];
-  videos?: VideoItem[];
-  audioFiles?: AudioItem[];
-  pdfs?: PdfItem[];
-  specs?: SpecRow[];
+  youtubeUrls?: string[];
+  pdfLabels?: string[];
+  pdfUrls?: string[];
   highlights?: string[];
   accessories?: AccessoryItem[];
   variants?: Variant[];
@@ -58,7 +53,6 @@ interface SiblingProduct {
   name: string;
   slug: { current: string };
   brand?: string;
-  price?: number;
   featured?: boolean;
   imageUrl?: string;
   specs?: SpecRow[];
@@ -78,7 +72,7 @@ const availabilityLabel: Record<string, { label: string; color: string }> = {
 };
 
 function getYouTubeId(url: string): string | null {
-  if (!url || typeof url !== 'string') return null;
+  if (!url || typeof url !== "string") return null;
   const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/);
   return match ? match[1] : null;
 }
@@ -207,6 +201,7 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [missing, setMissing] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
+  const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
 
   useEffect(() => {
     if (!productSlug) return;
@@ -214,16 +209,15 @@ export default function ProductDetailPage() {
     async function fetchData() {
       const prod = await client.fetch<ProductDetail | null>(
         `*[_type == "product" && slug.current == $productSlug][0] {
-          _id, name, slug, shortDescription, brand, countryOfManufacture, price, featured, active,
+          _id, name, slug, shortDescription, brand, country, featured, active,
           fullDescription,
           "images": images[] { "url": asset->url, alt },
-          "videos": videos[] { title, type, youtubeUrl, "fileUrl": file.asset->url },
-          "audioFiles": audioFiles[] { title, "fileUrl": audioFile.asset->url },
-          "pdfs": downloads[] { "label": coalesce(label, title), "fileUrl": coalesce(file.asset->url, pdfFile.asset->url) },
-          specs[] { parameter, value },
+          youtubeUrls,
+          pdfLabels,
+          pdfUrls,
           highlights,
           "accessories": accessories[] { name, description, price, link },
-          "variants": variants[] { name, size, price, availability, "specs": specs[] { parameter, value } },
+          "variants": variants[] { modelNumber, size, price, availability, "specs": specs[] { specName, specValue } },
           "faqs": faqs[] { question, answer },
           "seo": seo { seoTitle, metaDescription },
           "subcategory": subcategory-> { name, slug, "category": parentCategory-> { name, slug } }
@@ -239,9 +233,9 @@ export default function ProductDetailPage() {
 
       const sibs = await client.fetch<SiblingProduct[]>(
         `*[_type == "product" && subcategory->slug.current == $subcategorySlug && active == true] | order(featured desc, name asc) {
-          _id, name, slug, brand, price, featured,
+          _id, name, slug, brand, featured,
           "imageUrl": images[0].asset->url,
-          specs[]{ parameter, value }
+          "specs": variants[0].specs[] { specName, specValue }
         }`,
         { subcategorySlug }
       );
@@ -263,32 +257,29 @@ export default function ProductDetailPage() {
   const categoryName = product?.subcategory?.category?.name;
   const subName = product?.subcategory?.name;
   const subSlug = product?.subcategory?.slug?.current ?? subcategorySlug;
-  const flag = product?.countryOfManufacture ? countryFlags[product.countryOfManufacture] : null;
-  const country = product?.countryOfManufacture ? countryLabels[product.countryOfManufacture] : null;
+  const countryKey = product?.country?.toLowerCase() ?? "";
+  const flag = countryFlags[countryKey] ?? null;
+  const country = countryLabels[countryKey] ?? (product?.country ?? null);
 
   const hasHighlights = (product?.highlights?.length ?? 0) > 0;
   const hasFullDesc = (product?.fullDescription?.length ?? 0) > 0;
-  const hasSpecs = (product?.specs?.length ?? 0) > 0;
   const hasVariants = (product?.variants?.length ?? 0) > 0;
-  const hasVideos = (product?.videos?.length ?? 0) > 0;
-  const hasAudio = (product?.audioFiles?.length ?? 0) > 0;
-  const hasPdfs = (product?.pdfs?.filter((p) => p.fileUrl).length ?? 0) > 0;
+  const hasYouTube = (product?.youtubeUrls?.filter(getYouTubeId).length ?? 0) > 0;
+  const hasPdfs = (product?.pdfUrls?.length ?? 0) > 0;
   const hasAccessories = (product?.accessories?.length ?? 0) > 0;
   const hasFaqs = (product?.faqs?.length ?? 0) > 0;
 
-  /* Per-variant spec derivation (component level so sections can render independently) */
   const variants = product?.variants ?? [];
-  const hasPerVariantSpecs = variants.some((v) => (v.specs?.length ?? 0) > 0);
-  const variantSpecParams = Array.from(
-    new Set(variants.flatMap((v) => (v.specs ?? []).map((r) => r.parameter)))
-  );
+  const selectedVariant = variants[selectedVariantIdx] ?? null;
+  const selectedSpecs = selectedVariant?.specs ?? [];
+  const hasSpecs = variants.some((v) => (v.specs?.length ?? 0) > 0);
 
-  /* Siblings excluding current product (for "More in" cards) */
+  /* Siblings excluding current product */
   const moreProducts = siblings.filter((s) => s.slug.current !== productSlug);
 
-  /* Comparison table: all unique spec params across all siblings */
-  const allSpecParams = Array.from(
-    new Set(siblings.flatMap((s) => (s.specs ?? []).map((r) => r.parameter)))
+  /* Comparison table: all unique spec names across all siblings */
+  const allSpecNames = Array.from(
+    new Set(siblings.flatMap((s) => (s.specs ?? []).map((r) => r.specName)))
   );
 
   return (
@@ -403,10 +394,10 @@ export default function ProductDetailPage() {
             )}
           </div>
 
-          {/* RIGHT — Highlights + CTA (scrollable if content overflows) */}
+          {/* RIGHT — Highlights + CTA */}
           <div className="flex flex-col gap-5 lg:overflow-y-auto lg:max-h-screen">
 
-            {/* Special Highlights — hidden if no highlights */}
+            {/* Special Highlights */}
             {!loading && hasHighlights && (
               <div
                 className="rounded-2xl border p-5"
@@ -426,7 +417,7 @@ export default function ProductDetailPage() {
               </div>
             )}
 
-            {/* CTA: Enquire (50%) | Call (25%) | WhatsApp (25%) */}
+            {/* CTA: Enquire | Call | WhatsApp */}
             {loading ? (
               <div className="h-14 rounded-xl animate-pulse" style={{ background: "rgba(234,179,8,0.1)" }} />
             ) : (
@@ -462,73 +453,111 @@ export default function ProductDetailPage() {
           </div>
         </div>
 
-        {/* ── 4. Specifications (per-variant comparison or fallback) ──── */}
-        {!loading && hasVariants && hasPerVariantSpecs && (
+        {/* ── 5. Specifications ───────────────────────────────────────── */}
+        {!loading && hasSpecs && (
           <section className="mb-14">
             <SectionHeading>Specifications</SectionHeading>
-            <p className="text-xs mb-3 lg:hidden" style={{ color: "#737373" }}>← Swipe to compare models →</p>
-            <div
-              className="overflow-x-auto rounded-xl border"
-              style={{ borderColor: "rgba(234,179,8,0.14)", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
-            >
-              <table className="text-sm" style={{ minWidth: `${Math.max(500, variants.length * 160 + 180)}px` }}>
-                <thead>
-                  <tr style={{ background: "rgba(234,179,8,0.08)" }}>
-                    <th
-                      className="text-left px-5 py-3.5 font-semibold sticky left-0"
-                      style={{ color: "var(--gold)", background: "rgba(30,24,8,0.98)", minWidth: "170px", zIndex: 10 }}
-                    >
-                      Parameter
-                    </th>
+
+            {/* Variant selector — tabs if ≤ 6, dropdown if more */}
+            {variants.length > 1 && (
+              <div className="mb-5">
+                {variants.length <= 6 ? (
+                  <div className="flex flex-wrap gap-2">
                     {variants.map((v, i) => (
-                      <th key={i} className="text-left px-4 py-3.5" style={{ minWidth: "160px", width: `${100 / variants.length}%` }}>
-                        <div style={{ fontWeight: 600, color: "white" }}>{v.name}</div>
-                        <div style={{ fontSize: "12px", opacity: 0.7, color: "#a3a3a3" }}>{v.size}</div>
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {variantSpecParams.map((param, rowIdx) => (
-                    <tr
-                      key={param}
-                      style={{
-                        background: rowIdx % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)",
-                        borderTop: "1px solid rgba(234,179,8,0.07)",
-                      }}
-                    >
-                      <td
-                        className="px-5 py-3 font-medium sticky left-0"
-                        style={{ color: "#a3a3a3", background: rowIdx % 2 === 0 ? "#1a1a1a" : "rgba(15,15,15,0.98)", minWidth: "170px" }}
+                      <button
+                        key={i}
+                        onClick={() => setSelectedVariantIdx(i)}
+                        className="px-4 py-2 rounded-lg text-sm font-semibold border transition-all duration-200"
+                        style={{
+                          background: i === selectedVariantIdx ? "var(--gold)" : "var(--bg-secondary)",
+                          color: i === selectedVariantIdx ? "#0f0f0f" : "#a3a3a3",
+                          borderColor: i === selectedVariantIdx ? "var(--gold)" : "rgba(234,179,8,0.2)",
+                        }}
                       >
-                        {param}
-                      </td>
-                      {variants.map((v, colIdx) => {
-                        const spec = (v.specs ?? []).find((r) => r.parameter === param);
-                        return (
-                          <td
-                            key={colIdx}
-                            className="px-4 py-3 text-white"
-                            style={{
-                              background: colIdx % 2 === 0
-                                ? (rowIdx % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)")
-                                : (rowIdx % 2 === 0 ? "rgba(234,179,8,0.02)" : "var(--bg-secondary)"),
-                            }}
-                          >
-                            {spec?.value ?? <span style={{ color: "#525252" }}>—</span>}
-                          </td>
-                        );
-                      })}
+                        {v.modelNumber}{v.size ? ` — ${v.size}` : ""}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <select
+                    value={selectedVariantIdx}
+                    onChange={(e) => setSelectedVariantIdx(Number(e.target.value))}
+                    className="px-4 py-2.5 rounded-lg text-sm font-semibold border outline-none"
+                    style={{
+                      background: "var(--bg-secondary)",
+                      color: "white",
+                      borderColor: "rgba(234,179,8,0.3)",
+                    }}
+                  >
+                    {variants.map((v, i) => (
+                      <option key={i} value={i}>
+                        {v.modelNumber}{v.size ? ` — ${v.size}` : ""}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            )}
+
+            {/* 2-column spec table for selected variant */}
+            {selectedSpecs.length > 0 ? (
+              <div
+                className="rounded-xl border overflow-hidden"
+                style={{ borderColor: "rgba(234,179,8,0.14)" }}
+              >
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr style={{ background: "rgba(234,179,8,0.08)" }}>
+                      <th className="text-left px-5 py-3 font-semibold w-1/2" style={{ color: "var(--gold)" }}>
+                        Specification
+                      </th>
+                      <th className="text-left px-5 py-3 font-semibold w-1/2" style={{ color: "var(--gold)" }}>
+                        Value
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {selectedSpecs.map((spec, i) => (
+                      <tr
+                        key={i}
+                        style={{
+                          background: i % 2 === 0 ? "#1a1a1a" : "#0f0f0f",
+                          borderTop: "1px solid rgba(234,179,8,0.07)",
+                        }}
+                      >
+                        <td className="px-5 py-3 font-medium" style={{ color: "#a3a3a3" }}>
+                          {spec.specName}
+                        </td>
+                        <td className="px-5 py-3 font-semibold text-white">
+                          {spec.specValue}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div
+                className="rounded-xl border px-6 py-6 text-center"
+                style={{ borderColor: "rgba(234,179,8,0.14)", background: "var(--bg-secondary)" }}
+              >
+                <p className="text-sm" style={{ color: "#a3a3a3" }}>
+                  No specs listed for this model.{" "}
+                  <button
+                    onClick={() => openEnquiryModal(product?.name, `Please send me full specifications for: ${product?.name}`)}
+                    className="underline transition-colors hover:text-yellow-300"
+                    style={{ color: "var(--gold)" }}
+                  >
+                    Contact us for full specs.
+                  </button>
+                </p>
+              </div>
+            )}
           </section>
         )}
 
-        {/* No per-variant specs yet — show placeholder */}
-        {!loading && !hasPerVariantSpecs && (
+        {/* No specs at all */}
+        {!loading && !hasSpecs && (
           <section className="mb-14">
             <SectionHeading>Specifications</SectionHeading>
             <div
@@ -560,40 +589,27 @@ export default function ProductDetailPage() {
           </section>
         )}
 
-        {/* ── 7. Videos ───────────────────────────────────────────────── */}
-        {!loading && hasVideos && (
+        {/* ── 7. YouTube Videos ───────────────────────────────────────── */}
+        {!loading && hasYouTube && (
           <section className="mb-14">
             <SectionHeading>Videos</SectionHeading>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "16px" }}>
-              {product!.videos!.map((item, i) => (
-                <div key={i}>
-                  {item.title && (
-                    <p style={{ color: "#9ca3af", fontSize: "12px", marginBottom: "8px" }}>{item.title}</p>
-                  )}
-                  {item.youtubeUrl && getYouTubeId(item.youtubeUrl) && (
-                    <iframe
-                      width="100%"
-                      height="200"
-                      src={`https://www.youtube.com/embed/${getYouTubeId(item.youtubeUrl)}`}
-                      frameBorder={0}
-                      allowFullScreen
-                      style={{ borderRadius: "8px", display: "block" }}
-                    />
-                  )}
-                  {item.fileUrl && !item.youtubeUrl && (
-                    <video
-                      src={item.fileUrl}
-                      controls
-                      style={{ width: "100%", height: "200px", objectFit: "cover", borderRadius: "8px" }}
-                    />
-                  )}
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {product!.youtubeUrls!.filter(getYouTubeId).map((url, i) => (
+                <iframe
+                  key={i}
+                  width="100%"
+                  height="220"
+                  src={`https://www.youtube.com/embed/${getYouTubeId(url)}`}
+                  frameBorder={0}
+                  allowFullScreen
+                  style={{ borderRadius: "12px", display: "block" }}
+                />
               ))}
             </div>
           </section>
         )}
 
-        {/* ── 7. Variants & Pricing ───────────────────────────────────── */}
+        {/* ── 8. Variants & Pricing ───────────────────────────────────── */}
         {!loading && hasVariants && (
           <section className="mb-14">
             <SectionHeading>Variants &amp; Pricing</SectionHeading>
@@ -622,7 +638,7 @@ export default function ProductDetailPage() {
                           borderTop: "1px solid rgba(234,179,8,0.07)",
                         }}
                       >
-                        <td className="px-5 py-3.5 font-semibold text-white">{v.name}</td>
+                        <td className="px-5 py-3.5 font-semibold text-white">{v.modelNumber}</td>
                         <td className="px-5 py-3.5" style={{ color: "#a3a3a3" }}>
                           {v.size ?? <span style={{ color: "#525252" }}>—</span>}
                         </td>
@@ -641,8 +657,8 @@ export default function ProductDetailPage() {
                         <td className="px-5 py-3.5">
                           <button
                             onClick={() => openEnquiryModal(
-                              `${product?.name} — ${v.name}${v.size ? ` (${v.size})` : ""}`,
-                              `I am interested in: ${product?.name} — ${v.name}${v.size ? ` (${v.size})` : ""}. Page: ${typeof window !== "undefined" ? window.location.href : ""}`
+                              `${product?.name} — ${v.modelNumber}${v.size ? ` (${v.size})` : ""}`,
+                              `I am interested in: ${product?.name} — ${v.modelNumber}${v.size ? ` (${v.size})` : ""}. Page: ${typeof window !== "undefined" ? window.location.href : ""}`
                             )}
                             className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all duration-200 hover:brightness-110 whitespace-nowrap"
                             style={{ background: "var(--gold)", color: "#0f0f0f" }}
@@ -659,46 +675,24 @@ export default function ProductDetailPage() {
           </section>
         )}
 
-        {/* ── 10. Audio ───────────────────────────────────────────────── */}
-        {!loading && hasAudio && (
-          <section className="mb-14">
-            <SectionHeading>Audio Files</SectionHeading>
-            <div className="flex flex-col gap-4">
-              {product!.audioFiles!.map((item, i) => (
-                <div
-                  key={i}
-                  className="rounded-xl border p-5"
-                  style={{ background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.14)" }}
-                >
-                  {item.title && (
-                    <p className="text-sm font-semibold text-white mb-3">{item.title}</p>
-                  )}
-                  {item.fileUrl
-                    ? <audio src={item.fileUrl} controls className="w-full" style={{ accentColor: "#eab308" }} />
-                    : <p className="text-xs" style={{ color: "#525252" }}>Audio file unavailable.</p>
-                  }
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ── 11. PDF Downloads ───────────────────────────────────────── */}
+        {/* ── 9. PDF Downloads ────────────────────────────────────────── */}
         {!loading && hasPdfs && (
           <section className="mb-14">
             <SectionHeading>PDF Downloads</SectionHeading>
             <div className="flex flex-col gap-3">
-              {product!.pdfs!.filter((p) => p.fileUrl).map((pdf, i) => (
+              {product!.pdfUrls!.map((url, i) => (
                 <a
                   key={i}
-                  href={pdf.fileUrl}
+                  href={url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-3 px-5 py-4 rounded-xl border transition-all duration-200 hover:bg-white/5"
                   style={{ borderColor: "rgba(234,179,8,0.2)", color: "var(--gold)", background: "var(--bg-secondary)" }}
                 >
                   <span className="text-base">📄</span>
-                  <span className="text-sm font-semibold flex-1">{pdf.label || "Download PDF"}</span>
+                  <span className="text-sm font-semibold flex-1">
+                    {product!.pdfLabels?.[i] ?? `Download PDF ${i + 1}`}
+                  </span>
                   <span className="text-xs font-normal" style={{ color: "#737373" }}>↓ Download</span>
                 </a>
               ))}
@@ -706,7 +700,7 @@ export default function ProductDetailPage() {
           </section>
         )}
 
-        {/* ── 12. Accessories ─────────────────────────────────────────── */}
+        {/* ── 10. Accessories ─────────────────────────────────────────── */}
         {!loading && hasAccessories && (
           <section className="mb-14">
             <SectionHeading>Accessories &amp; Add-ons</SectionHeading>
@@ -742,7 +736,7 @@ export default function ProductDetailPage() {
           </section>
         )}
 
-        {/* ── 13. FAQs ────────────────────────────────────────────────── */}
+        {/* ── 11. FAQs ────────────────────────────────────────────────── */}
         {!loading && hasFaqs && (
           <section className="mb-14">
             <SectionHeading>FAQs</SectionHeading>
@@ -754,7 +748,7 @@ export default function ProductDetailPage() {
           </section>
         )}
 
-        {/* ── 12. More in [subcategory] — horizontal scroll cards ─────── */}
+        {/* ── 12. More in [subcategory] ────────────────────────────────── */}
         {!loading && moreProducts.length > 0 && (
           <section className="mb-14">
             <SectionHeading>More in {subName}</SectionHeading>
@@ -767,43 +761,20 @@ export default function ProductDetailPage() {
                   key={s._id}
                   href={`/products/${categorySlug}/${subSlug}/${s.slug.current}`}
                   className="flex-shrink-0 rounded-2xl border overflow-hidden transition-all duration-200 hover:border-yellow-400/40 hover:bg-white/5 group"
-                  style={{
-                    width: "200px",
-                    background: "var(--bg-secondary)",
-                    borderColor: "rgba(234,179,8,0.14)",
-                  }}
+                  style={{ width: "200px", background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.14)" }}
                 >
-                  {/* Image */}
-                  <div
-                    className="relative w-full"
-                    style={{ height: "130px", background: "rgba(234,179,8,0.04)" }}
-                  >
+                  <div className="relative w-full" style={{ height: "130px", background: "rgba(234,179,8,0.04)" }}>
                     {s.imageUrl ? (
-                      <Image
-                        src={s.imageUrl}
-                        alt={s.name}
-                        fill
-                        className="object-cover"
-                        sizes="200px"
-                      />
+                      <Image src={s.imageUrl} alt={s.name} fill className="object-cover" sizes="200px" />
                     ) : (
-                      <div className="flex items-center justify-center h-full opacity-40">
-                        <GearIcon />
-                      </div>
+                      <div className="flex items-center justify-center h-full opacity-40"><GearIcon /></div>
                     )}
                   </div>
-
-                  {/* Info */}
                   <div className="p-3 flex flex-col gap-1">
                     <p className="text-xs font-bold text-white leading-snug line-clamp-2 group-hover:text-yellow-300 transition-colors">
                       {s.name}
                     </p>
-                    {s.brand && (
-                      <p className="text-xs" style={{ color: "#737373" }}>{s.brand}</p>
-                    )}
-                    <p className="text-xs font-semibold mt-1" style={{ color: "var(--gold)" }}>
-                      {s.price ? `₹${s.price.toLocaleString("en-IN")}` : "Request Quote"}
-                    </p>
+                    {s.brand && <p className="text-xs" style={{ color: "#737373" }}>{s.brand}</p>}
                   </div>
                 </Link>
               ))}
@@ -811,8 +782,8 @@ export default function ProductDetailPage() {
           </section>
         )}
 
-        {/* ── 13. Compare all products in subcategory ─────────────────── */}
-        {!loading && siblings.length > 1 && (
+        {/* ── 13. Compare all models in subcategory ───────────────────── */}
+        {!loading && siblings.length > 1 && allSpecNames.length > 0 && (
           <section className="mb-4">
             <SectionHeading>Compare All {subName} Models</SectionHeading>
             <div
@@ -848,31 +819,11 @@ export default function ProductDetailPage() {
                       );
                     })}
                   </tr>
-                  <tr style={{ borderTop: "1px solid rgba(234,179,8,0.1)" }}>
-                    <td
-                      className="px-5 py-3 font-medium sticky left-0"
-                      style={{ color: "#737373", background: "#1a1a1a", minWidth: "180px" }}
-                    >
-                      Price
-                    </td>
-                    {siblings.map((s, i) => (
-                      <td
-                        key={s._id}
-                        className="px-4 py-3 font-bold"
-                        style={{ color: "var(--gold)", background: i % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)" }}
-                      >
-                        {s.price
-                          ? `₹${s.price.toLocaleString("en-IN")}`
-                          : <span style={{ color: "#737373", fontWeight: 400 }}>Request Quote</span>
-                        }
-                      </td>
-                    ))}
-                  </tr>
                 </thead>
                 <tbody>
-                  {allSpecParams.map((param, rowIdx) => (
+                  {allSpecNames.map((specName, rowIdx) => (
                     <tr
-                      key={param}
+                      key={specName}
                       style={{
                         background: rowIdx % 2 === 0 ? "rgba(234,179,8,0.02)" : "var(--bg-secondary)",
                         borderTop: "1px solid rgba(234,179,8,0.07)",
@@ -882,10 +833,10 @@ export default function ProductDetailPage() {
                         className="px-5 py-3 font-medium sticky left-0"
                         style={{ color: "#a3a3a3", background: rowIdx % 2 === 0 ? "rgba(15,15,15,0.98)" : "#1a1a1a", minWidth: "180px" }}
                       >
-                        {param}
+                        {specName}
                       </td>
                       {siblings.map((s, colIdx) => {
-                        const spec = (s.specs ?? []).find((r) => r.parameter === param);
+                        const spec = (s.specs ?? []).find((r) => r.specName === specName);
                         const isCurrent = s.slug.current === productSlug;
                         return (
                           <td
@@ -897,7 +848,7 @@ export default function ProductDetailPage() {
                               background: colIdx % 2 === 0 ? "rgba(234,179,8,0.02)" : "var(--bg-secondary)",
                             }}
                           >
-                            {spec?.value ?? <span style={{ color: "#525252" }}>—</span>}
+                            {spec?.specValue ?? <span style={{ color: "#525252" }}>—</span>}
                           </td>
                         );
                       })}
