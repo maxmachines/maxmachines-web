@@ -52,10 +52,10 @@ export const productVariant = defineType({
   ],
   preview: {
     select: { title: 'modelNumber', subtitle: 'size' },
-    prepare(selection: { title: string; subtitle: string }) {
+    prepare({ title, subtitle }: { title?: string; subtitle?: string }) {
       return {
-        title: selection.title || 'Unnamed Variant',
-        subtitle: selection.subtitle || '',
+        title: title ?? 'Unnamed Variant',
+        subtitle: subtitle ?? '',
       }
     },
   },
