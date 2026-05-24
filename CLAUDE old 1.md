@@ -49,7 +49,6 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 ## Pages Built So Far
 - / — Homepage (fully complete)
 - /contact — Contact page (complete)
-- /about — About page (complete)
 - /products — Product catalog (connected to Sanity)
 - /products/[slug] — Category page (connected to Sanity)
 - /studio — Sanity Studio (CMS dashboard)
@@ -57,6 +56,7 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 ## Pages Still To Build
 - /products/[slug]/[subcategorySlug] — Subcategory page
 - /products/[slug]/[subcategorySlug]/[productSlug] — Individual product page
+- /about — About page
 - /blog — Blog page
 - /our-clients — Clients page
 
@@ -79,44 +79,45 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 5. Vercel auto deploys in 2 minutes
 6. Check live on www.maxmachines.in
 
-## Google Sheet Importer — Tab Structure (IMPORTANT for code changes)
+## Current Status (Last Updated: April 2026)
 
-The MMT Google Sheet has 4 tabs. Sanity schema and importer script MUST match this structure.
+### Completed
+- Homepage, Contact page, Products catalog
+- Sanity CMS setup with Google Sheet importer
+- Product detail pages with specs, videos, variants
+- Google Analytics, Search Console, Sitemap, Schema markup
+- Custom enquiry form with Brevo + Resend backup
+- Global enquiry modal
 
-### TAB 1 — Products
-Columns: Product Name | Brand | Category | Subcategory | Country | Short Description | Full Description | Featured | Active | SEO Title | Meta Description | Keywords | Geo Tags | YouTube URLs | PDF Labels | PDF URLs
+### Pending Tasks
+- About page (/about)
+- Blog page (/blog)
+- Our Clients page (/our-clients)
+- Location landing pages (Chennai, Ahmedabad, Export, Government)
+- Google Business Profile setup
+- Brand logos in Sanity (currently text pills)
+- Category images upload in Sanity
+- GSheet importer — Highlights & Accessories tab testing
+- Video titles fix in importer
+- Mobile view testing of product pages
+- PDF download display on product pages
+- Audio file display on product pages
 
-- Featured: Yes/No (NOT TRUE/FALSE)
-- Active: Yes/No (NOT TRUE/FALSE)
-- Only Active=Yes products show on site
-- Category and Subcategory must match existing Sanity category/subcategory names
+### About Page Improvements (after products are complete)
+- Add real showroom/machine photo as hero background
+- Add real leadership photos (currently letter placeholders)
+- Add real client logos (currently text pills)
+- Add Google Maps embed for Chennai and Ahmedabad offices
+- Add dedicated section explaining own brands: HABA, PRG, VELSE, Airdass
 
-### TAB 2 — Variants & Specs (KEY:VALUE STRUCTURE)
-Columns: Product Name | Model Number | Size | Price | Availability | Spec Name | Spec Value
+### Homepage Additions
+- Add MMT own brand logos section: HABA, PRG, VELSE, Airdass
+- Add brands we deal in logos section (currently text pills in BrandStrip)
+- Upload real brand logo images to replace text pills
 
-- This is a FLEXIBLE key:value spec system
-- Each spec for a model = ONE row
-- One model with 15 specs = 15 rows (Product Name + Model Number + Size + Price + Availability stay constant; only Spec Name + Spec Value change)
-- Row order on sheet = display order on site (top row appears first)
-- Headline spec for the machine type ALWAYS goes first (Wheel Diameter for Vertical Bandsaw, Cutting Capacity for Horizontal Bandsaw, Chuck Size for Lathe, CFM for Air Compressor, etc.)
-- Different machine types have totally different spec names — NO fixed spec columns
-- Rows can be in any order in the sheet — importer groups all rows where Product Name matches and pulls them as that product's specs
-
-### TAB 3 — Highlights & Accessories
-Columns: Product Name | Type | Name/Text | Description | Price | Link
-
-- Type = "Highlight" or "Accessory"
-- Highlights: short punchy single line in Name/Text, Description LEFT BLANK
-- Accessories: Name in Name/Text + full Description in Description column
-
-### TAB 4 — FAQs
-Columns: Product Name | Question | Answer
-
-## Product Data Rules
-- Keywords MUST include: Chennai, Ahmedabad, Pan-India, export
-- Geo Tags always: Chennai,Ahmedabad,Gujarat,Pan-India,Export
-- Minimum 5 highlights, 5 FAQs per product (more is better)
-- FAQs buyer-focused, NO contact details in answers
-- No em dash — use hyphen (-)
-- HABA is MMT's own brand — never refer to as third party
-- N series = standard/budget range, R series = premium range
+### Brand Logos Needed (collect these files)
+- HABA logo
+- PRG logo
+- VELSE logo
+- Airdass logo
+- All dealer brand logos (Elecon, Batliboi, HMT, Kirloskar etc)

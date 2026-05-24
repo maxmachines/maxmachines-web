@@ -8,21 +8,21 @@ export const specRow = defineType({
   icon: ThListIcon,
   fields: [
     defineField({
-      name: 'parameter',
-      title: 'Parameter',
+      name: 'specName',
+      title: 'Spec Name',
       type: 'string',
       placeholder: 'e.g. Swing Over Bed',
       validation: (r) => r.required(),
     }),
     defineField({
-      name: 'value',
-      title: 'Value',
+      name: 'specValue',
+      title: 'Spec Value',
       type: 'string',
       placeholder: 'e.g. 500mm',
       validation: (r) => r.required(),
     }),
   ],
   preview: {
-    select: { title: 'parameter', subtitle: 'value' },
+    select: { title: 'specName', subtitle: 'specValue' },
   },
 })

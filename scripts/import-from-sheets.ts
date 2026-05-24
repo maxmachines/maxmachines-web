@@ -101,11 +101,11 @@ async function fetchCategories(): Promise<Record<string, string>> {
 }
 
 async function fetchSubcategories(): Promise<Record<string, { _id: string; categoryName: string }>> {
-  const subs = await client.fetch<{ _id: string; name: string; category: { name: string } }[]>(
-    `*[_type == "subcategory"]{ _id, name, category->{ name } }`
+  const subs = await client.fetch<{ _id: string; name: string; parentCategory: { name: string } }[]>(
+    `*[_type == "subcategory"]{ _id, name, parentCategory->{ name } }`
   )
   const map: Record<string, { _id: string; categoryName: string }> = {}
-  subs.forEach(s => { map[s.name] = { _id: s._id, categoryName: s.category?.name ?? '' } })
+  subs.forEach(s => { map[s.name] = { _id: s._id, categoryName: s.parentCategory?.name ?? '' } })
   return map
 }
 
@@ -126,17 +126,12 @@ function availabilityValue(raw: string): string {
     'in stock': 'in_stock',
     'out of stock': 'on_order',
     'on order': 'on_order',
+    'discontinued': 'discontinued',
   }
   return map[raw.toLowerCase().trim()] ?? 'in_stock'
 }
 
-function countryValue(raw: string): string {
-  const map: Record<string, string> = {
-    india: 'india', taiwan: 'taiwan', japan: 'japan', italy: 'italy', usa: 'usa',
-  }
-  return map[raw.toLowerCase().trim()] ?? ''
-}
-
+// Accepts "Yes"/"No" (case insensitive) and also "true"/"false"/"1"/"0"
 function parseBool(val: string): boolean {
   return ['yes', 'true', '1'].includes((val || '').toLowerCase().trim())
 }
@@ -161,37 +156,40 @@ async function main() {
 
   console.log(`\nFound: ${productsTab.length} products, ${variantsTab.length} variant rows, ${highlightsTab.length} highlight/accessory rows, ${faqsTab.length} FAQ rows\n`)
 
-  // Spec headers start at column F (index 5), after: Product Name, Model Number, Size, Price, Availability
-  const variantHeaders = variantsTab.length > 0 ? Object.keys(variantsTab[0]) : []
-  const specHeaders = variantHeaders.slice(5)
-
   // Fetch Sanity refs
   console.log('Loading Sanity categories and subcategories...')
   const [categoryMap, subcategoryMap] = await Promise.all([fetchCategories(), fetchSubcategories()])
   console.log(`  Categories: ${Object.keys(categoryMap).length}, Subcategories: ${Object.keys(subcategoryMap).length}\n`)
 
-  // Index variant/highlight/faq rows by product name
-  const variantsByProduct: Record<string, Record<string, string>[]> = {}
+  // ── Index Tab 2 rows by Product Name + Model Number ──────────────────────
+  // Structure: variantRows[productKey][modelKey] = specRows[]
+  const variantRows: Record<string, Map<string, Record<string, string>[]>> = {}
   variantsTab.forEach(row => {
-    const name = row['Product Name']
-    if (!name) return
-    const key = normalizeName(name)
-    if (!variantsByProduct[key]) variantsByProduct[key] = []
-    variantsByProduct[key].push(row)
+    const productName = row['Product Name']?.trim()
+    const modelNumber = row['Model Number']?.trim()
+    if (!productName || !modelNumber) return
+    const pk = normalizeName(productName)
+    const mk = normalizeName(modelNumber)
+    if (!variantRows[pk]) variantRows[pk] = new Map()
+    const modelMap = variantRows[pk]
+    if (!modelMap.has(mk)) modelMap.set(mk, [])
+    modelMap.get(mk)!.push(row)
   })
 
+  // ── Index Tab 3 rows by Product Name ────────────────────────────────────
   const highlightsByProduct: Record<string, Record<string, string>[]> = {}
   highlightsTab.forEach(row => {
-    const name = row['Product Name']
+    const name = row['Product Name']?.trim()
     if (!name) return
     const key = normalizeName(name)
     if (!highlightsByProduct[key]) highlightsByProduct[key] = []
     highlightsByProduct[key].push(row)
   })
 
+  // ── Index Tab 4 rows by Product Name ────────────────────────────────────
   const faqsByProduct: Record<string, Record<string, string>[]> = {}
   faqsTab.forEach(row => {
-    const name = row['Product Name']
+    const name = row['Product Name']?.trim()
     if (!name) return
     const key = normalizeName(name)
     if (!faqsByProduct[key]) faqsByProduct[key] = []
@@ -210,6 +208,15 @@ async function main() {
 
     console.log(`Importing product ${i + 1}/${productsTab.length}: ${name}...`)
 
+    // Resolve category
+    const catName = row['Category']?.trim()
+    const catId = catName ? categoryMap[catName] : null
+    if (!catId) {
+      console.error(`  ERROR: Category "${catName}" not found in Sanity. Skipping.`)
+      errors++
+      continue
+    }
+
     // Resolve subcategory
     const subName = row['Subcategory']?.trim()
     const subRef = subName ? subcategoryMap[subName] : null
@@ -219,87 +226,76 @@ async function main() {
       continue
     }
 
-    // Build variants
-    const variantRows = variantsByProduct[normalizeName(name)] ?? []
-    const variants = variantRows.map(vRow => {
-      const specs: object[] = []
-      specHeaders.forEach(specName => {
-        const value = vRow[specName]
-        if (specName && value) {
-          specs.push({ _type: 'specRow', _key: `spec-${Math.random().toString(36).slice(2,8)}`, parameter: specName, value })
-        }
-      })
+    // ── Build variants from Tab 2 ─────────────────────────────────────────
+    // Each Model Number = one variant. Rows for that model = its specs (in row order).
+    const modelMap = variantRows[normalizeName(name)] ?? new Map()
+    const variants = Array.from(modelMap.entries()).map(([, specRowsForModel]) => {
+      const firstRow = specRowsForModel[0]
+      const specs = specRowsForModel
+        .map(sr => ({ specName: sr['Spec Name']?.trim(), specValue: sr['Spec Value']?.trim() }))
+        .filter(s => s.specName && s.specValue)
+        .map(s => ({
+          _type: 'specRow',
+          _key: `spec-${Math.random().toString(36).slice(2, 8)}`,
+          specName: s.specName,
+          specValue: s.specValue,
+        }))
       return {
         _type: 'productVariant',
-        _key: `${slugify(vRow['Model Number'] || 'v')}-${Math.random().toString(36).slice(2,6)}`,
-        name: vRow['Model Number'] || '',
-        size: vRow['Size'] || '',
-        price: vRow['Price'] || '',
-        availability: availabilityValue(vRow['Availability'] || ''),
+        _key: `${slugify(firstRow['Model Number'] || 'v')}-${Math.random().toString(36).slice(2, 6)}`,
+        modelNumber: firstRow['Model Number']?.trim() || '',
+        size: firstRow['Size']?.trim() || '',
+        price: firstRow['Price']?.trim() || '',
+        availability: availabilityValue(firstRow['Availability'] || ''),
         specs,
       }
     })
 
-    // Build highlights and accessories
+    // ── Build highlights and accessories from Tab 3 ───────────────────────
     const haRows = highlightsByProduct[normalizeName(name)] ?? []
     const highlights: string[] = []
     const accessories: object[] = []
     haRows.forEach(hRow => {
-      if (hRow['Type']?.toLowerCase() === 'highlight') {
-        if (hRow['Name/Text']) highlights.push(hRow['Name/Text'])
-      } else if (hRow['Type']?.toLowerCase() === 'accessory') {
+      const type = hRow['Type']?.toLowerCase().trim()
+      if (type === 'highlight') {
+        if (hRow['Name/Text']) highlights.push(hRow['Name/Text'].trim())
+      } else if (type === 'accessory') {
         accessories.push({
-          _type: 'accessoryItem',
-          _key: `acc-${Math.random().toString(36).slice(2,8)}`,
-          name: hRow['Name/Text'] || '',
-          description: hRow['Description'] || '',
-          price: hRow['Price'] || '',
-          link: hRow['Link'] || undefined,
+          _type: 'object',
+          _key: `acc-${Math.random().toString(36).slice(2, 8)}`,
+          name: hRow['Name/Text']?.trim() || '',
+          description: hRow['Description']?.trim() || '',
+          price: hRow['Price']?.trim() || '',
+          link: hRow['Link']?.trim() || undefined,
         })
       }
     })
 
-    // Build FAQs
+    // ── Build FAQs from Tab 4 ─────────────────────────────────────────────
     const faqs = (faqsByProduct[normalizeName(name)] ?? []).map(fRow => ({
       _type: 'faqItem',
-      _key: `faq-${Math.random().toString(36).slice(2,8)}`,
-      question: fRow['Question'] || '',
-      answer: fRow['Answer'] || '',
+      _key: `faq-${Math.random().toString(36).slice(2, 8)}`,
+      question: fRow['Question']?.trim() || '',
+      answer: fRow['Answer']?.trim() || '',
     }))
 
-    // Build videos
+    // ── YouTube URLs (flat array) ──────────────────────────────────────────
     const youtubeUrls = (row['YouTube URLs'] || '').split(',').map((u: string) => u.trim()).filter(Boolean)
-    console.log('YouTube URLs found:', youtubeUrls)
-    const videos = youtubeUrls.map((url, idx) => ({
-      _type: 'videoItem',
-      _key: `vid-${Math.random().toString(36).slice(2,8)}`,
-      title: idx === 0 ? `${name} — Main Video` : `${name} — Video ${idx + 1}`,
-      type: 'youtube',
-      youtubeUrl: url,
-    }))
 
-    console.log('Videos being saved:', JSON.stringify(videos, null, 2))
-
-    // Build PDF downloads
+    // ── PDF labels and URLs (flat arrays) ────────────────────────────────
     const pdfLabels = splitCSVField(row['PDF Labels'] || '')
-    const pdfURLs = splitCSVField(row['PDF URLs'] || '')
-    const downloads = pdfLabels.map((label, idx) => ({
-      _type: 'pdfDownload',
-      _key: `pdf-${Math.random().toString(36).slice(2,8)}`,
-      label,
-      url: pdfURLs[idx] ?? '',
-    }))
+    const pdfUrls = splitCSVField(row['PDF URLs'] || '')
 
-    // Build SEO
+    // ── SEO meta ──────────────────────────────────────────────────────────
     const keywords = splitCSVField(row['Keywords'] || '')
-    const geoTags = splitCSVField(row['Geo Tags'] || '')
+    const geoTagList = splitCSVField(row['Geo Tags'] || '')
 
-    // Build full description as portable text blocks
+    // ── Full description as portable text blocks ───────────────────────────
     const fullDescText = row['Full Description']?.trim() || ''
     const fullDescription = fullDescText
       ? fullDescText.split(/\n+/).map(para => ({
           _type: 'block',
-          _key: `para-${Math.random().toString(36).slice(2,8)}`,
+          _key: `para-${Math.random().toString(36).slice(2, 8)}`,
           style: 'normal',
           markDefs: [],
           children: [{ _type: 'span', _key: 'span0', text: para, marks: [] }],
@@ -310,9 +306,10 @@ async function main() {
       _type: 'product',
       name,
       slug: { _type: 'slug', current: slugify(name) },
+      category: { _type: 'reference', _ref: catId },
       subcategory: { _type: 'reference', _ref: subRef._id },
       brand: row['Brand']?.trim() || undefined,
-      countryOfManufacture: countryValue(row['Country'] || ''),
+      country: row['Country']?.trim() || undefined,
       shortDescription: row['Short Description']?.trim() || undefined,
       fullDescription: fullDescription.length ? fullDescription : undefined,
       featured: parseBool(row['Featured'] || ''),
@@ -321,8 +318,9 @@ async function main() {
       highlights: highlights.length ? highlights : undefined,
       accessories: accessories.length ? accessories : undefined,
       faqs: faqs.length ? faqs : undefined,
-      videos: videos.length ? videos : undefined,
-      downloads: downloads.length ? downloads : undefined,
+      youtubeUrls: youtubeUrls.length ? youtubeUrls : undefined,
+      pdfLabels: pdfLabels.length ? pdfLabels : undefined,
+      pdfUrls: pdfUrls.length ? pdfUrls : undefined,
       seo: {
         _type: 'seoMeta',
         title: row['SEO Title']?.trim() || undefined,
@@ -330,12 +328,12 @@ async function main() {
         keywords: keywords.length ? keywords : undefined,
       },
       geoTags: {
-        cities: geoTags.length ? geoTags : undefined,
+        cities: geoTagList.length ? geoTagList : undefined,
         country: 'India',
       },
     }
 
-    // Check if product already exists by slug
+    // ── Create or update in Sanity ────────────────────────────────────────
     try {
       const existing = await client.fetch<{ _id: string; name: string } | null>(
         `*[_type == "product" && slug.current == $slug][0]{ _id, name }`,

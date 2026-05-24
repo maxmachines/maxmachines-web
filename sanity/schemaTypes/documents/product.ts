@@ -9,7 +9,6 @@ export const product = defineType({
   groups: [
     { name: 'basic', title: 'Basic Info', default: true },
     { name: 'media', title: 'Media' },
-    { name: 'specs', title: 'Specifications' },
     { name: 'features', title: 'Features & Accessories' },
     { name: 'variants', title: 'Variants & Pricing' },
     { name: 'faqs', title: 'FAQs' },
@@ -34,6 +33,14 @@ export const product = defineType({
       group: 'basic',
     }),
     defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'reference',
+      to: [{ type: 'category' }],
+      validation: (r) => r.required(),
+      group: 'basic',
+    }),
+    defineField({
       name: 'subcategory',
       title: 'Subcategory',
       type: 'reference',
@@ -48,26 +55,10 @@ export const product = defineType({
       group: 'basic',
     }),
     defineField({
-      name: 'countryOfManufacture',
+      name: 'country',
       title: 'Country of Manufacture',
       type: 'string',
-      options: {
-        list: [
-          { title: 'India', value: 'india' },
-          { title: 'Taiwan', value: 'taiwan' },
-          { title: 'Japan', value: 'japan' },
-          { title: 'Italy', value: 'italy' },
-          { title: 'USA', value: 'usa' },
-        ],
-        layout: 'radio',
-      },
-      group: 'basic',
-    }),
-    defineField({
-      name: 'price',
-      title: 'Price (₹)',
-      type: 'number',
-      description: 'Leave empty to show "Request Quote"',
+      placeholder: 'e.g. India, Taiwan, Japan',
       group: 'basic',
     }),
     defineField({
@@ -119,42 +110,28 @@ export const product = defineType({
       group: 'media',
     }),
     defineField({
-      name: 'videos',
-      title: 'Videos',
+      name: 'youtubeUrls',
+      title: 'YouTube URLs',
       type: 'array',
-      of: [defineArrayMember({ type: 'videoItem' })],
+      of: [defineArrayMember({ type: 'url' })],
       group: 'media',
     }),
     defineField({
-      name: 'audioFiles',
-      title: 'Audio Files',
+      name: 'pdfLabels',
+      title: 'PDF Labels',
       type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'object',
-          fields: [
-            defineField({ name: 'title', title: 'Title', type: 'string' }),
-            defineField({ name: 'audioFile', title: 'Audio File', type: 'file' }),
-          ],
-          preview: {
-            select: { title: 'title' },
-            prepare({ title }) {
-              return { title: title || 'Untitled Audio' }
-            },
-          },
-        }),
-      ],
+      description: 'Label for each PDF (e.g. "Datasheet", "Manual") — must match order of PDF URLs',
+      of: [defineArrayMember({ type: 'string' })],
+      options: { layout: 'tags' },
       group: 'media',
     }),
-
-    // ── Specs ────────────────────────────────────────────────────────────────
     defineField({
-      name: 'specs',
-      title: 'General Specs (Fallback)',
+      name: 'pdfUrls',
+      title: 'PDF URLs',
       type: 'array',
-      description: 'Used only when no per-variant specs are set. For per-model specs, add them inside each Variant below.',
-      of: [defineArrayMember({ type: 'specRow' })],
-      group: 'specs',
+      description: 'Download link for each PDF — must match order of PDF Labels',
+      of: [defineArrayMember({ type: 'url' })],
+      group: 'media',
     }),
 
     // ── Features & Accessories ───────────────────────────────────────────────
@@ -228,15 +205,6 @@ export const product = defineType({
       of: [defineArrayMember({ type: 'faqItem' })],
       group: 'faqs',
     }),
-    defineField({
-      name: 'downloads',
-      title: 'PDF Downloads',
-      description: 'Datasheets, manuals, brochures',
-      type: 'array',
-      of: [defineArrayMember({ type: 'pdfDownload' })],
-      group: 'faqs',
-    }),
-
     // ── SEO & Visibility ─────────────────────────────────────────────────────
     defineField({
       name: 'seo',

@@ -49,7 +49,6 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 ## Pages Built So Far
 - / — Homepage (fully complete)
 - /contact — Contact page (complete)
-- /about — About page (complete)
 - /products — Product catalog (connected to Sanity)
 - /products/[slug] — Category page (connected to Sanity)
 - /studio — Sanity Studio (CMS dashboard)
@@ -57,6 +56,7 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 ## Pages Still To Build
 - /products/[slug]/[subcategorySlug] — Subcategory page
 - /products/[slug]/[subcategorySlug]/[productSlug] — Individual product page
+- /about — About page
 - /blog — Blog page
 - /our-clients — Clients page
 
@@ -79,44 +79,22 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 5. Vercel auto deploys in 2 minutes
 6. Check live on www.maxmachines.in
 
-## Google Sheet Importer — Tab Structure (IMPORTANT for code changes)
+## Product Data Rules (MMT Google Sheet Importer)
+When updating products, the variant spec columns MUST adapt to the machine type — NEVER force bandsaw columns (blade size, blade speed) onto machines that don't have blades.
 
-The MMT Google Sheet has 4 tabs. Sanity schema and importer script MUST match this structure.
+Default specs by machine type:
+- Bandsaw: Model, Size, Price, Availability, Motor Power, Blade Size, Blade Speed, Cutting Cap Round, Cutting Cap Rectangle, Motor HP, Weight kg, Coolant, Table Size, Vise Type, Special Notes
+- Lathe: Chuck Size, Bed Length, Swing Diameter, Spindle Bore, Centre Height, Motor HP, Weight
+- Air Compressor: Tank Size, CFM, PSI, Motor HP, Voltage, Weight
+- Drilling Machine: Drilling Capacity, Spindle Travel, Column Diameter, Motor HP, Table Size, Weight
+- Always pick spec columns that actually matter for THAT machine type.
 
-### TAB 1 — Products
-Columns: Product Name | Brand | Category | Subcategory | Country | Short Description | Full Description | Featured | Active | SEO Title | Meta Description | Keywords | Geo Tags | YouTube URLs | PDF Labels | PDF URLs
-
-- Featured: Yes/No (NOT TRUE/FALSE)
-- Active: Yes/No (NOT TRUE/FALSE)
-- Only Active=Yes products show on site
-- Category and Subcategory must match existing Sanity category/subcategory names
-
-### TAB 2 — Variants & Specs (KEY:VALUE STRUCTURE)
-Columns: Product Name | Model Number | Size | Price | Availability | Spec Name | Spec Value
-
-- This is a FLEXIBLE key:value spec system
-- Each spec for a model = ONE row
-- One model with 15 specs = 15 rows (Product Name + Model Number + Size + Price + Availability stay constant; only Spec Name + Spec Value change)
-- Row order on sheet = display order on site (top row appears first)
-- Headline spec for the machine type ALWAYS goes first (Wheel Diameter for Vertical Bandsaw, Cutting Capacity for Horizontal Bandsaw, Chuck Size for Lathe, CFM for Air Compressor, etc.)
-- Different machine types have totally different spec names — NO fixed spec columns
-- Rows can be in any order in the sheet — importer groups all rows where Product Name matches and pulls them as that product's specs
-
-### TAB 3 — Highlights & Accessories
-Columns: Product Name | Type | Name/Text | Description | Price | Link
-
-- Type = "Highlight" or "Accessory"
-- Highlights: short punchy single line in Name/Text, Description LEFT BLANK
-- Accessories: Name in Name/Text + full Description in Description column
-
-### TAB 4 — FAQs
-Columns: Product Name | Question | Answer
-
-## Product Data Rules
-- Keywords MUST include: Chennai, Ahmedabad, Pan-India, export
+Other rules:
+- Tab-separated values only, no em dash (use hyphen)
+- Keywords must include Chennai, Ahmedabad, Pan-India, export
 - Geo Tags always: Chennai,Ahmedabad,Gujarat,Pan-India,Export
-- Minimum 5 highlights, 5 FAQs per product (more is better)
+- Minimum 5 highlights, 5 FAQs (more is better)
 - FAQs buyer-focused, NO contact details in answers
-- No em dash — use hyphen (-)
-- HABA is MMT's own brand — never refer to as third party
-- N series = standard/budget range, R series = premium range
+- HABA is MMT's own brand — never third party
+- N series = standard/budget, R series = premium
+- Featured: TRUE/FALSE, Active: TRUE/FALSE

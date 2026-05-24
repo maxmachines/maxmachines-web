@@ -8,8 +8,8 @@ export const productVariant = defineType({
   icon: ControlsIcon,
   fields: [
     defineField({
-      name: 'name',
-      title: 'Model Number / Name',
+      name: 'modelNumber',
+      title: 'Model Number',
       type: 'string',
       placeholder: 'e.g. HMM9R',
       validation: (r) => r.required(),
@@ -51,7 +51,7 @@ export const productVariant = defineType({
     }),
   ],
   preview: {
-    select: { title: 'name', subtitle: 'size' },
+    select: { title: 'modelNumber', subtitle: 'size' },
     prepare({ title, subtitle }: { title?: string; subtitle?: string }) {
       return {
         title: title || 'Unnamed Variant',
