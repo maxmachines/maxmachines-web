@@ -33,6 +33,13 @@ export const product = defineType({
       group: 'basic',
     }),
     defineField({
+      name: 'displayOrder',
+      title: 'Display Order',
+      type: 'number',
+      description: 'Lower number = appears first in product listings',
+      group: 'basic',
+    }),
+    defineField({
       name: 'category',
       title: 'Category',
       type: 'reference',
@@ -148,43 +155,7 @@ export const product = defineType({
       name: 'accessories',
       title: 'Accessories & Add-ons',
       type: 'array',
-      of: [
-        defineArrayMember({
-          type: 'object',
-          fields: [
-            defineField({
-              name: 'name',
-              title: 'Name',
-              type: 'string',
-              validation: (r) => r.required(),
-            }),
-            defineField({
-              name: 'description',
-              title: 'Description',
-              type: 'text',
-              rows: 2,
-            }),
-            defineField({
-              name: 'price',
-              title: 'Price',
-              type: 'string',
-              description: 'e.g. "₹2,500" or "Request Quote"',
-            }),
-            defineField({
-              name: 'link',
-              title: 'Product Page Link',
-              type: 'url',
-              description: 'Optional — link to another product page',
-            }),
-          ],
-          preview: {
-            select: { title: 'name', subtitle: 'price' },
-            prepare({ title, subtitle }) {
-              return { title: title || 'Unnamed Accessory', subtitle }
-            },
-          },
-        }),
-      ],
+      of: [defineArrayMember({ type: 'accessoryItem' })],
       group: 'features',
     }),
 

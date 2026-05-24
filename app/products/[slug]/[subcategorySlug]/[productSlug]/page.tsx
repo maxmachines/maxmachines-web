@@ -232,7 +232,7 @@ export default function ProductDetailPage() {
       }
 
       const sibs = await client.fetch<SiblingProduct[]>(
-        `*[_type == "product" && subcategory->slug.current == $subcategorySlug && active == true] | order(featured desc, name asc) {
+        `*[_type == "product" && subcategory->slug.current == $subcategorySlug && active == true] | order(displayOrder asc, featured desc, name asc) {
           _id, name, slug, brand, featured,
           "imageUrl": images[0].asset->url,
           "specs": variants[0].specs[] { specName, specValue }

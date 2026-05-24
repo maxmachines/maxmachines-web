@@ -96,7 +96,7 @@ async function fetchCategories(): Promise<Record<string, string>> {
     `*[_type == "category"]{ _id, name }`
   )
   const map: Record<string, string> = {}
-  cats.forEach(c => { map[c.name] = c._id })
+  cats.forEach(c => { map[c.name.toLowerCase().trim()] = c._id })
   return map
 }
 
@@ -208,11 +208,12 @@ async function main() {
 
     console.log(`Importing product ${i + 1}/${productsTab.length}: ${name}...`)
 
-    // Resolve category
+    // Resolve category (case-insensitive lookup)
     const catName = row['Category']?.trim()
-    const catId = catName ? categoryMap[catName] : null
+    const catId = catName ? categoryMap[catName.toLowerCase().trim()] : null
     if (!catId) {
-      console.error(`  ERROR: Category "${catName}" not found in Sanity. Skipping.`)
+      const availableCats = Object.keys(categoryMap).join(', ')
+      console.error(`  ERROR: Category "${catName}" not found in Sanity. Available: [${availableCats}]. Skipping.`)
       errors++
       continue
     }
@@ -261,7 +262,7 @@ async function main() {
         if (hRow['Name/Text']) highlights.push(hRow['Name/Text'].trim())
       } else if (type === 'accessory') {
         accessories.push({
-          _type: 'object',
+          _type: 'accessoryItem',
           _key: `acc-${Math.random().toString(36).slice(2, 8)}`,
           name: hRow['Name/Text']?.trim() || '',
           description: hRow['Description']?.trim() || '',
@@ -302,10 +303,14 @@ async function main() {
         }))
       : []
 
+    const displayOrderRaw = row['Display Order']?.trim()
+    const displayOrder = displayOrderRaw ? parseInt(displayOrderRaw, 10) : undefined
+
     const doc = {
       _type: 'product',
       name,
       slug: { _type: 'slug', current: slugify(name) },
+      displayOrder: displayOrder && !isNaN(displayOrder) ? displayOrder : undefined,
       category: { _type: 'reference', _ref: catId },
       subcategory: { _type: 'reference', _ref: subRef._id },
       brand: row['Brand']?.trim() || undefined,

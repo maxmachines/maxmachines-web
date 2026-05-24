@@ -274,7 +274,7 @@ export default function SubcategoryPage() {
       }
 
       const prods = await client.fetch<Product[]>(
-        `*[_type == "product" && subcategory->slug.current == $subcategorySlug && active == true] | order(featured desc) {
+        `*[_type == "product" && subcategory->slug.current == $subcategorySlug && active == true] | order(displayOrder asc, featured desc) {
           _id, name, slug, shortDescription, brand, countryOfManufacture, featured,
           "imageUrl": images[0].asset->url,
           "variantCount": count(variants)

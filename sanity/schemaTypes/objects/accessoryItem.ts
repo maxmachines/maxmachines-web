@@ -21,11 +21,18 @@ export const accessoryItem = defineType({
     }),
     defineField({
       name: 'price',
-      title: 'Price (leave empty for "Request Quote")',
-      type: 'number',
+      title: 'Price',
+      type: 'string',
+      description: 'e.g. "₹2,500" or leave empty for "Request Quote"',
+    }),
+    defineField({
+      name: 'link',
+      title: 'Product Page Link',
+      type: 'url',
+      description: 'Optional — link to another product page',
     }),
   ],
   preview: {
-    select: { title: 'name', subtitle: 'description' },
+    select: { title: 'name', subtitle: 'price' },
   },
 })
