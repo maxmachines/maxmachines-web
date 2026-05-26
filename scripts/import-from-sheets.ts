@@ -18,7 +18,13 @@ if (fs.existsSync(envPath)) {
 }
 
 const SHEET_ID = '1PymyVSGmjSvRgyg5n9wXyZNKgVExpHJ4T_XvyCanDWY'
-const SHEET_BASE = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=`
+
+const SHEET_GIDS: Record<string, string> = {
+  'Products': '0',
+  'Variants & Specs': '1924145122',
+  'Highlights & Accessories': '1811493441',
+  'FAQs': '872074886',
+}
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
@@ -30,63 +36,53 @@ const client = createClient({
 
 // ── CSV Parser ───────────────────────────────────────────────────────────────
 
-function parseCSV(raw: string): string[][] {
-  const rows: string[][] = []
-  let row: string[] = []
-  let field = ''
-  let inQuotes = false
+function parseCSV(text: string): Record<string, string>[] {
+  const lines = text.split(/\r?\n/)
+  if (lines.length < 2) return []
 
-  for (let i = 0; i < raw.length; i++) {
-    const ch = raw[i]
-    const next = raw[i + 1]
-
-    if (inQuotes) {
-      if (ch === '"' && next === '"') {
-        field += '"'
-        i++
-      } else if (ch === '"') {
-        inQuotes = false
-      } else {
-        field += ch
-      }
-    } else {
+  const parseRow = (line: string): string[] => {
+    const fields: string[] = []
+    let current = ''
+    let inQuotes = false
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i]
       if (ch === '"') {
-        inQuotes = true
-      } else if (ch === ',') {
-        row.push(field.trim())
-        field = ''
-      } else if (ch === '\n' || (ch === '\r' && next === '\n')) {
-        if (ch === '\r') i++
-        row.push(field.trim())
-        rows.push(row)
-        row = []
-        field = ''
+        if (inQuotes && line[i + 1] === '"') { current += '"'; i++ }
+        else inQuotes = !inQuotes
+      } else if (ch === ',' && !inQuotes) {
+        fields.push(current.trim())
+        current = ''
       } else {
-        field += ch
+        current += ch
       }
     }
+    fields.push(current.trim())
+    return fields
   }
-  if (field || row.length) {
-    row.push(field.trim())
-    rows.push(row)
+
+  const headers = parseRow(lines[0])
+  const rows: Record<string, string>[] = []
+
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i].trim()) continue
+    const values = parseRow(lines[i])
+    const obj: Record<string, string> = {}
+    headers.forEach((h, idx) => { obj[h] = values[idx] ?? '' })
+    if (Object.values(obj).some(v => v !== '')) rows.push(obj)
   }
+
   return rows
 }
 
 async function fetchSheet(tabName: string): Promise<Record<string, string>[]> {
-  const url = SHEET_BASE + encodeURIComponent(tabName)
+  const gid = SHEET_GIDS[tabName]
+  if (!gid) throw new Error(`No GID configured for tab "${tabName}"`)
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`
   console.log(`  Fetching tab: ${tabName}`)
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Failed to fetch tab "${tabName}": ${res.status} ${res.statusText}`)
   const text = await res.text()
-  const rows = parseCSV(text)
-  if (rows.length < 2) return []
-  const headers = rows[0]
-  return rows.slice(1).filter(r => r.some(c => c)).map(row => {
-    const obj: Record<string, string> = {}
-    headers.forEach((h, i) => { obj[h] = row[i] ?? '' })
-    return obj
-  })
+  return parseCSV(text)
 }
 
 // ── Sanity Helpers ───────────────────────────────────────────────────────────

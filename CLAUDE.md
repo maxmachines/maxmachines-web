@@ -49,7 +49,6 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 ## Pages Built So Far
 - / — Homepage (fully complete)
 - /contact — Contact page (complete)
-- /about — About page (complete)
 - /products — Product catalog (connected to Sanity)
 - /products/[slug] — Category page (connected to Sanity)
 - /studio — Sanity Studio (CMS dashboard)
@@ -57,6 +56,7 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 ## Pages Still To Build
 - /products/[slug]/[subcategorySlug] — Subcategory page
 - /products/[slug]/[subcategorySlug]/[productSlug] — Individual product page
+- /about — About page
 - /blog — Blog page
 - /our-clients — Clients page
 
@@ -79,44 +79,62 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 5. Vercel auto deploys in 2 minutes
 6. Check live on www.maxmachines.in
 
-## Google Sheet Importer — Tab Structure (IMPORTANT for code changes)
+---
+PRODUCT UPDATE WORKFLOW FOR MMT
 
-The MMT Google Sheet has 4 tabs. Sanity schema and importer script MUST match this structure.
+When Jabs says "let's update product" or pastes raw machine specs:
 
-### TAB 1 — Products
-Columns: Product Name | Brand | Category | Subcategory | Country | Short Description | Full Description | Featured | Active | SEO Title | Meta Description | Keywords | Geo Tags | YouTube URLs | PDF Labels | PDF URLs
+STEP 1 — Ask Jabs these 5 headline details FIRST (constant per machine, ask once):
+1. Product Name
+2. Brand (HABA is MMT's own brand, never third party)
+3. Category (e.g. Vertical Bandsaw Machine, Lathe Machine)
+4. Subcategory (e.g. Metal Cutting Vertical Bandsaw)
+5. Country (Made in India / Imported from...)
 
-- Featured: Yes/No (NOT TRUE/FALSE)
-- Active: Yes/No (NOT TRUE/FALSE)
-- Only Active=Yes products show on site
-- Category and Subcategory must match existing Sanity category/subcategory names
+Also ask the HEADLINE SPEC by which this machine type is recognised:
+- Vertical Bandsaw: Wheel Diameter (e.g. 400mm)
+- Horizontal Bandsaw: Cutting Capacity
+- Lathe: Chuck Size or Bed Length
+- Air Compressor: CFM or Tank Size
+- Drilling Machine: Drilling Capacity
+- Ask Jabs if unsure for any other machine type
 
-### TAB 2 — Variants & Specs (KEY:VALUE STRUCTURE)
+Keep these 5 details + headline spec constant for all related models until Jabs says "next machine".
+
+STEP 2 — Format raw spec content into 4 tab-separated outputs ready for MMT Google Sheet:
+
+TAB 1 — Products
+Columns: Display Order | Product Name | Brand | Category | Subcategory | Country | Short Description | Full Description | Featured | Active | SEO Title | Meta Description | Keywords | Geo Tags | YouTube URLs | PDF Labels | PDF URLs
+
+TAB 2 — Variants & Specs (key:value structure, flexible for any machine)
 Columns: Product Name | Model Number | Size | Price | Availability | Spec Name | Spec Value
-
-- This is a FLEXIBLE key:value spec system
-- Each spec for a model = ONE row
-- One model with 15 specs = 15 rows (Product Name + Model Number + Size + Price + Availability stay constant; only Spec Name + Spec Value change)
+- Price always: Request Quote
+- Availability always: In Stock
+- Each spec = one row
 - Row order on sheet = display order on site (top row appears first)
-- Headline spec for the machine type ALWAYS goes first (Wheel Diameter for Vertical Bandsaw, Cutting Capacity for Horizontal Bandsaw, Chuck Size for Lathe, CFM for Air Compressor, etc.)
-- Different machine types have totally different spec names — NO fixed spec columns
-- Rows can be in any order in the sheet — importer groups all rows where Product Name matches and pulls them as that product's specs
+- ALWAYS put the headline spec (wheel diameter / chuck size / CFM etc.) as the FIRST row so it appears on top of site spec table
+- For one model with 15 specs = 15 rows (Product Name + Model + Size + Price + Availability stay same; only Spec Name + Spec Value change per row)
 
-### TAB 3 — Highlights & Accessories
+TAB 3 — Highlights & Accessories
 Columns: Product Name | Type | Name/Text | Description | Price | Link
+- Highlights: short punchy single line in Name/Text column, Description column LEFT BLANK
+- Accessories: Name in Name/Text column + full Description in Description column (since accessories will be displayed in detail on the site later)
 
-- Type = "Highlight" or "Accessory"
-- Highlights: short punchy single line in Name/Text, Description LEFT BLANK
-- Accessories: Name in Name/Text + full Description in Description column
-
-### TAB 4 — FAQs
+TAB 4 — FAQs
 Columns: Product Name | Question | Answer
 
-## Product Data Rules
+GENERAL RULES:
+- Tab-separated values only (paste-ready for Google Sheets)
+- No em dash — use hyphen (-) only
 - Keywords MUST include: Chennai, Ahmedabad, Pan-India, export
 - Geo Tags always: Chennai,Ahmedabad,Gujarat,Pan-India,Export
-- Minimum 5 highlights, 5 FAQs per product (more is better)
-- FAQs buyer-focused, NO contact details in answers
-- No em dash — use hyphen (-)
-- HABA is MMT's own brand — never refer to as third party
+- Minimum 5 highlights, 5 FAQs (more is always better)
+- FAQs buyer-focused — NO contact details (no phone, no email) in answers
+- HABA is MMT's own brand — never refer to as third party or external
 - N series = standard/budget range, R series = premium range
+- Featured: Yes/No, Active: Yes/No (NOT TRUE/FALSE, not yes/no lowercase)
+
+OUTPUT FORMAT FOR EVERY MESSAGE:
+Before each tab's data block, show the column header row as reference so Jabs knows what each cell is.
+
+IF UNSURE — ask Jabs before formatting. Do not assume.
