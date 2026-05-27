@@ -54,8 +54,8 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 - /studio — Sanity Studio (CMS dashboard)
 
 ## Pages Still To Build
-- /products/[slug]/[subcategorySlug] — Subcategory page
-- /products/[slug]/[subcategorySlug]/[productSlug] — Individual product page
+- /products/[slug]/[subcategorySlug] — Subcategory page (complete)
+- /products/[slug]/[subcategorySlug]/[productSlug] — Individual product page (complete, with comparison spec table)
 - /about — About page
 - /blog — Blog page
 - /our-clients — Clients page
@@ -136,5 +136,15 @@ GENERAL RULES:
 
 OUTPUT FORMAT FOR EVERY MESSAGE:
 Before each tab's data block, show the column header row as reference so Jabs knows what each cell is.
+
+## Key Learnings
+
+- Google Sheets gviz URL mangles CSV for some tabs — importer uses /export?format=csv&gid= instead
+- Spec table on product page = all variants as columns, specs as rows (comparison style)
+- Compare Models section = different products within same subcategory — separate from spec table
+- Subcategory display order must be set in Sanity Studio or via script after creation
+- When stuck on infra/import errors — consult Gemini and Grok before spending too long
+- PRG Drilling Machine range complete — 7 subcategories live
+- Photos pending: VMCB and all Drilling machines
 
 IF UNSURE — ask Jabs before formatting. Do not assume.
