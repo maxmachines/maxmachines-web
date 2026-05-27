@@ -201,7 +201,6 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [missing, setMissing] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
-  const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
 
   useEffect(() => {
     if (!productSlug) return;
@@ -270,9 +269,10 @@ export default function ProductDetailPage() {
   const hasFaqs = (product?.faqs?.length ?? 0) > 0;
 
   const variants = product?.variants ?? [];
-  const selectedVariant = variants[selectedVariantIdx] ?? null;
-  const selectedSpecs = selectedVariant?.specs ?? [];
   const hasSpecs = variants.some((v) => (v.specs?.length ?? 0) > 0);
+  const allVariantSpecNames = Array.from(
+    new Set(variants.flatMap((v) => (v.specs ?? []).map((r) => r.specName)))
+  );
 
   /* Siblings excluding current product */
   const moreProducts = siblings.filter((s) => s.slug.current !== productSlug);
@@ -457,102 +457,93 @@ export default function ProductDetailPage() {
         {!loading && hasSpecs && (
           <section className="mb-14">
             <SectionHeading>Specifications</SectionHeading>
-
-            {/* Variant selector — tabs if ≤ 6, dropdown if more */}
-            {variants.length > 1 && (
-              <div className="mb-5">
-                {variants.length <= 6 ? (
-                  <div className="flex flex-wrap gap-2">
+            <div
+              className="overflow-x-auto rounded-xl border"
+              style={{ borderColor: "rgba(234,179,8,0.14)", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+            >
+              <table className="text-sm" style={{ minWidth: `${Math.max(400, variants.length * 160 + 180)}px` }}>
+                <thead>
+                  <tr style={{ background: "rgba(234,179,8,0.08)" }}>
+                    <th
+                      className="text-left px-5 py-3.5 font-semibold sticky left-0"
+                      style={{ color: "var(--gold)", background: "rgba(30,24,8,0.98)", minWidth: "180px", zIndex: 10 }}
+                    >
+                      Specification
+                    </th>
                     {variants.map((v, i) => (
-                      <button
+                      <th
                         key={i}
-                        onClick={() => setSelectedVariantIdx(i)}
-                        className="px-4 py-2 rounded-lg text-sm font-semibold border transition-all duration-200"
-                        style={{
-                          background: i === selectedVariantIdx ? "var(--gold)" : "var(--bg-secondary)",
-                          color: i === selectedVariantIdx ? "#0f0f0f" : "#a3a3a3",
-                          borderColor: i === selectedVariantIdx ? "var(--gold)" : "rgba(234,179,8,0.2)",
-                        }}
+                        className="text-left px-4 py-3.5 font-semibold"
+                        style={{ color: "#d4d4d4", minWidth: "160px" }}
                       >
                         {v.modelNumber}{v.size ? ` — ${v.size}` : ""}
-                      </button>
-                    ))}
-                  </div>
-                ) : (
-                  <select
-                    value={selectedVariantIdx}
-                    onChange={(e) => setSelectedVariantIdx(Number(e.target.value))}
-                    className="px-4 py-2.5 rounded-lg text-sm font-semibold border outline-none"
-                    style={{
-                      background: "var(--bg-secondary)",
-                      color: "white",
-                      borderColor: "rgba(234,179,8,0.3)",
-                    }}
-                  >
-                    {variants.map((v, i) => (
-                      <option key={i} value={i}>
-                        {v.modelNumber}{v.size ? ` — ${v.size}` : ""}
-                      </option>
-                    ))}
-                  </select>
-                )}
-              </div>
-            )}
-
-            {/* 2-column spec table for selected variant */}
-            {selectedSpecs.length > 0 ? (
-              <div
-                className="rounded-xl border overflow-hidden"
-                style={{ borderColor: "rgba(234,179,8,0.14)" }}
-              >
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr style={{ background: "rgba(234,179,8,0.08)" }}>
-                      <th className="text-left px-5 py-3 font-semibold w-1/2" style={{ color: "var(--gold)" }}>
-                        Specification
                       </th>
-                      <th className="text-left px-5 py-3 font-semibold w-1/2" style={{ color: "var(--gold)" }}>
-                        Value
-                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {allVariantSpecNames.map((specName, rowIdx) => (
+                    <tr
+                      key={specName}
+                      style={{
+                        background: rowIdx % 2 === 0 ? "#1a1a1a" : "#0f0f0f",
+                        borderTop: "1px solid rgba(234,179,8,0.07)",
+                      }}
+                    >
+                      <td
+                        className="px-5 py-3 font-medium sticky left-0"
+                        style={{ color: "#a3a3a3", background: rowIdx % 2 === 0 ? "#1a1a1a" : "rgba(15,15,15,0.98)", minWidth: "180px" }}
+                      >
+                        {specName}
+                      </td>
+                      {variants.map((v, i) => {
+                        const spec = (v.specs ?? []).find((r) => r.specName === specName);
+                        return (
+                          <td key={i} className="px-4 py-3 font-semibold text-white">
+                            {spec?.specValue ?? <span style={{ color: "#525252" }}>—</span>}
+                          </td>
+                        );
+                      })}
                     </tr>
-                  </thead>
-                  <tbody>
-                    {selectedSpecs.map((spec, i) => (
-                      <tr
-                        key={i}
-                        style={{
-                          background: i % 2 === 0 ? "#1a1a1a" : "#0f0f0f",
-                          borderTop: "1px solid rgba(234,179,8,0.07)",
-                        }}
-                      >
-                        <td className="px-5 py-3 font-medium" style={{ color: "#a3a3a3" }}>
-                          {spec.specName}
-                        </td>
-                        <td className="px-5 py-3 font-semibold text-white">
-                          {spec.specValue}
-                        </td>
-                      </tr>
+                  ))}
+                  <tr style={{ background: "rgba(234,179,8,0.04)", borderTop: "1px solid rgba(234,179,8,0.14)" }}>
+                    <td
+                      className="px-5 py-3 font-medium sticky left-0"
+                      style={{ color: "#a3a3a3", background: "rgba(20,16,4,0.98)", minWidth: "180px" }}
+                    >
+                      Price
+                    </td>
+                    {variants.map((v, i) => (
+                      <td key={i} className="px-4 py-3">
+                        {v.price
+                          ? <span className="font-bold" style={{ color: "var(--gold)" }}>{v.price}</span>
+                          : <span style={{ color: "#737373" }}>Request Quote</span>
+                        }
+                      </td>
                     ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <div
-                className="rounded-xl border px-6 py-6 text-center"
-                style={{ borderColor: "rgba(234,179,8,0.14)", background: "var(--bg-secondary)" }}
-              >
-                <p className="text-sm" style={{ color: "#a3a3a3" }}>
-                  No specs listed for this model.{" "}
-                  <button
-                    onClick={() => openEnquiryModal(product?.name, `Please send me full specifications for: ${product?.name}`)}
-                    className="underline transition-colors hover:text-yellow-300"
-                    style={{ color: "var(--gold)" }}
-                  >
-                    Contact us for full specs.
-                  </button>
-                </p>
-              </div>
-            )}
+                  </tr>
+                  <tr style={{ background: "rgba(234,179,8,0.02)", borderTop: "1px solid rgba(234,179,8,0.07)" }}>
+                    <td
+                      className="px-5 py-3 font-medium sticky left-0"
+                      style={{ color: "#a3a3a3", background: "rgba(15,15,15,0.98)", minWidth: "180px" }}
+                    >
+                      Availability
+                    </td>
+                    {variants.map((v, i) => {
+                      const avail = v.availability ? availabilityLabel[v.availability] : null;
+                      return (
+                        <td key={i} className="px-4 py-3">
+                          {avail
+                            ? <span className="text-xs font-semibold" style={{ color: avail.color }}>{avail.label}</span>
+                            : <span style={{ color: "#525252" }}>—</span>
+                          }
+                        </td>
+                      );
+                    })}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </section>
         )}
 
