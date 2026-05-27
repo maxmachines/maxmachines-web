@@ -468,7 +468,7 @@ export default function ProductDetailPage() {
                       className="text-left px-5 py-3.5 font-semibold sticky left-0"
                       style={{ color: "var(--gold)", background: "rgba(30,24,8,0.98)", minWidth: "180px", zIndex: 10 }}
                     >
-                      Specification
+                      Model No.
                     </th>
                     {variants.map((v, i) => (
                       <th
@@ -476,7 +476,7 @@ export default function ProductDetailPage() {
                         className="text-left px-4 py-3.5 font-semibold"
                         style={{ color: "#d4d4d4", minWidth: "160px" }}
                       >
-                        {v.modelNumber}{v.size ? ` — ${v.size}` : ""}
+                        {v.modelNumber}
                       </th>
                     ))}
                   </tr>
