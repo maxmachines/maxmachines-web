@@ -54,8 +54,8 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 - /studio — Sanity Studio (CMS dashboard)
 
 ## Pages Still To Build
-- /products/[slug]/[subcategorySlug] — Subcategory page (complete)
-- /products/[slug]/[subcategorySlug]/[productSlug] — Individual product page (complete, with comparison spec table)
+- /products/[slug]/[subcategorySlug] — Subcategory page
+- /products/[slug]/[subcategorySlug]/[productSlug] — Individual product page
 - /about — About page
 - /blog — Blog page
 - /our-clients — Clients page
@@ -104,12 +104,10 @@ Keep these 5 details + headline spec constant for all related models until Jabs 
 STEP 2 — Format raw spec content into 4 tab-separated outputs ready for MMT Google Sheet:
 
 TAB 1 — Products
-Columns: Display Order | Product Name | Brand | Category | Subcategory | Country | Short Description | Full Description | Featured | Active | SEO Title | Meta Description | Keywords | Geo Tags | YouTube URLs | PDF Labels | PDF URLs
+Columns: Product Name | Brand | Category | Subcategory | Country | Short Description | Full Description | Featured | Active | SEO Title | Meta Description | Keywords | Geo Tags | YouTube URLs | PDF Labels | PDF URLs
 
 TAB 2 — Variants & Specs (key:value structure, flexible for any machine)
 Columns: Product Name | Model Number | Size | Price | Availability | Spec Name | Spec Value
-- Price always: Request Quote
-- Availability always: In Stock
 - Each spec = one row
 - Row order on sheet = display order on site (top row appears first)
 - ALWAYS put the headline spec (wheel diameter / chuck size / CFM etc.) as the FIRST row so it appears on top of site spec table
@@ -132,19 +130,9 @@ GENERAL RULES:
 - FAQs buyer-focused — NO contact details (no phone, no email) in answers
 - HABA is MMT's own brand — never refer to as third party or external
 - N series = standard/budget range, R series = premium range
-- Featured: Yes/No, Active: Yes/No (NOT TRUE/FALSE, not yes/no lowercase)
+- Featured: Yes/No, Active: Yes/No (NOT TRUE/FALSE)
 
 OUTPUT FORMAT FOR EVERY MESSAGE:
 Before each tab's data block, show the column header row as reference so Jabs knows what each cell is.
-
-## Key Learnings
-
-- Google Sheets gviz URL mangles CSV for some tabs — importer uses /export?format=csv&gid= instead
-- Spec table on product page = all variants as columns, specs as rows (comparison style)
-- Compare Models section = different products within same subcategory — separate from spec table
-- Subcategory display order must be set in Sanity Studio or via script after creation
-- When stuck on infra/import errors — consult Gemini and Grok before spending too long
-- PRG Drilling Machine range complete — 7 subcategories live
-- Photos pending: VMCB and all Drilling machines
 
 IF UNSURE — ask Jabs before formatting. Do not assume.
