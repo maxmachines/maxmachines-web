@@ -29,8 +29,6 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 - Always ask him what he sees before proceeding
 - Be patient — he may ask basic questions, answer them warmly
 - Celebrate wins — he has built something impressive
-- Do NOT repeat or re-generate data that has already been accepted
-- Ask clarifying questions before formatting new product data
 
 ## Design System
 - Primary background: #0f0f0f (black)
@@ -51,6 +49,7 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 ## Pages Built So Far
 - / — Homepage (fully complete)
 - /contact — Contact page (complete)
+- /about — About page (complete)
 - /products — Product catalog (connected to Sanity)
 - /products/[slug] — Category page (connected to Sanity)
 - /studio — Sanity Studio (CMS dashboard)
@@ -58,13 +57,12 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 ## Pages Still To Build
 - /products/[slug]/[subcategorySlug] — Subcategory page
 - /products/[slug]/[subcategorySlug]/[productSlug] — Individual product page
-- /about — About page
 - /blog — Blog page
 - /our-clients — Clients page
 
 ## Key Business Info
 - Company: Max Machine Tools (MMT)
-- Group established: 1963
+- Group: MODI Machines Group (established 1963)
 - MMT established: 2012
 - Locations: Chennai HQ + Ahmedabad Hub
 - GST: 33AAWFM0648L1ZS
@@ -83,133 +81,121 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 
 ---
 
-## Product Categories — Completed So Far
+## PRODUCT CATEGORIES COMPLETED (imported and live)
 
-### Vertical Bandsaw Machine (Category)
-- Metal Cutting Vertical Bandsaw — HABA R Series (VMCB16RSE, VMCB20RSE)
-- Metal Cutting Vertical Bandsaw — PRG Standard Series (VMCB18, VMCB24, VMCB30, VMCB18S, VMCB24S)
-- Metal Cutting Vertical Bandsaw — PRG Eco Series (VMCB18E)
-- AAC Block Cutting Machine — HABA (VMCB16RSE-AAC)
-- Special Application Vertical Bandsaw — PRG (honeycomb, carburettor, fan rod, plastic roll cutting)
-- Wood Cutting Vertical Bandsaw — PRG (WCB16RSE, WCB18)
+### Vertical Bandsaw Machine
+Subcategories: Metal Cutting Vertical Bandsaw, Wood Cutting Vertical Bandsaw, AAC Block Cutting Machine, Special Application Vertical Bandsaw
+Brands: HABA (R Series premium), PRG (Standard, Eco Series)
+Headline spec: Wheel Diameter
+Models include: VMCB16RSE, VMCB20RSE, VMCB18, VMCB24, VMCB30, VMCB18S, VMCB24S, VMCB18E, VMCB16RSE-AAC, WCB16RSE, WCB18 + Special Application variants
 
-### Horizontal Bandsaw Machine (Category)
-- Metal Cutting Horizontal Bandsaw — HABA HMM Series R (HMM9R, HMM12R, HMM13R)
-- Metal Cutting Horizontal Bandsaw — HABA HMM Series N (HMM8N, HMM12N, HMM14N)
+### Drilling Machine
+Subcategories (in display order): Pillar Drilling, Drilling cum Tapping, Pure Tapping, Drilling cum Milling Machine, Radial Drilling, Multi Drill Heads, Automation in Drilling
+Brand: PRG | Country: Made in India | Headline spec: Drilling Capacity
+Note: Multi Spindle Drill Head is custom made-to-order with no fixed models. Automation in Drilling is a placeholder only.
 
-### Drilling Machine (Category) — 7 subcategories
-- Pillar Drilling
-- Drilling cum Tapping
-- Pure Tapping
-- Drilling cum Milling Machine
-- Radial Drilling
-- Multi Drill Heads (custom made-to-order, no fixed models)
-- Automation in Drilling (placeholder only)
-All: PRG brand, Made in India, headline spec = Drilling Capacity
+### Press Machines
+Subcategories: Mechanical Power Press, Pneumatic Power Press, Hydraulic Press, Impact Press, Toggle Press
+Brand: PRG | Country: Made in India | Headline spec: Capacity (Tons)
+Models include:
+- Mechanical Power Press: PMC5 to PMC100
+- Pneumatic Power Press: PPC20 to PPC100
+- C Frame Ram Type Hydraulic Press: PHCR/3 to PHCR/200
+- C Frame 4 Guide Plate Hydraulic Press: PHCGP/20 to PHCGP/300
+- H Type Hydraulic Press Motorised: PHHM/5 to PHHM/500
+- H Type Hydraulic Press Hand Operated: PHHH/5 to PHHH/150
+- Fix Frame Ram Type Hydraulic Press: PHFR/20 to PHFR/500
+- Fix Frame Piston Type Hydraulic Press: PHRP/5 to PHRP/300
+- 4 Pillar Hydraulic Press: PH4P/5 to PH4P/300
+- Impact Press Machine: PIH11, PIH15, PIP25, PIP35
+- Toggle Press Machine: TPH6, TPH9, TPP6
+Note: Impact Press and Toggle Press also belong under a future Marking Machines category (deferred — schema only supports single subcategory per product currently).
 
-### Press Machines (Category) — 5 subcategories
-- Mechanical Power Press — PRG (PMC5 to PMC100)
-- Pneumatic Power Press — PRG (PPC20 to PPC100)
-- C Frame Ram Type Hydraulic Press — PRG (PHCR/3 to PHCR/200)
-- C Frame 4 Guide Plate Hydraulic Press — PRG (PHCGP/20 to PHCGP/300)
-- H Type Hydraulic Press Motorised — PRG (PHHM/5 to PHHM/500)
-- H Type Hydraulic Press Hand Operated — PRG (PHHH/5 to PHHH/150)
-- Fix Frame Ram Type Hydraulic Press — PRG (PHFR/20 to PHFR/500)
-- Fix Frame Piston Type Hydraulic Press — PRG (PHRP/5 to PHRP/300)
-- 4 Pillar Hydraulic Press — PRG (PH4P/5 to PH4P/300)
-- Impact Press Machine — PRG (PIH11, PIH15, PIP25, PIP35)
-- Toggle Press Machine — PRG (TPH6, TPH9, TPP6)
-All: PRG brand, Made in India, headline spec = Capacity in Tons
+### Lathe Machine
+Subcategories: All Geared Lathe Machine (complete), others TBD
+Brand: HABA | Country: Made in India | Headline spec: Bed Length (inches)
+Models completed:
+- Light Duty All Geared Lathe: HAG691
+- Medium Duty All Geared Lathe: HAG812, HAG1013
+- Heavy Duty All Geared Lathe (Bed 13"): HAG1032 to HAG1234 (6 models)
+- Heavy Duty All Geared Lathe (Bed 15"): HAG1253 to HAG1554 (6 models)
+- Extra Heavy Duty All Geared Lathe (Bed 18"): HAG1684, HAG1884
+- Extra Heavy Duty All Geared Lathe (Bed 22"): HAG20224
+- Extra Heavy Duty All Geared Lathe (Bed 26"): HAG22265, HAG24265
 
-### Lathe Machine (Category) — 1 subcategory so far
-- All Geared Lathe Machine — HABA, Made in India, headline spec = Chuck Size / Bed Length
-  - HABA Light Duty All Geared Lathe Machine (HAG691)
-  - HABA Medium Duty All Geared Lathe Machine (HAG812, HAG1013)
-  - HABA Heavy Duty All Geared Lathe Machine (Bed: 13") — HAG1032 to HAG1234 (6 models)
-  - HABA Heavy Duty All Geared Lathe Machine (Bed: 15") — HAG1253 to HAG1554 (6 models)
-  - HABA Extra Heavy Duty All Geared Lathe Machine (Bed: 18") — HAG1684, HAG1884
-  - HABA Extra Heavy Duty All Geared Lathe Machine (Bed: 22") — HAG20224
-  - HABA Extra Heavy Duty All Geared Lathe Machine (Bed: 26") — HAG22265, HAG24265
-
----
-
-## Pending TODO
-
-### Schema & Importer
-- [ ] Fix Display Order logic — currently works globally, not per subcategory
-- [ ] Update Sanity schema — subcategory field from single to multi-reference (array)
-- [ ] Update importer script to support comma-separated subcategories
-- [ ] Update frontend to display products under multiple subcategories
-
-### Products — Pending
-- [ ] Rename existing press products to include PRG brand prefix (e.g. "PRG Mechanical Power Press")
-- [ ] Clean up Air Line Pressure spec inconsistency across Impact Press models (different units)
-- [ ] Add PLC Control Panel as optional accessory to C Frame Ram Type Hydraulic Press
-- [ ] Add PLC Control Panel as optional accessory to C Frame 4 Guide Plate Hydraulic Press
-- [ ] Air Compressor (new category — headline spec: CFM or Tank Size)
-- [ ] Marking Machines (new category — Impact Press and Toggle Press to be cross-listed here after multi-subcategory schema upgrade)
-- [ ] Photos for VMCB and all Drilling Machines — pending manual upload to Sanity
-
-### Website Pages
-- [ ] /products/[slug]/[subcategorySlug] — Subcategory page
-- [ ] /products/[slug]/[subcategorySlug]/[productSlug] — Individual product page
-- [ ] /blog — Blog page
-- [ ] /our-clients — Clients page
+### Metal Cutting Bandsaw (Horizontal)
+Subcategories: HMM Series
+Brand: HABA | Headline spec: Cutting Capacity
+Models: HMM9R (225mm), HMM12R (300mm), HMM13R (330mm), HMM8N, HMM12N, HMM14N
+Note: R series = premium, N series = standard/budget
 
 ---
 
-## Import Pipeline — Critical Rules
+## ACTIVE ISSUES / DEFERRED WORK
+- Display Order logic is broken — works globally, not per subcategory — deferred for later fix
+- Sanity schema supports only single subcategory per product — multi-subcategory support planned (needed for Impact Press / Toggle Press under Marking Machines)
+- Air Line Pressure spec inconsistency across Impact Press models (different units) — flagged for cleanup
+- Existing press products need PRG brand prefix added to product names
+- Photos for VMCB and all drilling machines pending manual upload to Sanity Studio
 
-### Before Every Import Run
-1. Manually create any new Categories and Subcategories in Sanity Studio first — the importer does NOT auto-create them
-2. Clear ALL Google Sheets filters before running npm run import-products — active filters hide rows from the importer
+---
 
-### CSV Export Endpoint
-- ALWAYS use the native export endpoint: /export?format=csv&gid=NUMERIC_ID
-- NEVER use the gviz/tq endpoint — it mangles data for tabs where content was pasted from external sources
+## ON THE HORIZON
+- Add remaining machine categories: Air Compressor (new), Marking Machines (with Impact Press and Toggle Press cross-listed)
+- Build remaining website pages: /subcategory, /product, /blog, /our-clients
+- Fix Display Order logic per subcategory
+- Update Sanity schema for multi-subcategory support; update importer and frontend
+- Update CLAUDE.md and Project Instructions at end of each major session
 
-### Known Sheet GIDs
-- Products: 0
-- Variants & Specs: 1924145122
-- Highlights & Accessories: 1811493441
-- FAQs: 872074886
+---
 
-### Stray Columns
-- Delete all columns beyond the expected range (e.g. beyond column G in Variants & Specs) — stray data corrupts CSV export entirely
+## IMPORT PIPELINE — CRITICAL RULES
 
-### Debugging Approach
+### Before every import run:
+1. Manually create any new Categories and Subcategories in Sanity Studio FIRST — the importer does NOT auto-create them
+2. Clear ALL Google Sheets filters before running `npm run import-products` — active filters hide rows from the importer
+
+### CSV Export — use native endpoint only:
+- Use: `/export?format=csv&gid=NUMERIC_ID`
+- NEVER use: `/gviz/tq?tqx=out:csv&sheet=TAB_NAME` — this endpoint mangles data (columns merge together)
+
+### Known Sheet GIDs:
+- Products tab: 0
+- Variants & Specs tab: 1924145122
+- Highlights & Accessories tab: 1811493441
+- FAQs tab: 872074886
+
+### Stray data in extra columns:
+- Stray data in columns beyond the expected range corrupts CSV export
+- Fix: select from the first unused column to the end of the sheet and delete those columns entirely
+
+### Debugging approach:
 - When persistent technical errors can't be resolved quickly, consult Gemini and Grok for additional diagnosis before continuing
 - Team approach: Claude formats/builds; Gemini and Grok debug tricky infrastructure issues
 
 ---
 
-## Tab 1 (Products) — Column Order
+## GOOGLE SHEET COLUMN ORDER (EXACT)
+
+**Tab 1 — Products:**
 Product Name | Brand | Category | Subcategory | Country | Display Order | Short Description | Full Description | Featured | Active | SEO Title | Meta Description | Keywords | Geo Tags | YouTube URLs | PDF Labels | PDF URLs
 
-## Tab 2 (Variants & Specs) — Column Order
+**Tab 2 — Variants & Specs:**
 Product Name | Model Number | Size | Price | Availability | Spec Name | Spec Value
 
-## Tab 3 (Highlights & Accessories) — Column Order
+**Tab 3 — Highlights & Accessories:**
 Product Name | Type | Name/Text | Description | Price | Link
 
-## Tab 4 (FAQs) — Column Order
+**Tab 4 — FAQs:**
 Product Name | Question | Answer
 
 ---
 
-## Claude in Chrome — Browser Automation Notes
-- Requires per-domain permission grants — click extension icon while on target tab and enable site access
-- After granting permission, refresh the page before automating
-- Tab IDs change after any navigation or refresh — always call tabs_context_mcp again after refresh
-- Batch actions (navigate, wait, type, click) work well inside a single browser_batch call
-
----
-
-PRODUCT UPDATE WORKFLOW FOR MMT
+## PRODUCT UPDATE WORKFLOW FOR MMT
 
 When Jabs says "let's update product" or pastes raw machine specs:
 
-STEP 1 — Ask Jabs these 5 headline details FIRST (constant per machine, ask once):
+### STEP 1 — Ask Jabs these 5 headline details FIRST (constant per machine, ask once):
 1. Product Name
 2. Brand (HABA is MMT's own brand, never third party)
 3. Category (e.g. Vertical Bandsaw Machine, Lathe Machine)
@@ -219,50 +205,61 @@ STEP 1 — Ask Jabs these 5 headline details FIRST (constant per machine, ask on
 Also ask the HEADLINE SPEC by which this machine type is recognised:
 - Vertical Bandsaw: Wheel Diameter (e.g. 400mm)
 - Horizontal Bandsaw: Cutting Capacity
-- Lathe: Chuck Size or Bed Length
+- Lathe: Bed Length (inches)
 - Air Compressor: CFM or Tank Size
 - Drilling Machine: Drilling Capacity
-- Press Machine: Capacity in Tons
+- Press Machine: Capacity (Tons)
 - Ask Jabs if unsure for any other machine type
 
 Keep these 5 details + headline spec constant for all related models until Jabs says "next machine".
 
-STEP 2 — Format raw spec content into 4 tab-separated outputs ready for MMT Google Sheet:
+### STEP 2 — Format raw spec content into 4 tab-separated outputs ready for MMT Google Sheet:
 
-TAB 1 — Products
+**TAB 1 — Products**
 Columns: Product Name | Brand | Category | Subcategory | Country | Display Order | Short Description | Full Description | Featured | Active | SEO Title | Meta Description | Keywords | Geo Tags | YouTube URLs | PDF Labels | PDF URLs
 
-TAB 2 — Variants & Specs (key:value structure, flexible for any machine)
+**TAB 2 — Variants & Specs** (key:value structure, flexible for any machine)
 Columns: Product Name | Model Number | Size | Price | Availability | Spec Name | Spec Value
 - Each spec = one row
 - Row order on sheet = display order on site (top row appears first)
-- ALWAYS put the headline spec (wheel diameter / chuck size / CFM etc.) as the FIRST row so it appears on top of site spec table
+- ALWAYS put the headline spec (wheel diameter / chuck size / CFM / capacity etc.) as the FIRST row so it appears at top of site spec table
 - For one model with 15 specs = 15 rows (Product Name + Model + Size + Price + Availability stay same; only Spec Name + Spec Value change per row)
+- Price always: "Request Quote"
+- Availability always: "In Stock"
 
-TAB 3 — Highlights & Accessories
+**TAB 3 — Highlights & Accessories**
 Columns: Product Name | Type | Name/Text | Description | Price | Link
 - Highlights: short punchy single line in Name/Text column, Description column LEFT BLANK
-- Accessories: Name in Name/Text column + full Description in Description column (since accessories will be displayed in detail on the site later)
+- Accessories: Name in Name/Text column + full Description in Description column
 
-TAB 4 — FAQs
+**TAB 4 — FAQs**
 Columns: Product Name | Question | Answer
 
-GENERAL RULES:
+### GENERAL RULES:
 - Tab-separated values only (paste-ready for Google Sheets)
 - No em dash — use hyphen (-) only
+- Product names must always include brand prefix: "PRG [Product Name]" or "HABA [Product Name]"
 - Keywords MUST include: Chennai, Ahmedabad, Pan-India, export
 - Geo Tags always: Chennai,Tamil Nadu,Ahmedabad,Gujarat,Pan-India,Export,Government Supply
 - Minimum 5 highlights, 5 FAQs (more is always better)
 - FAQs buyer-focused — NO contact details (no phone, no email) in answers
-- HABA is MMT's own brand — never refer to as third party or external
+- HABA is MMT's own designed and manufactured brand — never refer to as third party or external
 - PRG is also MMT's own brand — never refer to as third party or external
 - N series = standard/budget range, R series = premium range
-- Featured: Yes/No, Active: Yes/No (NOT TRUE/FALSE)
-- Price always: Request Quote
-- Availability always: In Stock
-- Product names must always include brand prefix: "PRG [Product Name]" or "HABA [Product Name]"
+- Featured: Yes/No | Active: Yes/No (NOT TRUE/FALSE)
+- Do not repeat or re-generate data that has already been accepted
+- Ask clarifying questions before formatting — do not assume
 
-OUTPUT FORMAT FOR EVERY MESSAGE:
+### OUTPUT FORMAT FOR EVERY MESSAGE:
 Before each tab's data block, show the column header row as reference so Jabs knows what each cell is.
 
-IF UNSURE — ask Jabs before formatting. Do not assume.
+### IF UNSURE — ask Jabs before formatting. Do not assume.
+
+---
+
+## BROWSER AUTOMATION (Claude in Chrome)
+- Requires per-domain permission grants — click the extension icon while on the target tab and enable site access
+- After granting permission, refresh the page before the extension can interact
+- Tab IDs change after any navigation or refresh — always call tabs_context_mcp again after refresh to get current tab ID
+- For Sanity Studio subcategory creation: click name field → type → click slug generate button → click category reference field → type to trigger dropdown search → submit
+- Batch actions combining navigate, wait, type, click in a single browser_batch call work well for multi-step form submissions
