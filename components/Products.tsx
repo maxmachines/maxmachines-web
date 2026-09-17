@@ -78,14 +78,14 @@ export default async function Products() {
               >
                 <div
                   className="relative w-full flex items-center justify-center overflow-hidden"
-                  style={{ height: "160px", background: "rgba(234,179,8,0.04)" }}
+                  style={{ height: "220px", background: "#f5f5f0" }}
                 >
                   {cat.imageUrl ? (
                     <Image
                       src={cat.imageUrl}
                       alt={cat.name}
                       fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="object-contain group-hover:scale-105 transition-transform duration-500"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                   ) : (

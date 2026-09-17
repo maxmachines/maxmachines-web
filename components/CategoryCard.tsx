@@ -48,8 +48,8 @@ export default function CategoryCard({ category }: { category: Category }) {
       <div
         className="relative w-full flex items-center justify-center overflow-hidden"
         style={{
-          height: "160px",
-          background: "rgba(234,179,8,0.04)",
+          height: "220px",
+          background: "#f5f5f0",
         }}
       >
         {category.imageUrl ? (
@@ -57,7 +57,7 @@ export default function CategoryCard({ category }: { category: Category }) {
             src={category.imageUrl}
             alt={category.name}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-contain group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (

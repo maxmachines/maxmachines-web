@@ -212,14 +212,14 @@ function ProductCard({
       <Link href={`/products/${categorySlug}/${subcategorySlug}/${product.slug.current}`}>
         <div
           className="relative w-full overflow-hidden"
-          style={{ height: "200px", background: "rgba(234,179,8,0.04)" }}
+          style={{ height: "220px", background: "#f5f5f0" }}
         >
           {product.imageUrl ? (
             <Image
               src={product.imageUrl}
               alt={product.name}
               fill
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              className="object-contain group-hover:scale-105 transition-transform duration-500"
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             />
           ) : (
