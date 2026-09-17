@@ -1,15 +1,41 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import SocialStrip from "@/components/SocialStrip";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import CategoryCard from "@/components/CategoryCard";
 import { client } from "@/sanity/lib/client";
 
-/* ─── Types ──────────────────────────────────────────────────── */
+export const metadata: Metadata = {
+  title: "Our Machine Catalog | Max Machine Tools",
+  description:
+    "Explore our comprehensive range of industrial machinery — Lathe, Drilling, Milling, Power Press, Bandsaw, and Marking machines, manufactured in India and sourced from the world's best.",
+  openGraph: {
+    title: "Our Machine Catalog | Max Machine Tools",
+    description:
+      "Explore our comprehensive range of industrial machinery — manufactured in India and sourced from the world's best.",
+    url: "https://www.maxmachines.in/products",
+    siteName: "Max Machine Tools",
+    images: [
+      {
+        url: "https://www.maxmachines.in/logo.png",
+        width: 1200,
+        height: 1200,
+        alt: "Max Machine Tools",
+      },
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Our Machine Catalog | Max Machine Tools",
+    description: "Explore our comprehensive range of industrial machinery.",
+    images: ["https://www.maxmachines.in/logo.png"],
+  },
+};
+
 interface Category {
   _id: string;
   name: string;
@@ -18,7 +44,6 @@ interface Category {
   imageUrl?: string;
 }
 
-/* ─── SVG Background ─────────────────────────────────────────── */
 const GearBackground = () => (
   <svg
     className="absolute inset-0 w-full h-full pointer-events-none"
@@ -80,7 +105,6 @@ const GearBackground = () => (
   </svg>
 );
 
-/* ─── Gear placeholder icon ──────────────────────────────────── */
 const GearIcon = () => (
   <svg viewBox="0 0 64 64" fill="none" className="w-12 h-12" aria-hidden="true">
     <circle cx="32" cy="32" r="28" stroke="#eab308" strokeWidth="1.5" opacity="0.4" />
@@ -92,102 +116,21 @@ const GearIcon = () => (
   </svg>
 );
 
-/* ─── Arrow icon ─────────────────────────────────────────────── */
-const ArrowRightIcon = () => (
-  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-    <path d="M4 10h12M10 4l6 6-6 6" />
-  </svg>
-);
-
-/* ─── Category Card ──────────────────────────────────────────── */
-function CategoryCard({ category }: { category: Category }) {
-  return (
-    <Link
-      href={`/products/${category.slug.current}`}
-      className="card-hover group relative rounded-2xl border overflow-hidden flex flex-col"
-      style={{
-        background: "var(--bg-secondary)",
-        borderColor: "rgba(234,179,8,0.14)",
-        transition: "border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease",
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.borderColor = "rgba(234,179,8,0.55)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.borderColor = "rgba(234,179,8,0.14)";
-      }}
-    >
-      <div
-        className="relative w-full flex items-center justify-center overflow-hidden"
-        style={{
-          height: "160px",
-          background: "rgba(234,179,8,0.04)",
-        }}
-      >
-        {category.imageUrl ? (
-          <Image
-            src={category.imageUrl}
-            alt={category.name}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
-        ) : (
-          <GearIcon />
-        )}
-        {category.imageUrl && (
-          <div
-            className="absolute inset-0"
-            style={{ background: "linear-gradient(to top, rgba(26,26,26,0.8) 0%, transparent 60%)" }}
-          />
-        )}
-      </div>
-
-      <div className="flex flex-col flex-1 p-6">
-        <h3 className="text-white font-bold text-lg mb-2 leading-snug group-hover:text-yellow-300 transition-colors duration-200">
-          {category.name}
-        </h3>
-        {category.description && (
-          <p className="text-sm leading-relaxed mb-4 flex-1" style={{ color: "#a3a3a3" }}>
-            {category.description}
-          </p>
-        )}
-        <div
-          className="inline-flex items-center gap-2 text-sm font-bold mt-auto group-hover:gap-3 transition-all duration-200"
-          style={{ color: "var(--gold)" }}
-        >
-          Explore
-          <ArrowRightIcon />
-        </div>
-      </div>
-    </Link>
+async function getCategories(): Promise<Category[]> {
+  return client.fetch(
+    `*[_type == "category"] | order(displayOrder asc) {
+      _id, name, slug, description, "imageUrl": image.asset->url
+    }`
   );
 }
 
-/* ─── Page ───────────────────────────────────────────────────── */
-export default function ProductsPage() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    client
-      .fetch<Category[]>(
-        `*[_type == "category"] | order(displayOrder asc) {
-          _id, name, slug, description, "imageUrl": image.asset->url
-        }`
-      )
-      .then((data) => {
-        setCategories(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+export default async function ProductsPage() {
+  const categories = await getCategories();
 
   return (
     <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
       <Navbar />
 
-      {/* ── HERO ─────────────────────────────────────────────── */}
       <section
         className="relative flex items-center justify-center overflow-hidden"
         style={{ paddingTop: "80px" }}
@@ -239,7 +182,6 @@ export default function ProductsPage() {
 
       <SocialStrip />
 
-      {/* ── CATEGORIES GRID ──────────────────────────────────── */}
       <section className="pt-3 pb-10 lg:pb-16" style={{ background: "var(--bg-primary)" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-4">
@@ -251,17 +193,7 @@ export default function ProductsPage() {
             </p>
           </div>
 
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="rounded-2xl border h-72 animate-pulse"
-                  style={{ background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.08)" }}
-                />
-              ))}
-            </div>
-          ) : categories.length > 0 ? (
+          {categories.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {categories.map((category) => (
                 <CategoryCard key={category._id} category={category} />
@@ -280,7 +212,6 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* ── BOTTOM CTA ───────────────────────────────────────── */}
       <section className="py-16 lg:py-20" style={{ background: "var(--bg-secondary)" }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div
@@ -299,14 +230,14 @@ export default function ProductsPage() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 flex-shrink-0">
-              <a
+              <Link
                 href="tel:+919962061514"
                 className="px-6 py-3.5 rounded-xl font-bold text-sm text-center transition-all duration-200 hover:scale-105 hover:brightness-110"
                 style={{ background: "var(--gold)", color: "#0f0f0f" }}
               >
                 📞 Call Chennai
-              </a>
-              <a
+              </Link>
+              <Link
                 href="https://wa.me/919382861514"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -314,8 +245,8 @@ export default function ProductsPage() {
                 style={{ color: "#22c55e", borderColor: "#22c55e" }}
               >
                 💬 WhatsApp Us
-              </a>
-              <a
+              </Link>
+              <Link
                 href="https://forms.gle/TXjAGS67M1Nnb2Ye9"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -323,7 +254,7 @@ export default function ProductsPage() {
                 style={{ borderColor: "rgba(255,255,255,0.2)" }}
               >
                 📋 Fill Form
-              </a>
+              </Link>
             </div>
           </div>
         </div>

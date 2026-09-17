@@ -79,6 +79,23 @@ export async function generateMetadata({
       title,
       description,
       url: `https://www.maxmachines.in/products/${slug}`,
+      siteName: "Max Machine Tools",
+      images: [
+        {
+          url: category.imageUrl || "https://www.maxmachines.in/logo.png",
+          width: 1200,
+          height: category.imageUrl ? 800 : 1200,
+          alt: category.name,
+        },
+      ],
+      locale: "en_IN",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [category.imageUrl || "https://www.maxmachines.in/logo.png"],
     },
   };
 }
