@@ -95,6 +95,30 @@ export const metadata: Metadata = {
   verification: {
     google: 'SE7m5urx14P8fAwG9CURoHItdyBrwzQ-9RYvZqdoP7A',
   },
+  openGraph: {
+    title: "Max Machines — Legacy of Precision Since 1963",
+    description:
+      "Industrial machinery supplier based in Chennai and Ahmedabad, supplying Lathe, Drilling, Milling, Power Press, Bandsaw, and Laser machines across India since 1963.",
+    url: "https://www.maxmachines.in",
+    siteName: "Max Machine Tools",
+    images: [
+      {
+        url: "https://www.maxmachines.in/logo.png",
+        width: 1200,
+        height: 1200,
+        alt: "Max Machine Tools",
+      },
+    ],
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Max Machines — Legacy of Precision Since 1963",
+    description:
+      "Industrial machinery supplier based in Chennai and Ahmedabad since 1963.",
+    images: ["https://www.maxmachines.in/logo.png"],
+  },
 };
 
 export default function RootLayout({
