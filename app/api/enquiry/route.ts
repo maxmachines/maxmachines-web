@@ -1,6 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(5, "1 m"),
+});
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for") ?? "unknown";
+  const { success } = await ratelimit.limit(ip);
+
+  if (!success) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again in a minute." },
+      { status: 429 }
+    );
+  }
+
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   if (!RESEND_API_KEY) {
     return NextResponse.json({ error: "Email service not configured" }, { status: 500 });
