@@ -1,10 +1,7 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -25,6 +22,65 @@ interface Subcategory {
   slug: { current: string };
   description?: string;
   imageUrl?: string;
+}
+
+/* ─── Data fetchers ──────────────────────────────────────────── */
+async function getCategory(slug: string): Promise<Category | null> {
+  return client.fetch<Category | null>(
+    `*[_type == "category" && slug.current == $slug][0] {
+      _id, name, slug, description, "imageUrl": image.asset->url
+    }`,
+    { slug }
+  );
+}
+
+async function getSubcategories(categoryId: string): Promise<Subcategory[]> {
+  return client.fetch<Subcategory[]>(
+    `*[_type == "subcategory" && parentCategory._ref == $categoryId] | order(displayOrder asc) {
+      _id, name, slug, description, "imageUrl": image.asset->url
+    }`,
+    { categoryId }
+  );
+}
+
+/* ─── SSG params ─────────────────────────────────────────────── */
+export async function generateStaticParams() {
+  const categories = await client.fetch<{ slug: { current: string } }[]>(
+    `*[_type == "category"]{ slug }`
+  );
+  return categories.map((c) => ({ slug: c.slug.current }));
+}
+
+/* ─── Metadata ───────────────────────────────────────────────── */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const category = await getCategory(slug);
+
+  if (!category) {
+    return { title: "Category Not Found | Max Machine Tools" };
+  }
+
+  const title = `${category.name} | Max Machine Tools`;
+  const description =
+    category.description ||
+    `Explore our range of ${category.name.toLowerCase()} — supplied Pan-India and for export by Max Machine Tools.`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `https://www.maxmachines.in/products/${slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://www.maxmachines.in/products/${slug}`,
+    },
+  };
 }
 
 /* ─── SVG Background ─────────────────────────────────────────── */
@@ -116,12 +172,6 @@ function SubcategoryCard({
         borderColor: "rgba(234,179,8,0.14)",
         transition: "border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease",
       }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.borderColor = "rgba(234,179,8,0.55)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.borderColor = "rgba(234,179,8,0.14)";
-      }}
     >
       <div
         className="relative w-full flex items-center justify-center overflow-hidden"
@@ -171,48 +221,17 @@ function SubcategoryCard({
 }
 
 /* ─── Page ───────────────────────────────────────────────────── */
-export default function CategoryPage() {
-  const params = useParams();
-  const slug = params.slug as string;
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const category = await getCategory(slug);
 
-  const [category, setCategory] = useState<Category | null>(null);
-  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [missing, setMissing] = useState(false);
+  if (!category) notFound();
 
-  useEffect(() => {
-    if (!slug) return;
-
-    async function fetchData() {
-      const cat = await client.fetch<Category | null>(
-        `*[_type == "category" && slug.current == $slug][0] {
-          _id, name, slug, description, "imageUrl": image.asset->url
-        }`,
-        { slug }
-      );
-
-      if (!cat) {
-        setMissing(true);
-        setLoading(false);
-        return;
-      }
-
-      const subs = await client.fetch<Subcategory[]>(
-        `*[_type == "subcategory" && parentCategory._ref == $categoryId] | order(displayOrder asc) {
-          _id, name, slug, description, "imageUrl": image.asset->url
-        }`,
-        { categoryId: cat._id }
-      );
-
-      setCategory(cat);
-      setSubcategories(subs);
-      setLoading(false);
-    }
-
-    fetchData().catch(() => setLoading(false));
-  }, [slug]);
-
-  if (missing) notFound();
+  const subcategories = await getSubcategories(category._id);
 
   return (
     <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
@@ -266,23 +285,14 @@ export default function CategoryPage() {
               Catalog
             </Link>
             <ChevronRightIcon />
-            <span style={{ color: "var(--gold)" }}>
-              {loading ? "Loading…" : category?.name}
-            </span>
+            <span style={{ color: "var(--gold)" }}>{category.name}</span>
           </nav>
 
           <h1 className="animate-fade-in-up font-black leading-tight tracking-tight mb-2 text-4xl lg:text-5xl">
-            {loading ? (
-              <span
-                className="inline-block rounded-lg animate-pulse"
-                style={{ width: "280px", height: "1em", background: "rgba(234,179,8,0.1)" }}
-              />
-            ) : (
-              <span style={{ color: "var(--gold)" }}>{category?.name}</span>
-            )}
+            <span style={{ color: "var(--gold)" }}>{category.name}</span>
           </h1>
 
-          {!loading && category?.description && (
+          {category.description && (
             <p
               className="animate-fade-in-up-delay-1 text-base leading-snug max-w-2xl mx-auto mt-2"
               style={{ color: "#a3a3a3" }}
@@ -290,7 +300,6 @@ export default function CategoryPage() {
               {category.description}
             </p>
           )}
-
         </div>
       </section>
 
@@ -299,38 +308,28 @@ export default function CategoryPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-4">
             <h2 className="text-3xl font-black text-white mb-1">
-              {loading
-                ? "Loading…"
-                : subcategories.length > 0
-                ? <><span style={{ color: "var(--gold)" }}>{subcategories.length} Type{subcategories.length !== 1 ? "s" : ""}</span>{" "}Available</>
-
-                : "Coming Soon"}
+              {subcategories.length > 0 ? (
+                <>
+                  <span style={{ color: "var(--gold)" }}>
+                    {subcategories.length} Type{subcategories.length !== 1 ? "s" : ""}
+                  </span>{" "}
+                  Available
+                </>
+              ) : (
+                "Coming Soon"
+              )}
             </h2>
             <p className="text-sm max-w-xl mx-auto" style={{ color: "#a3a3a3" }}>
-              {!loading && subcategories.length === 0 && category
+              {subcategories.length === 0
                 ? `We're adding our full range of ${category.name.toLowerCase()} to the catalog. Contact us for the complete list.`
                 : "Select a type to explore the machines we stock and supply."}
             </p>
           </div>
 
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="rounded-2xl border h-64 animate-pulse"
-                  style={{ background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.08)" }}
-                />
-              ))}
-            </div>
-          ) : subcategories.length > 0 ? (
+          {subcategories.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {subcategories.map((sub) => (
-                <SubcategoryCard
-                  key={sub._id}
-                  subcategory={sub}
-                  categorySlug={slug}
-                />
+                <SubcategoryCard key={sub._id} subcategory={sub} categorySlug={slug} />
               ))}
             </div>
           ) : (

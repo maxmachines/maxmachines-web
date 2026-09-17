@@ -1,17 +1,16 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import { PortableText } from "@portabletext/react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import EnquireButton from "@/components/EnquireButton";
+import FaqAccordion from "@/components/FaqAccordion";
+import ProductImageGallery from "@/components/ProductImageGallery";
 import { client } from "@/sanity/lib/client";
-import { useEnquiryModal } from "@/context/EnquiryModalContext";
 
 /* ─── Types ──────────────────────────────────────────────────────── */
 interface SpecRow { specName: string; specValue: string }
@@ -77,20 +76,96 @@ function getYouTubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 
+/* ─── Data fetchers ──────────────────────────────────────────────── */
+async function getProduct(productSlug: string): Promise<ProductDetail | null> {
+  return client.fetch<ProductDetail | null>(
+    `*[_type == "product" && slug.current == $productSlug][0] {
+      _id, name, slug, shortDescription, brand, country, featured, active,
+      fullDescription,
+      "images": images[] { "url": asset->url, alt },
+      youtubeUrls,
+      pdfLabels,
+      pdfUrls,
+      highlights,
+      "accessories": accessories[] { name, description, price, link },
+      "variants": variants[] { modelNumber, size, price, availability, "specs": specs[] { specName, specValue } },
+      "faqs": faqs[] { question, answer },
+      "seo": seo { seoTitle, metaDescription },
+      "subcategory": subcategory-> { name, slug, "category": parentCategory-> { name, slug } }
+    }`,
+    { productSlug }
+  );
+}
+
+async function getSiblings(subcategorySlug: string): Promise<SiblingProduct[]> {
+  return client.fetch<SiblingProduct[]>(
+    `*[_type == "product" && subcategory->slug.current == $subcategorySlug && active == true] | order(displayOrder asc, featured desc, name asc) {
+      _id, name, slug, brand, featured,
+      "imageUrl": images[0].asset->url,
+      "specs": variants[0].specs[] { specName, specValue }
+    }`,
+    { subcategorySlug }
+  );
+}
+
+/* ─── SSG params ─────────────────────────────────────────────────── */
+export async function generateStaticParams() {
+  const products = await client.fetch<
+    { prodSlug: string; subSlug: string | null; catSlug: string | null }[]
+  >(
+    `*[_type == "product"]{
+      "prodSlug": slug.current,
+      "subSlug": subcategory->slug.current,
+      "catSlug": subcategory->parentCategory->slug.current
+    }`
+  );
+  return products
+    .filter((p) => p.subSlug && p.catSlug)
+    .map((p) => ({
+      slug: p.catSlug as string,
+      subcategorySlug: p.subSlug as string,
+      productSlug: p.prodSlug,
+    }));
+}
+
+/* ─── Metadata ───────────────────────────────────────────────────── */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; subcategorySlug: string; productSlug: string }>;
+}): Promise<Metadata> {
+  const { slug, subcategorySlug, productSlug } = await params;
+  const product = await getProduct(productSlug);
+
+  if (!product) {
+    return { title: "Product Not Found | Max Machine Tools" };
+  }
+
+  const title = product.seo?.seoTitle || `${product.name} | Max Machine Tools`;
+  const description =
+    product.seo?.metaDescription ||
+    product.shortDescription ||
+    `${product.name} — supplied Pan-India and for export by Max Machine Tools.`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `https://www.maxmachines.in/products/${slug}/${subcategorySlug}/${productSlug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://www.maxmachines.in/products/${slug}/${subcategorySlug}/${productSlug}`,
+      ...(product.images?.[0]?.url ? { images: [product.images[0].url] } : {}),
+    },
+  };
+}
+
 /* ─── Icons ──────────────────────────────────────────────────────── */
 const ChevronRight = () => (
   <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 flex-shrink-0">
     <path d="M7 4l6 6-6 6" />
-  </svg>
-);
-
-const ChevronDown = ({ open }: { open: boolean }) => (
-  <svg
-    viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2"
-    strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 flex-shrink-0"
-    style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}
-  >
-    <path d="M4 7l6 6 6-6" />
   </svg>
 );
 
@@ -115,37 +190,6 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
       />
       {children}
     </h2>
-  );
-}
-
-/* ─── FAQ Accordion ──────────────────────────────────────────────── */
-function FaqAccordion({ faq }: { faq: FaqItem }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div
-      className="border rounded-xl overflow-hidden"
-      style={{ borderColor: open ? "rgba(234,179,8,0.4)" : "rgba(234,179,8,0.14)" }}
-    >
-      <button
-        className="w-full flex items-center justify-between gap-4 p-5 text-left"
-        style={{ background: open ? "rgba(234,179,8,0.06)" : "var(--bg-secondary)" }}
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span className="font-semibold text-white text-sm leading-snug">{faq.question}</span>
-        <span style={{ color: "var(--gold)" }}><ChevronDown open={open} /></span>
-      </button>
-      <div
-        style={{
-          maxHeight: open ? "600px" : "0",
-          overflow: "hidden",
-          transition: "max-height 0.35s ease",
-        }}
-      >
-        <div className="px-5 pb-5 pt-3" style={{ background: "var(--bg-secondary)" }}>
-          <p className="text-sm leading-relaxed" style={{ color: "#a3a3a3" }}>{faq.answer}</p>
-        </div>
-      </div>
-    </div>
   );
 }
 
@@ -188,99 +232,50 @@ const ptComponents = {
 };
 
 /* ─── Page ───────────────────────────────────────────────────────── */
-export default function ProductDetailPage() {
-  const params = useParams();
-  const slug = params.slug as string;
-  const subcategorySlug = params.subcategorySlug as string;
-  const productSlug = params.productSlug as string;
+export default async function ProductDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string; subcategorySlug: string; productSlug: string }>;
+}) {
+  const { productSlug } = await params;
+  const product = await getProduct(productSlug);
 
-  const { openEnquiryModal } = useEnquiryModal();
+  if (!product) notFound();
 
-  const [product, setProduct] = useState<ProductDetail | null>(null);
-  const [siblings, setSiblings] = useState<SiblingProduct[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [missing, setMissing] = useState(false);
-  const [activeImage, setActiveImage] = useState(0);
-
-  useEffect(() => {
-    if (!productSlug) return;
-
-    async function fetchData() {
-      const prod = await client.fetch<ProductDetail | null>(
-        `*[_type == "product" && slug.current == $productSlug][0] {
-          _id, name, slug, shortDescription, brand, country, featured, active,
-          fullDescription,
-          "images": images[] { "url": asset->url, alt },
-          youtubeUrls,
-          pdfLabels,
-          pdfUrls,
-          highlights,
-          "accessories": accessories[] { name, description, price, link },
-          "variants": variants[] { modelNumber, size, price, availability, "specs": specs[] { specName, specValue } },
-          "faqs": faqs[] { question, answer },
-          "seo": seo { seoTitle, metaDescription },
-          "subcategory": subcategory-> { name, slug, "category": parentCategory-> { name, slug } }
-        }`,
-        { productSlug }
-      );
-
-      if (!prod) {
-        setMissing(true);
-        setLoading(false);
-        return;
-      }
-
-      const sibs = await client.fetch<SiblingProduct[]>(
-        `*[_type == "product" && subcategory->slug.current == $subcategorySlug && active == true] | order(displayOrder asc, featured desc, name asc) {
-          _id, name, slug, brand, featured,
-          "imageUrl": images[0].asset->url,
-          "specs": variants[0].specs[] { specName, specValue }
-        }`,
-        { subcategorySlug }
-      );
-
-      setProduct(prod);
-      setSiblings(sibs);
-      setLoading(false);
-    }
-
-    fetchData().catch(() => setLoading(false));
-  }, [productSlug, subcategorySlug]);
-
-  if (missing) notFound();
+  const subcategorySlugFromProduct = product.subcategory?.slug?.current;
+  const siblings = subcategorySlugFromProduct ? await getSiblings(subcategorySlugFromProduct) : [];
 
   /* ── Derived values ── */
-  const images = product?.images ?? [];
-  const hasImages = images.length > 0;
-  const categorySlug = product?.subcategory?.category?.slug?.current ?? slug;
-  const categoryName = product?.subcategory?.category?.name;
-  const subName = product?.subcategory?.name;
-  const subSlug = product?.subcategory?.slug?.current ?? subcategorySlug;
-  const countryKey = product?.country?.toLowerCase() ?? "";
+  const images = product.images ?? [];
+  const categorySlug = product.subcategory?.category?.slug?.current;
+  const categoryName = product.subcategory?.category?.name;
+  const subName = product.subcategory?.name;
+  const subSlug = product.subcategory?.slug?.current;
+  const countryKey = product.country?.toLowerCase() ?? "";
   const flag = countryFlags[countryKey] ?? null;
-  const country = countryLabels[countryKey] ?? (product?.country ?? null);
+  const country = countryLabels[countryKey] ?? (product.country ?? null);
 
-  const hasHighlights = (product?.highlights?.length ?? 0) > 0;
-  const hasFullDesc = (product?.fullDescription?.length ?? 0) > 0;
-  const hasVariants = (product?.variants?.length ?? 0) > 0;
-  const hasYouTube = (product?.youtubeUrls?.filter(getYouTubeId).length ?? 0) > 0;
-  const hasPdfs = (product?.pdfUrls?.length ?? 0) > 0;
-  const hasAccessories = (product?.accessories?.length ?? 0) > 0;
-  const hasFaqs = (product?.faqs?.length ?? 0) > 0;
+  const hasHighlights = (product.highlights?.length ?? 0) > 0;
+  const hasFullDesc = (product.fullDescription?.length ?? 0) > 0;
+  const hasVariants = (product.variants?.length ?? 0) > 0;
+  const hasYouTube = (product.youtubeUrls?.filter(getYouTubeId).length ?? 0) > 0;
+  const hasPdfs = (product.pdfUrls?.length ?? 0) > 0;
+  const hasAccessories = (product.accessories?.length ?? 0) > 0;
+  const hasFaqs = (product.faqs?.length ?? 0) > 0;
 
-  const variants = product?.variants ?? [];
+  const variants = product.variants ?? [];
   const hasSpecs = variants.some((v) => (v.specs?.length ?? 0) > 0);
   const allVariantSpecNames = Array.from(
     new Set(variants.flatMap((v) => (v.specs ?? []).map((r) => r.specName)))
   );
 
-  /* Siblings excluding current product */
   const moreProducts = siblings.filter((s) => s.slug.current !== productSlug);
 
-  /* Comparison table: all unique spec names across all siblings */
   const allSpecNames = Array.from(
     new Set(siblings.flatMap((s) => (s.specs ?? []).map((r) => r.specName)))
   );
+
+  const canonicalUrl = `https://www.maxmachines.in/products/${categorySlug}/${subSlug}/${productSlug}`;
 
   return (
     <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
@@ -294,58 +289,43 @@ export default function ProductDetailPage() {
             Catalog
           </Link>
           <ChevronRight />
-          {loading ? <span style={{ color: "#737373" }}>…</span> : (
-            <Link href={`/products/${categorySlug}`} className="transition-colors hover:text-yellow-300" style={{ color: "#737373" }}>
-              {categoryName}
-            </Link>
-          )}
+          <Link href={`/products/${categorySlug}`} className="transition-colors hover:text-yellow-300" style={{ color: "#737373" }}>
+            {categoryName}
+          </Link>
           <ChevronRight />
-          {loading ? <span style={{ color: "#737373" }}>…</span> : (
-            <Link href={`/products/${categorySlug}/${subSlug}`} className="transition-colors hover:text-yellow-300" style={{ color: "#737373" }}>
-              {subName}
-            </Link>
-          )}
+          <Link href={`/products/${categorySlug}/${subSlug}`} className="transition-colors hover:text-yellow-300" style={{ color: "#737373" }}>
+            {subName}
+          </Link>
           <ChevronRight />
-          <span style={{ color: "var(--gold)" }}>
-            {loading ? "Loading…" : product?.name}
-          </span>
+          <span style={{ color: "var(--gold)" }}>{product.name}</span>
         </nav>
 
         {/* ── 2. Product name + badges ────────────────────────────────── */}
-        {loading ? (
-          <div className="space-y-3 mb-6">
-            <div className="rounded-lg animate-pulse h-10 w-80" style={{ background: "rgba(234,179,8,0.1)" }} />
-            <div className="rounded-lg animate-pulse h-5 w-48" style={{ background: "rgba(255,255,255,0.05)" }} />
+        <div className="mb-3">
+          <h1 className="text-3xl lg:text-5xl font-black text-white leading-tight mb-4">
+            {product.name}
+          </h1>
+          <div className="flex flex-wrap gap-2 items-center">
+            {product.featured && (
+              <span className="text-xs font-bold px-3 py-1 rounded-full" style={{ background: "var(--gold)", color: "#0f0f0f" }}>
+                ★ Featured
+              </span>
+            )}
+            {product.brand && (
+              <span className="text-xs font-semibold px-3 py-1 rounded-full border" style={{ color: "var(--gold)", borderColor: "rgba(234,179,8,0.35)", background: "rgba(234,179,8,0.07)" }}>
+                {product.brand}
+              </span>
+            )}
+            {flag && country && (
+              <span className="text-xs font-semibold px-3 py-1 rounded-full border" style={{ color: "#a3a3a3", borderColor: "rgba(163,163,163,0.2)", background: "rgba(163,163,163,0.05)" }}>
+                {flag} Made in {country}
+              </span>
+            )}
           </div>
-        ) : (
-          <div className="mb-3">
-            <h1 className="text-3xl lg:text-5xl font-black text-white leading-tight mb-4">
-              {product?.name}
-            </h1>
-            <div className="flex flex-wrap gap-2 items-center">
-              {product?.featured && (
-                <span className="text-xs font-bold px-3 py-1 rounded-full" style={{ background: "var(--gold)", color: "#0f0f0f" }}>
-                  ★ Featured
-                </span>
-              )}
-              {product?.brand && (
-                <span className="text-xs font-semibold px-3 py-1 rounded-full border" style={{ color: "var(--gold)", borderColor: "rgba(234,179,8,0.35)", background: "rgba(234,179,8,0.07)" }}>
-                  {product.brand}
-                </span>
-              )}
-              {flag && country && (
-                <span className="text-xs font-semibold px-3 py-1 rounded-full border" style={{ color: "#a3a3a3", borderColor: "rgba(163,163,163,0.2)", background: "rgba(163,163,163,0.05)" }}>
-                  {flag} Made in {country}
-                </span>
-              )}
-            </div>
-          </div>
-        )}
+        </div>
 
         {/* ── 3. Short description ────────────────────────────────────── */}
-        {loading ? (
-          <div className="rounded-lg animate-pulse h-5 w-full max-w-2xl mb-10" style={{ background: "rgba(255,255,255,0.05)" }} />
-        ) : product?.shortDescription ? (
+        {product.shortDescription ? (
           <p className="text-base max-w-3xl leading-relaxed mb-10" style={{ color: "#a3a3a3" }}>
             {product.shortDescription}
           </p>
@@ -357,48 +337,12 @@ export default function ProductDetailPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-8 lg:gap-12 mb-16">
 
           {/* LEFT — Image gallery */}
-          <div>
-            <div
-              className="relative w-full rounded-2xl overflow-hidden mb-3 border"
-              style={{ height: "420px", background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.14)" }}
-            >
-              {loading ? (
-                <div className="w-full h-full animate-pulse" style={{ background: "rgba(234,179,8,0.06)" }} />
-              ) : hasImages ? (
-                <Image
-                  src={images[activeImage].url}
-                  alt={images[activeImage].alt ?? product?.name ?? ""}
-                  fill
-                  className="object-contain"
-                  sizes="(max-width: 1024px) 100vw, 60vw"
-                  priority
-                />
-              ) : (
-                <div className="flex items-center justify-center h-full"><GearIcon /></div>
-              )}
-            </div>
-
-            {!loading && images.length > 1 && (
-              <div className="flex gap-2 flex-wrap">
-                {images.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveImage(i)}
-                    className="relative rounded-xl overflow-hidden border-2 transition-all duration-200 flex-shrink-0"
-                    style={{ width: "72px", height: "72px", borderColor: i === activeImage ? "var(--gold)" : "rgba(234,179,8,0.15)" }}
-                  >
-                    <Image src={img.url} alt={img.alt ?? `Image ${i + 1}`} fill className="object-cover" sizes="72px" />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          <ProductImageGallery images={images} productName={product.name} />
 
           {/* RIGHT — Highlights + CTA */}
           <div className="flex flex-col gap-5 lg:overflow-y-auto lg:max-h-screen">
 
-            {/* Special Highlights */}
-            {!loading && hasHighlights && (
+            {hasHighlights && (
               <div
                 className="rounded-2xl border p-5"
                 style={{ background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.22)" }}
@@ -407,7 +351,7 @@ export default function ProductDetailPage() {
                   Special Highlights
                 </p>
                 <ul className="flex flex-col gap-3">
-                  {product!.highlights!.map((h, i) => (
+                  {product.highlights!.map((h, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-sm leading-snug" style={{ color: "#d4d4d4" }}>
                       <span className="text-base leading-none mt-0.5 flex-shrink-0" style={{ color: "var(--gold)" }}>★</span>
                       {h}
@@ -418,43 +362,37 @@ export default function ProductDetailPage() {
             )}
 
             {/* CTA: Enquire | Call | WhatsApp */}
-            {loading ? (
-              <div className="h-14 rounded-xl animate-pulse" style={{ background: "rgba(234,179,8,0.1)" }} />
-            ) : (
-              <div className="flex gap-2">
-                <button
-                  onClick={() => openEnquiryModal(
-                    product?.name,
-                    `I am interested in: ${product?.name}. Page: ${typeof window !== "undefined" ? window.location.href : ""}`
-                  )}
-                  className="flex-[2] py-3.5 rounded-xl font-bold text-sm transition-all duration-200 hover:brightness-110 text-center leading-tight"
-                  style={{ background: "var(--gold)", color: "#0f0f0f" }}
-                >
-                  📋 Enquire About This Machine
-                </button>
-                <a
-                  href="tel:+919962061514"
-                  className="flex-1 flex items-center justify-center py-3.5 rounded-xl text-sm font-bold border transition-all duration-200 hover:bg-white/5"
-                  style={{ color: "white", borderColor: "rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.04)" }}
-                >
-                  📞 Call
-                </a>
-                <a
-                  href="https://wa.me/919382861514"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center py-3.5 rounded-xl text-sm font-bold transition-all duration-200 hover:opacity-90"
-                  style={{ background: "#22c55e", color: "white" }}
-                >
-                  💬 WA
-                </a>
-              </div>
-            )}
+            <div className="flex gap-2">
+              <EnquireButton
+                productName={product.name}
+                message={`I am interested in: ${product.name}.`}
+                includePageUrl
+                label="📋 Enquire About This Machine"
+                className="flex-[2] py-3.5 rounded-xl font-bold text-sm transition-all duration-200 hover:brightness-110 text-center leading-tight"
+                style={{ background: "var(--gold)", color: "#0f0f0f" }}
+              />
+              <a
+                href="tel:+919962061514"
+                className="flex-1 flex items-center justify-center py-3.5 rounded-xl text-sm font-bold border transition-all duration-200 hover:bg-white/5"
+                style={{ color: "white", borderColor: "rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.04)" }}
+              >
+                📞 Call
+              </a>
+              <a
+                href="https://wa.me/919382861514"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center py-3.5 rounded-xl text-sm font-bold transition-all duration-200 hover:opacity-90"
+                style={{ background: "#22c55e", color: "white" }}
+              >
+                💬 WA
+              </a>
+            </div>
           </div>
         </div>
 
         {/* ── 5. Specifications ───────────────────────────────────────── */}
-        {!loading && hasSpecs && (
+        {hasSpecs && (
           <section className="mb-14">
             <SectionHeading>Specifications</SectionHeading>
             <div
@@ -548,7 +486,7 @@ export default function ProductDetailPage() {
         )}
 
         {/* No specs at all */}
-        {!loading && !hasSpecs && (
+        {!hasSpecs && (
           <section className="mb-14">
             <SectionHeading>Specifications</SectionHeading>
             <div
@@ -557,35 +495,35 @@ export default function ProductDetailPage() {
             >
               <p className="text-sm" style={{ color: "#a3a3a3" }}>
                 Detailed specifications coming soon.{" "}
-                <button
-                  onClick={() => openEnquiryModal(product?.name, `Please send me full specifications for: ${product?.name}`)}
+                <EnquireButton
+                  productName={product.name}
+                  message={`Please send me full specifications for: ${product.name}`}
+                  label="Contact us for full specs."
                   className="underline transition-colors hover:text-yellow-300"
                   style={{ color: "var(--gold)" }}
-                >
-                  Contact us for full specs.
-                </button>
+                />
               </p>
             </div>
           </section>
         )}
 
         {/* ── 6. Overview ─────────────────────────────────────────────── */}
-        {!loading && hasFullDesc && (
+        {hasFullDesc && (
           <section className="mb-14">
             <SectionHeading>Overview</SectionHeading>
             <PortableText
-              value={product!.fullDescription as Parameters<typeof PortableText>[0]["value"]}
+              value={product.fullDescription as Parameters<typeof PortableText>[0]["value"]}
               components={ptComponents}
             />
           </section>
         )}
 
         {/* ── 7. YouTube Videos ───────────────────────────────────────── */}
-        {!loading && hasYouTube && (
+        {hasYouTube && (
           <section className="mb-14">
             <SectionHeading>Videos</SectionHeading>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {product!.youtubeUrls!.filter(getYouTubeId).map((url, i) => (
+              {product.youtubeUrls!.filter(getYouTubeId).map((url, i) => (
                 <iframe
                   key={i}
                   width="100%"
@@ -601,7 +539,7 @@ export default function ProductDetailPage() {
         )}
 
         {/* ── 8. Variants & Pricing ───────────────────────────────────── */}
-        {!loading && hasVariants && (
+        {hasVariants && (
           <section className="mb-14">
             <SectionHeading>Variants &amp; Pricing</SectionHeading>
             <div
@@ -646,16 +584,14 @@ export default function ProductDetailPage() {
                           }
                         </td>
                         <td className="px-5 py-3.5">
-                          <button
-                            onClick={() => openEnquiryModal(
-                              `${product?.name} — ${v.modelNumber}${v.size ? ` (${v.size})` : ""}`,
-                              `I am interested in: ${product?.name} — ${v.modelNumber}${v.size ? ` (${v.size})` : ""}. Page: ${typeof window !== "undefined" ? window.location.href : ""}`
-                            )}
+                          <EnquireButton
+                            productName={`${product.name} — ${v.modelNumber}${v.size ? ` (${v.size})` : ""}`}
+                            message={`I am interested in: ${product.name} — ${v.modelNumber}${v.size ? ` (${v.size})` : ""}.`}
+                            includePageUrl
+                            label="Enquire"
                             className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all duration-200 hover:brightness-110 whitespace-nowrap"
                             style={{ background: "var(--gold)", color: "#0f0f0f" }}
-                          >
-                            Enquire
-                          </button>
+                          />
                         </td>
                       </tr>
                     );
@@ -667,11 +603,11 @@ export default function ProductDetailPage() {
         )}
 
         {/* ── 9. PDF Downloads ────────────────────────────────────────── */}
-        {!loading && hasPdfs && (
+        {hasPdfs && (
           <section className="mb-14">
             <SectionHeading>PDF Downloads</SectionHeading>
             <div className="flex flex-col gap-3">
-              {product!.pdfUrls!.map((url, i) => (
+              {product.pdfUrls!.map((url, i) => (
                 <a
                   key={i}
                   href={url}
@@ -682,7 +618,7 @@ export default function ProductDetailPage() {
                 >
                   <span className="text-base">📄</span>
                   <span className="text-sm font-semibold flex-1">
-                    {product!.pdfLabels?.[i] ?? `Download PDF ${i + 1}`}
+                    {product.pdfLabels?.[i] ?? `Download PDF ${i + 1}`}
                   </span>
                   <span className="text-xs font-normal" style={{ color: "#737373" }}>↓ Download</span>
                 </a>
@@ -692,11 +628,11 @@ export default function ProductDetailPage() {
         )}
 
         {/* ── 10. Accessories ─────────────────────────────────────────── */}
-        {!loading && hasAccessories && (
+        {hasAccessories && (
           <section className="mb-14">
             <SectionHeading>Accessories &amp; Add-ons</SectionHeading>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {product!.accessories!.map((acc, i) => (
+              {product.accessories!.map((acc, i) => (
                 <div
                   key={i}
                   className="rounded-xl border p-5 flex flex-col gap-3"
@@ -728,11 +664,11 @@ export default function ProductDetailPage() {
         )}
 
         {/* ── 11. FAQs ────────────────────────────────────────────────── */}
-        {!loading && hasFaqs && (
+        {hasFaqs && (
           <section className="mb-14">
             <SectionHeading>FAQs</SectionHeading>
             <div className="flex flex-col gap-3">
-              {product!.faqs!.map((faq, i) => (
+              {product.faqs!.map((faq, i) => (
                 <FaqAccordion key={i} faq={faq} />
               ))}
             </div>
@@ -740,7 +676,7 @@ export default function ProductDetailPage() {
         )}
 
         {/* ── 12. More in [subcategory] ────────────────────────────────── */}
-        {!loading && moreProducts.length > 0 && (
+        {moreProducts.length > 0 && (
           <section className="mb-14">
             <SectionHeading>More in {subName}</SectionHeading>
             <div
@@ -774,7 +710,7 @@ export default function ProductDetailPage() {
         )}
 
         {/* ── 13. Compare all models in subcategory ───────────────────── */}
-        {!loading && siblings.length > 1 && allSpecNames.length > 0 && (
+        {siblings.length > 1 && allSpecNames.length > 0 && (
           <section className="mb-4">
             <SectionHeading>Compare All {subName} Models</SectionHeading>
             <div
@@ -872,27 +808,25 @@ export default function ProductDetailPage() {
 
       <Footer />
       <WhatsAppButton />
-      {product && (
-        <SchemaMarkup data={{
-          "@context": "https://schema.org",
-          "@type": "Product",
-          "name": product.name,
-          ...(product.images?.[0]?.url ? { "image": product.images[0].url } : {}),
-          ...(product.shortDescription ? { "description": product.shortDescription } : {}),
-          ...(product.brand ? { "brand": { "@type": "Brand", "name": product.brand } } : {}),
-          "offers": {
-            "@type": "Offer",
-            "url": typeof window !== "undefined" ? window.location.href : `https://www.maxmachines.in/products/${categorySlug}/${subSlug}/${productSlug}`,
-            "priceCurrency": "INR",
-            "price": product.variants?.[0]?.price ?? "Contact for price",
-            "availability": "https://schema.org/InStock",
-            "seller": {
-              "@type": "Organization",
-              "name": "Max Machine Tools"
-            }
+      <SchemaMarkup data={{
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": product.name,
+        ...(product.images?.[0]?.url ? { "image": product.images[0].url } : {}),
+        ...(product.shortDescription ? { "description": product.shortDescription } : {}),
+        ...(product.brand ? { "brand": { "@type": "Brand", "name": product.brand } } : {}),
+        "offers": {
+          "@type": "Offer",
+          "url": canonicalUrl,
+          "priceCurrency": "INR",
+          "price": product.variants?.[0]?.price ?? "Contact for price",
+          "availability": "https://schema.org/InStock",
+          "seller": {
+            "@type": "Organization",
+            "name": "Max Machine Tools"
           }
-        }} />
-      )}
+        }
+      }} />
     </main>
   );
 }

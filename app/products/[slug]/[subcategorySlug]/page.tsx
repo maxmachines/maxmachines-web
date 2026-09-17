@@ -1,15 +1,12 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import EnquireButton from "@/components/EnquireButton";
 import { client } from "@/sanity/lib/client";
-import { useEnquiryModal } from "@/context/EnquiryModalContext";
 
 /* ─── Types ──────────────────────────────────────────────────────── */
 interface ParentCategory {
@@ -54,6 +51,71 @@ const countryLabels: Record<string, string> = {
   italy: "Italy",
   usa: "USA",
 };
+
+/* ─── Data fetchers ──────────────────────────────────────────────── */
+async function getSubcategory(subcategorySlug: string): Promise<Subcategory | null> {
+  return client.fetch<Subcategory | null>(
+    `*[_type == "subcategory" && slug.current == $subcategorySlug][0] {
+      _id, name, slug, description,
+      "imageUrl": image.asset->url,
+      "parentCategory": parentCategory->{_id, name, slug}
+    }`,
+    { subcategorySlug }
+  );
+}
+
+async function getProducts(subcategorySlug: string): Promise<Product[]> {
+  return client.fetch<Product[]>(
+    `*[_type == "product" && subcategory->slug.current == $subcategorySlug && active == true] | order(displayOrder asc, featured desc) {
+      _id, name, slug, shortDescription, brand, countryOfManufacture, featured,
+      "imageUrl": images[0].asset->url,
+      "variantCount": count(variants)
+    }`,
+    { subcategorySlug }
+  );
+}
+
+/* ─── SSG params ─────────────────────────────────────────────────── */
+export async function generateStaticParams() {
+  const subs = await client.fetch<{ subSlug: string; catSlug: string | null }[]>(
+    `*[_type == "subcategory"]{ "subSlug": slug.current, "catSlug": parentCategory->slug.current }`
+  );
+  return subs
+    .filter((s) => s.catSlug)
+    .map((s) => ({ slug: s.catSlug as string, subcategorySlug: s.subSlug }));
+}
+
+/* ─── Metadata ───────────────────────────────────────────────────── */
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; subcategorySlug: string }>;
+}): Promise<Metadata> {
+  const { slug, subcategorySlug } = await params;
+  const subcategory = await getSubcategory(subcategorySlug);
+
+  if (!subcategory) {
+    return { title: "Subcategory Not Found | Max Machine Tools" };
+  }
+
+  const title = `${subcategory.name} | Max Machine Tools`;
+  const description =
+    subcategory.description ||
+    `Explore our range of ${subcategory.name.toLowerCase()} — supplied Pan-India and for export by Max Machine Tools.`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: `https://www.maxmachines.in/products/${slug}/${subcategorySlug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://www.maxmachines.in/products/${slug}/${subcategorySlug}`,
+    },
+  };
+}
 
 /* ─── SVG Icons ──────────────────────────────────────────────────── */
 const GearBackground = () => (
@@ -116,32 +178,18 @@ function ProductCard({
   product,
   categorySlug,
   subcategorySlug,
-  onEnquire,
 }: {
   product: Product;
   categorySlug: string;
   subcategorySlug: string;
-  onEnquire: (name: string) => void;
 }) {
   const flag = product.countryOfManufacture ? countryFlags[product.countryOfManufacture] : null;
   const country = product.countryOfManufacture ? countryLabels[product.countryOfManufacture] : null;
 
   return (
     <div
-      className="rounded-2xl border overflow-hidden flex flex-col group"
-      style={{
-        background: "var(--bg-secondary)",
-        borderColor: "rgba(234,179,8,0.14)",
-        transition: "border-color 0.3s ease, box-shadow 0.3s ease",
-      }}
-      onMouseEnter={(e) => {
-        (e.currentTarget as HTMLElement).style.borderColor = "rgba(234,179,8,0.5)";
-        (e.currentTarget as HTMLElement).style.boxShadow = "0 8px 32px rgba(234,179,8,0.08)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget as HTMLElement).style.borderColor = "rgba(234,179,8,0.14)";
-        (e.currentTarget as HTMLElement).style.boxShadow = "none";
-      }}
+      className="rounded-2xl border overflow-hidden flex flex-col group border-[rgba(234,179,8,0.14)] hover:border-[rgba(234,179,8,0.5)] hover:shadow-[0_8px_32px_rgba(234,179,8,0.08)] transition-[border-color,box-shadow] duration-300"
+      style={{ background: "var(--bg-secondary)" }}
     >
       {/* Image */}
       <Link href={`/products/${categorySlug}/${subcategorySlug}/${product.slug.current}`}>
@@ -228,13 +276,12 @@ function ProductCard({
           >
             View Machine <ArrowRight />
           </Link>
-          <button
-            onClick={() => onEnquire(product.name)}
+          <EnquireButton
+            productName={product.name}
+            label="Enquire"
             className="px-4 py-2.5 rounded-xl text-sm font-bold border transition-all duration-200 hover:bg-white/5"
             style={{ color: "white", borderColor: "rgba(255,255,255,0.2)" }}
-          >
-            Enquire
-          </button>
+          />
         </div>
       </div>
     </div>
@@ -242,58 +289,18 @@ function ProductCard({
 }
 
 /* ─── Page ───────────────────────────────────────────────────────── */
-export default function SubcategoryPage() {
-  const params = useParams();
-  const slug = params.slug as string;
-  const subcategorySlug = params.subcategorySlug as string;
+export default async function SubcategoryPage({
+  params,
+}: {
+  params: Promise<{ slug: string; subcategorySlug: string }>;
+}) {
+  const { slug, subcategorySlug } = await params;
+  const subcategory = await getSubcategory(subcategorySlug);
 
-  const { openEnquiryModal } = useEnquiryModal();
+  if (!subcategory) notFound();
 
-  const [subcategory, setSubcategory] = useState<Subcategory | null>(null);
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [missing, setMissing] = useState(false);
-
-  useEffect(() => {
-    if (!slug || !subcategorySlug) return;
-
-    async function fetchData() {
-      const sub = await client.fetch<Subcategory | null>(
-        `*[_type == "subcategory" && slug.current == $subcategorySlug][0] {
-          _id, name, slug, description,
-          "imageUrl": image.asset->url,
-          "parentCategory": parentCategory->{_id, name, slug}
-        }`,
-        { subcategorySlug }
-      );
-
-      if (!sub) {
-        setMissing(true);
-        setLoading(false);
-        return;
-      }
-
-      const prods = await client.fetch<Product[]>(
-        `*[_type == "product" && subcategory->slug.current == $subcategorySlug && active == true] | order(displayOrder asc, featured desc) {
-          _id, name, slug, shortDescription, brand, countryOfManufacture, featured,
-          "imageUrl": images[0].asset->url,
-          "variantCount": count(variants)
-        }`,
-        { subcategorySlug }
-      );
-
-      setSubcategory(sub);
-      setProducts(prods);
-      setLoading(false);
-    }
-
-    fetchData().catch(() => setLoading(false));
-  }, [slug, subcategorySlug]);
-
-  if (missing) notFound();
-
-  const categoryName = subcategory?.parentCategory?.name;
-  const categorySlugVal = slug;
+  const products = await getProducts(subcategorySlug);
+  const categoryName = subcategory.parentCategory?.name;
 
   return (
     <main className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
@@ -328,31 +335,18 @@ export default function SubcategoryPage() {
               Catalog
             </Link>
             <ChevronRight />
-            {loading ? (
-              <span style={{ color: "#737373" }}>…</span>
-            ) : (
-              <Link href={`/products/${categorySlugVal}`} className="transition-colors hover:text-yellow-300" style={{ color: "#737373" }}>
-                {categoryName}
-              </Link>
-            )}
+            <Link href={`/products/${slug}`} className="transition-colors hover:text-yellow-300" style={{ color: "#737373" }}>
+              {categoryName}
+            </Link>
             <ChevronRight />
-            <span style={{ color: "var(--gold)" }}>
-              {loading ? "Loading…" : subcategory?.name}
-            </span>
+            <span style={{ color: "var(--gold)" }}>{subcategory.name}</span>
           </nav>
 
           <h1 className="font-black leading-tight tracking-tight mb-2 text-4xl lg:text-5xl">
-            {loading ? (
-              <span
-                className="inline-block rounded-lg animate-pulse"
-                style={{ width: "300px", height: "1em", background: "rgba(234,179,8,0.1)" }}
-              />
-            ) : (
-              <span style={{ color: "var(--gold)" }}>{subcategory?.name}</span>
-            )}
+            <span style={{ color: "var(--gold)" }}>{subcategory.name}</span>
           </h1>
 
-          {!loading && subcategory?.description && (
+          {subcategory.description && (
             <p className="text-base leading-snug max-w-2xl mx-auto mt-2" style={{ color: "#a3a3a3" }}>
               {subcategory.description}
             </p>
@@ -365,38 +359,32 @@ export default function SubcategoryPage() {
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center mb-6">
             <h2 className="text-3xl font-black text-white mb-1">
-              {loading ? "Loading…" : (
-                products.length > 0
-                  ? <><span style={{ color: "var(--gold)" }}>{products.length} Machine{products.length !== 1 ? "s" : ""}</span>{" "}Available</>
-                  : "Coming Soon"
+              {products.length > 0 ? (
+                <>
+                  <span style={{ color: "var(--gold)" }}>
+                    {products.length} Machine{products.length !== 1 ? "s" : ""}
+                  </span>{" "}
+                  Available
+                </>
+              ) : (
+                "Coming Soon"
               )}
             </h2>
             <p className="text-sm max-w-xl mx-auto" style={{ color: "#a3a3a3" }}>
-              {!loading && products.length === 0
+              {products.length === 0
                 ? "We're adding our full range to the catalog. Contact us for the complete list."
                 : "Click a machine to view full specifications, variants, and pricing."}
             </p>
           </div>
 
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="rounded-2xl border h-80 animate-pulse"
-                  style={{ background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.08)" }}
-                />
-              ))}
-            </div>
-          ) : products.length > 0 ? (
+          {products.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map((product) => (
                 <ProductCard
                   key={product._id}
                   product={product}
-                  categorySlug={categorySlugVal}
+                  categorySlug={slug}
                   subcategorySlug={subcategorySlug}
-                  onEnquire={(name) => openEnquiryModal(name)}
                 />
               ))}
             </div>
@@ -432,13 +420,12 @@ export default function SubcategoryPage() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 flex-shrink-0">
-              <button
-                onClick={() => openEnquiryModal(subcategory?.name)}
+              <EnquireButton
+                productName={subcategory.name}
+                label="📋 Send Enquiry"
                 className="px-6 py-3.5 rounded-xl font-bold text-sm text-center transition-all duration-200 hover:scale-105 hover:brightness-110"
                 style={{ background: "var(--gold)", color: "#0f0f0f" }}
-              >
-                📋 Send Enquiry
-              </button>
+              />
               <a
                 href="tel:+919962061514"
                 className="px-6 py-3.5 rounded-xl font-bold text-sm text-center transition-all duration-200 hover:bg-white/5 border"
