@@ -32,8 +32,8 @@ export default function ProductImageGallery({
   return (
     <div>
       <div
-        className="relative w-full rounded-2xl overflow-hidden mb-3 border"
-        style={{ height: "420px", background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.14)" }}
+        className="relative w-full aspect-square rounded-2xl overflow-hidden mb-3 border"
+        style={{ background: "#f5f5f0", borderColor: "rgba(234,179,8,0.14)" }}
       >
         {hasImages ? (
           <Image
@@ -56,9 +56,9 @@ export default function ProductImageGallery({
               key={i}
               onClick={() => setActiveImage(i)}
               className="relative rounded-xl overflow-hidden border-2 transition-all duration-200 flex-shrink-0"
-              style={{ width: "72px", height: "72px", borderColor: i === activeImage ? "var(--gold)" : "rgba(234,179,8,0.15)" }}
+              style={{ width: "72px", height: "72px", borderColor: i === activeImage ? "var(--gold)" : "rgba(234,179,8,0.15)", background: "#f5f5f0" }}
             >
-              <Image src={img.url} alt={img.alt ?? `Image ${i + 1}`} fill className="object-cover" sizes="72px" />
+              <Image src={img.url} alt={img.alt ?? `Image ${i + 1}`} fill className="object-contain" sizes="72px" />
             </button>
           ))}
         </div>
