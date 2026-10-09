@@ -36,13 +36,14 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 - Gold accent: #eab308
 - Gold hover: #facc15
 - Text: white and grey
+- Product photo panels use #F5F5F0 (off-white) — not the site's black background
 - All pages use Navbar and Footer components
 - WhatsApp floating button on all pages
 - Social strip above footer
 
 ## Project Structure
 - app/ — Next.js pages
-- components/ — Reusable components (Navbar, Footer, WhatsAppButton, SocialStrip, BrandStrip, Contact, Hero, About, Products, Stats)
+- components/ — Reusable components (Navbar, Footer, WhatsAppButton, SocialStrip, BrandStrip, Contact, Hero, About, Products, Stats, ProductImageGallery, CategoryCard, ContactEnquiryCTA, EnquireButton, EnquiryForm, EnquiryModal, FaqAccordion, SchemaMarkup)
 - sanity/ — Sanity CMS schema and config
 - public/ — Static assets including logo.png
 
@@ -51,14 +52,32 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 - /contact — Contact page (complete)
 - /products — Product catalog (connected to Sanity)
 - /products/[slug] — Category page (connected to Sanity)
+- /products/[slug]/[subcategorySlug] — Subcategory page (connected to Sanity)
+- /products/[slug]/[subcategorySlug]/[productSlug] — Individual product page (connected to Sanity)
+- /about — About page (complete)
 - /studio — Sanity Studio (CMS dashboard)
 
-## Pages Still To Build
-- /products/[slug]/[subcategorySlug] — Subcategory page
-- /products/[slug]/[subcategorySlug]/[productSlug] — Individual product page
-- /about — About page
-- /blog — Blog page
-- /our-clients — Clients page
+## Pages Needing Content
+- /blog — Exists as a placeholder; hidden from Navbar and Footer until it has real content
+- /our-clients — Exists as a placeholder; hidden from Navbar and Footer until it has real content
+
+## Sanity & Revalidation
+- All Sanity-driven pages use `export const revalidate = 3600` (1 hour)
+- Published Sanity changes can take up to 1 hour to show on the live site, with no redeploy needed
+- Changed from 60 to 3600 on 9 Oct 2026 to save Vercel ISR Writes (see Vercel Usage Notes below)
+- Do NOT set revalidate back to 60 on any page
+
+## Vercel Usage Notes
+- Vercel free tier: ISR Writes limit is 200,000 per month. If exceeded, projects get paused (site goes offline).
+- 9 Oct 2026: ISR Writes reached 153,518 (77%) because all 5 Sanity pages had revalidate = 60.
+- Fix applied 9 Oct 2026: revalidate = 3600 in app/page.tsx, app/products/page.tsx, app/products/[slug]/page.tsx, app/products/[slug]/[subcategorySlug]/page.tsx and app/products/[slug]/[subcategorySlug]/[productSlug]/page.tsx.
+- Keep revalidate at 3600 or higher on every new page that reads from Sanity (e.g. /blog, /our-clients once built).
+- Next step if usage still climbs: add a Sanity webhook for instant updates, then raise revalidate even higher.
+- Jabs is checking Vercel usage again in 2 to 3 days (around 12 Oct 2026). Last reading: 153,518 on 9 Oct 2026.
+
+## Product Image Gallery
+- `components/ProductImageGallery.tsx` renders a square frame with a `#F5F5F0` (off-white) background and `object-contain` so images are never cropped
+- Product photos should be shot or exported with a flat `#F5F5F0` background to match the gallery frame
 
 ## Key Business Info
 - Company: Max Machine Tools (MMT)
@@ -78,15 +97,6 @@ This is the official website for Max Machine Tools (maxmachines.in) — an indus
 4. Then git add . && git commit && git push
 5. Vercel auto deploys in 2 minutes
 6. Check live on www.maxmachines.in
-
-## Vercel Usage Notes
-- Vercel free tier: ISR Writes limit is 200,000 per month. If exceeded, projects get paused (site goes offline).
-- 9 Oct 2026: ISR Writes reached 153,518 (77%) because all 5 pages had revalidate = 60.
-- Fix applied 9 Oct 2026: changed to revalidate = 3600 (1 hour) in app/page.tsx, app/products/page.tsx, app/products/[slug]/page.tsx, app/products/[slug]/[subcategorySlug]/page.tsx and app/products/[slug]/[subcategorySlug]/[productSlug]/page.tsx.
-- Trade-off: Sanity changes can take up to 1 hour to show on the live site.
-- Keep revalidate at 3600 or higher on every new page that reads from Sanity (e.g. /about, /blog, /our-clients).
-- Next step if usage still climbs: add a Sanity webhook for instant updates, then raise revalidate even higher.
-- Jabs is checking Vercel usage again in 2 to 3 days (around 12 Oct 2026).
 
 ---
 PRODUCT UPDATE WORKFLOW FOR MMT
