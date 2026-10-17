@@ -168,3 +168,56 @@ OUTPUT FORMAT FOR EVERY MESSAGE:
 Before each tab's data block, show the column header row as reference so Jabs knows what each cell is.
 
 IF UNSURE — ask Jabs before formatting. Do not assume.
+
+---
+WEBSITE IMPROVEMENT PLAN (started 18 Oct 2026)
+
+## GOLDEN RULE - AI READABILITY (never forget)
+The site must be readable and reachable by every AI tool, and everything we do should help AI tools recommend Max Machine Tools. Nobody can guarantee an AI will suggest us, so the aim is to remove every blocker and give clear, consistent facts to quote.
+Ask for every change: "Does this help AI tools find and trust us?"
+- Do not block AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google) in robots.txt or Vercel bot protection
+- Content (names, specs, FAQs) must be plain text in the page, not only loaded by JavaScript, not only in images or PDFs
+- Specs as real text tables
+- Keep sitemap.xml complete and URLs clean; no dead links
+- Add structured data (JSON-LD): Organization (Chennai + Ahmedabad), Product, FAQ, Breadcrumbs (SchemaMarkup component already exists - check and extend it)
+- One set of facts everywhere (address, since 1963, MMT since 2012, response time, WhatsApp number) on the site, IndiaMART, JustDial, YouTube and Google Business Profile
+- Meta descriptions and page text must match what is really listed
+- Optional: add a short llms.txt describing the business
+- Later: alt text for every photo and a text summary for every video
+
+## Working Rule For This Plan
+- Plan and discuss first. Make NO changes until Jabs confirms each one.
+- One confirmed action at a time, simple words.
+- Do not git commit or push without Jabs asking.
+
+## Decisions Already Made (do not change)
+- Site deliberately lists only fast-moving machines (hundreds exist). Add specifications first; photos and videos later (photos need background cleaning first).
+- Client logos on the site are all real customers. Keep them.
+- Contact form looks direct but writes into a Google Form, then a Google Sheet, which sends an instant email and WhatsApp to the customer. The same sheet feeds Magic CRM (tenant MMT_001) and the IndiaMART automation. DO NOT BREAK THIS.
+- Social media is handled in a separate marketing project. This project is website only.
+
+## Google Analytics Findings (GA4, 18 Sep to 15 Oct 2026)
+- About 1.1K users, 10s average engagement
+- "404: This page could not be found" had 561 views and 558 users (99.28% bounce), more than the home page (638 views, 463 users, 71.46% bounce). About half of all users hit a 404.
+- Catalogue page: 113 views, 69 users, 17.39% bounce. Individual machine pages only 11 to 26 views each.
+- No key events set up, so enquiries are not measured.
+
+## Work Order
+Step 0. Read-only AI-readiness check: robots.txt, sitemap, whether pages show content as plain text, Vercel bot settings
+1. Find the cause of 404 traffic (which URLs, which referrers: old YouTube links, IndiaMART, JustDial, Google results, bots) using GA4 and Google Search Console. Then fix with redirects from old URLs to correct new pages, plus a helpful custom 404 page with links to Products and a WhatsApp button.
+2. GA4 key events: contact form submitted, WhatsApp button clicked, call button clicked, catalogue requested. Add a "how did you find us" source field to the form only if it does not break the Sheet flow.
+3. WhatsApp wa.me buttons: add pre-filled message e.g. "Hi, I saw your website and I am interested in [machine name]". Keep a YouTube version "I saw your video on YouTube" for links used there. ASK Jabs which number each button uses (currently +91 93828 61514 National Sales; automated number 91760 61514 is "Coming soon").
+4. Check that "Fill Form" buttons on product pages (forms.gle link) feed the same Google Sheet as the Contact form. REPORT ONLY, change nothing without asking.
+5. Align meta descriptions with what is actually listed. Home and About say Milling and Laser, which are not categories on the site.
+6. Plan phased category additions: Laser Marking Machines, Shearing, Press Brake, Cutting Blades, Metal Pneumatic Fittings, Small Automation, Vices, Chucks, and others Jabs will list. Full product list will come separately. Add "Don't see your machine? Ask us" call to action on category pages.
+7. About page edits (confirm each with Jabs): remove Kerdoss Trade India (SEBI RA) and Laser Unlimited (closed) from leadership section; shorten ministry biography of Late Mr. P.R. Garg to a short respectful tribute; "10+ export countries" lists Dubai and UAE separately (same country), so fix the count or the list.
+8. Conflicting promises: Home says "we respond within the hour", Contact says "calls within 4 business hours". ASK Jabs which to keep and make them match everywhere.
+9. Navigation differs between pages (About shows Blog and Our Clients, Home does not). Note: /blog and /our-clients are placeholders deliberately hidden from Navbar and Footer until they have real content (see above), so the About page showing them may be the bug. Check and make consistent.
+10. Product page template for later: one video, 3 photos, key specs, "Get quote on WhatsApp" button.
+
+## Needed From Jabs (to start)
+- Google Search Console login for maxmachines.in and GA4 access
+- WhatsApp number for each button
+- Choice: "within the hour" or "4 business hours"
+- Full product list
+- First step when ready: GA4, Reports, Engagement, Pages and screens, click the "404" row, report the broken URLs and referrers
