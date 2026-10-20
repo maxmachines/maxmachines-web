@@ -24,6 +24,7 @@ interface Subcategory {
   slug: { current: string };
   description?: string;
   imageUrl?: string;
+  activeProducts: { slug: string }[];
 }
 
 /* ─── Data fetchers ──────────────────────────────────────────── */
@@ -39,7 +40,8 @@ async function getCategory(slug: string): Promise<Category | null> {
 async function getSubcategories(categoryId: string): Promise<Subcategory[]> {
   return client.fetch<Subcategory[]>(
     `*[_type == "subcategory" && parentCategory._ref == $categoryId] | order(displayOrder asc) {
-      _id, name, slug, description, "imageUrl": image.asset->url
+      _id, name, slug, description, "imageUrl": image.asset->url,
+      "activeProducts": *[_type == "product" && subcategory._ref == ^._id && active == true] | order(displayOrder asc) { "slug": slug.current }
     }`,
     { categoryId }
   );
@@ -178,13 +180,19 @@ const ChevronRightIcon = () => (
 function SubcategoryCard({
   subcategory,
   categorySlug,
+  directProductSlug,
 }: {
   subcategory: Subcategory;
   categorySlug: string;
+  directProductSlug?: string;
 }) {
+  const href = directProductSlug
+    ? `/products/${categorySlug}/${subcategory.slug.current}/${directProductSlug}`
+    : `/products/${categorySlug}/${subcategory.slug.current}`;
+
   return (
     <Link
-      href={`/products/${categorySlug}/${subcategory.slug.current}`}
+      href={href}
       className="card-hover group relative rounded-2xl border overflow-hidden flex flex-col"
       style={{
         background: "var(--bg-secondary)",
@@ -231,7 +239,7 @@ function SubcategoryCard({
           className="inline-flex items-center gap-2 text-sm font-bold mt-auto group-hover:gap-3 transition-all duration-200"
           style={{ color: "var(--gold)" }}
         >
-          View Machines
+          {directProductSlug ? "View Machine" : "View Machines"}
           <ArrowRightIcon />
         </div>
       </div>
@@ -348,7 +356,12 @@ export default async function CategoryPage({
           {subcategories.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {subcategories.map((sub) => (
-                <SubcategoryCard key={sub._id} subcategory={sub} categorySlug={slug} />
+                <SubcategoryCard
+                  key={sub._id}
+                  subcategory={sub}
+                  categorySlug={slug}
+                  directProductSlug={sub.activeProducts.length === 1 ? sub.activeProducts[0].slug : undefined}
+                />
               ))}
             </div>
           ) : (
