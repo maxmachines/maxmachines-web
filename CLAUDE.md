@@ -221,3 +221,12 @@ Step 0. Read-only AI-readiness check: robots.txt, sitemap, whether pages show co
 - Choice: "within the hour" or "4 business hours"
 - Full product list
 - First step when ready: GA4, Reports, Engagement, Pages and screens, click the "404" row, report the broken URLs and referrers
+
+## Product Photo and Card Image Standards
+- All product photos: 1600x1600 PNG, machine centred on exactly #F5F5F0, with a label "Model No: <model> <view>" (Inter SemiBold ~64px, #1F1F1F, short gold #EAB308 line above). File names lowercase-hyphenated: model-machinetype-view.png
+- Views: Left = motor on left of picture, Right = motor on right, Front
+- Product page with many models: group photo as photo 2 (1600x1600, two rows of three, equal height, small to large, right view, model label under each). Photo 1 stays a single machine
+- Subcategory and product card images: 1600x1600, one machine cropped tight, no label. Card box on the site is 220px tall, object-contain, on #f5f5f0
+- /products category cards: pencil-sketch drawings (made in Gemini from a photo), 1600x900 on exactly #F5F5F0, machine about 800px tall, centred
+- A subcategory with exactly one product skips its own page and links straight to the product (app/products/[slug]/page.tsx). The subcategory page stays live for Google
+- Photo work itself is done in Claude chat inside the MaxMachines.in 2.0 project, not in Claude Code
