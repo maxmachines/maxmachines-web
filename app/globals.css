@@ -69,3 +69,21 @@ body {
   transform: translateY(-6px);
   box-shadow: 0 20px 40px rgba(234, 179, 8, 0.15);
 }
+
+/* Picture protection: faint www.maxmachines.in watermark over every product/category picture.
+   It sits on top of the picture, so screenshots carry it and right-click cannot reach the picture. */
+*:has(> img[src*='cdn.sanity.io'])::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background-image: url("/watermark.svg");
+  background-repeat: repeat;
+  background-size: 320px 200px;
+}
+
+img[src*="cdn.sanity.io"] {
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}

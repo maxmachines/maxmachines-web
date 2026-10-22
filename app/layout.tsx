@@ -5,6 +5,7 @@ import "./globals.css";
 import { EnquiryModalProvider } from "@/context/EnquiryModalContext";
 import EnquiryModal from "@/components/EnquiryModal";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import ImageGuard from "@/components/ImageGuard";
 
 const organizationSchema = {
   "@context": "https://schema.org",
@@ -146,6 +147,7 @@ export default function RootLayout({
         </Script>
       </head>
       <body className="min-h-full flex flex-col">
+        <ImageGuard />
         <SchemaMarkup data={organizationSchema} />
         <SchemaMarkup data={localBusinessSchema} />
         <EnquiryModalProvider>
