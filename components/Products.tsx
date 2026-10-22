@@ -91,12 +91,6 @@ export default async function Products() {
                   ) : (
                     <GearIcon />
                   )}
-                  {cat.imageUrl && (
-                    <div
-                      className="absolute inset-0"
-                      style={{ background: "linear-gradient(to top, rgba(26,26,26,0.8) 0%, transparent 60%)" }}
-                    />
-                  )}
                 </div>
 
                 <div className="flex flex-col flex-1 p-6">

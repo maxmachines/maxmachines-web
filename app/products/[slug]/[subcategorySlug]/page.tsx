@@ -229,12 +229,6 @@ function ProductCard({
               <GearIcon />
             </div>
           )}
-          {product.imageUrl && (
-            <div
-              className="absolute inset-0"
-              style={{ background: "linear-gradient(to top, rgba(26,26,26,0.7) 0%, transparent 50%)" }}
-            />
-          )}
           {product.featured && (
             <span
               className="absolute top-3 left-3 text-xs font-bold px-2 py-1 rounded-full"
