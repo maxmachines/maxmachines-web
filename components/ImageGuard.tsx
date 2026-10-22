@@ -5,6 +5,12 @@ import { useEffect } from "react";
 // Blocks right-click and dragging on product pictures (a deterrent only; the watermark is the real protection).
 export default function ImageGuard() {
   useEffect(() => {
+    // The Studio (/studio) is for editing, so no watermark or right-click block there.
+    if (window.location.pathname.startsWith("/studio")) {
+      document.documentElement.setAttribute("data-studio", "1");
+      return;
+    }
+
     const isPicture = (t: EventTarget | null) =>
       t instanceof Element &&
       (t.closest('img[src*="cdn.sanity.io"]') !== null ||

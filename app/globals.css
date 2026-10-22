@@ -82,6 +82,12 @@ body {
   background-size: 320px 200px;
 }
 
+/* Sanity Studio: no watermark */
+html[data-studio] *:has(> img[src*='cdn.sanity.io'])::after {
+  content: none;
+  background-image: none;
+}
+
 img[src*="cdn.sanity.io"] {
   -webkit-user-drag: none;
   user-select: none;
