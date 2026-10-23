@@ -230,3 +230,55 @@ Step 0. Read-only AI-readiness check: robots.txt, sitemap, whether pages show co
 - /products category cards: pencil-sketch drawings (made in Gemini from a photo), 1600x900 on exactly #F5F5F0, machine about 800px tall, centred
 - A subcategory with exactly one product skips its own page and links straight to the product (app/products/[slug]/page.tsx). The subcategory page stays live for Google
 - Photo work itself is done in Claude chat inside the MaxMachines.in 2.0 project, not in Claude Code
+
+## Categories and Subcategories - fill in Sanity Studio (added 22 Oct 2026)
+- The Google Sheet and importer are for PRODUCTS only. They never create or fill Categories or Subcategories; they only look them up by name and skip the product with an error if missing. Create and fill Categories and Subcategories by hand in Sanity Studio, before importing products
+- Fields to fill for every Category and Subcategory (do all of them, not only the name):
+  - Image (Category field is called "Icon / Image"): category = pencil sketch card 1600x900; subcategory = tight-cropped machine card 1600x1600 (see photo standards)
+  - Description: one short line, shown under the card name and used as the fallback search description. Use only facts already on the site (brand, capacity range, number of models, Made in India)
+  - Display Order: a number; lower appears first. Check the other records before choosing
+  - SEO Meta: SEO Title (max 60 characters, ends with "| Max Machine Tools"), Meta Description (max 160, mentions Made in India and Chennai, Ahmedabad, Pan-India and export), Keywords as tags (machine type, brand + machine type, Chennai, Ahmedabad, Pan-India, export)
+- Publish the record, then check the live page. Pages refresh from Sanity at most once an hour (revalidate = 3600); to see a change at once, Redeploy on Vercel
+- Done so far: Subcategory Pillar Drilling and Category Drilling Machine are filled and published. Other categories and subcategories still need the same treatment
+
+## PRG Pillar Drilling Machine page - what was done (22 Oct 2026)
+- Product Images order: group photo first (PPD12RS scaled to 70 percent; PPD25R label reads "PPD25R & PPD32R" because one picture covers both), then left and right views for PPD12RS, PPD20R, PPD25R/PPD32R, PPD40MR, PPD40R, PPD40HR, small to large. Front views are not used on this page
+- PPD12RS pictures carry two small inset close-ups (PPD12RC Chuck, PPD12RC Spindle) at the right side
+- Alt text pattern: "<model> pillar drilling machine, left view" or "right view"
+- When a photo is changed, the old file is kept in the Ready for upload folder with "-old" added to its name
+- Planned, not built yet: a revalidate API route plus a Sanity webhook so a publish refreshes the live page at once, then raise the normal revalidate time (24 hours, or 2 hours if preferred)
+
+## Next Session To-Do (noted 22 Oct 2026)
+1. Re-check live /products/drilling-machine and /products: card pictures and descriptions for Pillar Drilling and Drilling Machine should show after a redeploy (they were still empty at last check)
+2. Update bandsaw pictures in Sanity (product pages and card pictures), then fill details for those categories/subcategories
+3. Fill the remaining Drilling subcategories (6) and the other 5 categories using the rule above
+4. Check the Vertical Bandsaw product pages for the extra-click problem
+5. Build the revalidate API route plus Sanity webhook (plan first, change nothing until Jabs confirms), then raise the normal revalidate time (24 hours, or 2 hours)
+6. Jabs makes card pictures ready for Lathe, Press Machines and Marking Solutions
+7. Then "let's update product" for the next product
+8. (added 22 Oct, late) Descriptions are missing on both bandsaw categories and their subcategories; fill them as per the Categories and Subcategories rule above
+9. (added 22 Oct, late) Card pictures show a grey gradient at the bottom that makes them look dull; Jabs is fine with removing it. Find the card component (CategoryCard.tsx / category and subcategory pages), show Jabs the change first, no commit unless he asks
+
+## Update 24 Oct 2026 (newer than the notes above; where they differ, this section wins)
+Site code (already committed in git; last commit "Studio without watermark, page refresh 24h"):
+- The Sanity webhook is BUILT: app/api/revalidate/route.ts. Publishing in Studio refreshes / , /about and everything under /products within about a minute, no redeploy needed (checked live on 24 Oct with the press pages). The normal page refresh time is now 24 hours. This replaces the older "revalidate 3600", "up to 1 hour", "Redeploy on Vercel" and "Planned, not built yet" lines above
+- Done since 22 Oct: dark gradient removed from card pictures; picture watermark and right-click block on site pictures (not in Studio); pictures resized by the Sanity image service. So to-do items 5 and 9 of the 22 Oct list are finished
+
+PRG Impact Press Machine and PRG Toggle Press Machine (published 24 Oct 2026, pictures live):
+- Kept as two separate products. Impact Press = PIH11, PIH15, PIP25, PIP35. Toggle Press = TPH9 (not "TOH9")
+- Product Images order on Impact: all-models collage, 4 actual-scale group photos, one collage per model (PIH11, PIH15, PIP25, PIP35), then the single views of each model. On Toggle (Jabs's choice): TPH9 collage, TPH9 singles (back, front, left, left 2, right), then the all-models collage and the 4 actual-scale photos. This overrides the "group photo as photo 2" line in Product Photo and Card Image Standards for these two pages
+- Alt text on every picture. Singles: "PRG <MODEL> impact press machine, <view> view" (Toggle: "PRG TPH9 toggle press machine, <view> view"; "view 2/3" for the -2/-3 files). Group photos: "PRG impact press and toggle press machines, all models: PIH11, PIH15, PIP25, PIP35 and TPH9" and "... at actual scale, front view / angled view 1 / 2 / 3: PIP35, PIP25, PIH15 and TPH9". Both products use identical wording for the group photos
+- YouTube link for Impact Press: https://youtu.be/lQ-R4lGM-1g, in the Google Sheet Products tab, row 27, column O (YouTube URLs) and in Studio. The sheet is the permanent source because the importer overwrites Studio-only edits
+- How pictures were uploaded: Jabs drags several files from Finder onto the Product Images list in Studio (not onto "Add item"); Claude in Chrome then reads each picture's label, types the alt text and fixes the order by dragging the row handles one row at a time (long drags do not register). Claude in Chrome cannot pick files itself
+- Still missing: card pictures for Press Machines (category), Impact Press and Toggle Press (subcategory), and for Lathe and Marking
+
+## Next Session To-Do (updated 24 Oct 2026)
+Done: items 5 and 9 of the 22 Oct list (webhook, gradient); press pictures.
+Tomorrow's order (Jabs, 24 Oct): first the card pictures for Press Machines (category) and the Impact Press and Toggle Press subcategory cards, which still show no images; then item 2 (update the bandsaw pictures in Sanity, product pages and card pictures, then fill details for those categories/subcategories); then everything else on this list.
+Still open from the 22 Oct list: 1 (re-check /products card pictures and descriptions), 3 (remaining Drilling subcategories and other categories), 4 (Vertical Bandsaw extra-click check), 6 (card pictures for Lathe, Press Machines, Marking), 7 ("let's update product"), 8 (bandsaw category and subcategory descriptions).
+
+## STANDING RULE - a product is not finished until its Category and Subcategory are done (added 24 Oct 2026)
+- Updating a product is the final stage of the work on it, so every time a product is updated, its Category and Subcategory are updated in the same session, using the "Categories and Subcategories - fill in Sanity Studio" rule above: card picture (category = pencil sketch 1600x900, subcategory = tight card photo 1600x1600), Description, Display Order, SEO Meta; then publish and check the live page
+- This is why we do the product first and only then touch the other items: the Category and Subcategory step is part of every "let's update product" run and every picture update, not a separate job for later
+- Check list at the end of every product update: 1 product pictures and alt text, 2 YouTube link in the Google Sheet, 3 subcategory card picture and details, 4 category card picture and details, 5 publish and check the live pages. Claude must ask Jabs for any missing card picture before closing the product
+- Applies to the open items too: Press Machines (Impact Press, Toggle Press) and bandsaw are the next ones to close this way
