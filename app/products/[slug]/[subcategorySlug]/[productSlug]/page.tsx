@@ -847,6 +847,8 @@ export default async function ProductDetailPage({
         ...(product.images?.[0]?.url ? { "image": product.images[0].url } : {}),
         "description": pageDescription,
         ...(product.brand ? { "brand": { "@type": "Brand", "name": product.brand } } : {}),
+        ...(product.variants?.[0]?.modelNumber ? { "sku": product.variants[0].modelNumber, "model": product.variants[0].modelNumber } : {}),
+        ...(subName ? { "category": subName } : {}),
         ...((product.geoTags?.cities?.length ?? 0) > 0 ? { "areaServed": product.geoTags!.cities } : {}),
         "offers": {
           "@type": "Offer",
@@ -860,6 +862,28 @@ export default async function ProductDetailPage({
           }
         }
       }} />
+      <SchemaMarkup data={{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.maxmachines.in" },
+          { "@type": "ListItem", "position": 2, "name": "Products", "item": "https://www.maxmachines.in/products" },
+          ...(categoryName && categorySlug ? [{ "@type": "ListItem", "position": 3, "name": categoryName, "item": `https://www.maxmachines.in/products/${categorySlug}` }] : []),
+          ...(subName && subSlug ? [{ "@type": "ListItem", "position": 4, "name": subName, "item": `https://www.maxmachines.in/products/${categorySlug}/${subSlug}` }] : []),
+          { "@type": "ListItem", "position": 5, "name": product.name, "item": canonicalUrl },
+        ],
+      }} />
+      {hasFaqs && (
+        <SchemaMarkup data={{
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": product.faqs!.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": { "@type": "Answer", "text": faq.answer },
+          })),
+        }} />
+      )}
     </main>
   );
 }

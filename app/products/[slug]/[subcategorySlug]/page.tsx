@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import EnquireButton from "@/components/EnquireButton";
+import SchemaMarkup from "@/components/SchemaMarkup";
 import { client } from "@/sanity/lib/client";
 
 /* ─── Types ──────────────────────────────────────────────────────── */
@@ -466,6 +467,16 @@ export default async function SubcategoryPage({
 
       <Footer />
       <WhatsAppButton />
+      <SchemaMarkup data={{
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.maxmachines.in" },
+          { "@type": "ListItem", "position": 2, "name": "Products", "item": "https://www.maxmachines.in/products" },
+          ...(categoryName ? [{ "@type": "ListItem", "position": 3, "name": categoryName, "item": `https://www.maxmachines.in/products/${slug}` }] : []),
+          { "@type": "ListItem", "position": 4, "name": subcategory.name, "item": `https://www.maxmachines.in/products/${slug}/${subcategorySlug}` },
+        ],
+      }} />
     </main>
   );
 }

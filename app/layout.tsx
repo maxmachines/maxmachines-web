@@ -41,6 +41,7 @@ const organizationSchema = {
       "availableLanguage": ["English", "Hindi", "Tamil", "Gujarati"]
     }
   ],
+  "areaServed": ["India", "UAE", "Middle East", "Africa", "South Asia"],
   "sameAs": [
     "https://www.linkedin.com/company/maxmachinetools",
     "https://www.youtube.com/@MaxMachineTools",
