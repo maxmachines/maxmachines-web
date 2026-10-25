@@ -36,7 +36,7 @@ const steps = [
   { n: "02", heading: "Receive a quotation", body: "We send you a quotation with machine price, packing charges, and estimated freight to your port. No hidden fees." },
   { n: "03", heading: "Confirm the order", body: "Once you accept the quote, we confirm availability and lead time. Payment terms are agreed at this stage." },
   { n: "04", heading: "Packing and dispatch", body: "Machines are packed in export-grade wooden crates. We prepare packing lists and coordinate with the freight forwarder." },
-  { n: "05", heading: "Shipping documents", body: "We provide the documents you need: commercial invoice, packing list, and any other paperwork required for customs clearance." },
+  { n: "05", heading: "Shipping documents", body: "We provide the documents you need: commercial invoice, packing list, and Certificate of Origin (COO)." },
 ];
 
 const brands = [
@@ -108,7 +108,7 @@ export default function ExportAndUAEPage() {
               style={{ background: "var(--gold)", color: "#0f0f0f" }}
             />
             <a
-              href="https://wa.me/919382861514"
+              href="https://wa.me/919962061514"
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-3.5 rounded-xl font-bold text-sm border transition-all duration-200 hover:bg-white/5"
@@ -173,7 +173,7 @@ export default function ExportAndUAEPage() {
               Markets We <span style={{ color: "var(--gold)" }}>Serve</span>
             </h2>
             <p style={{ color: "#a3a3a3" }}>
-              We have supplied machines to buyers outside India. If you are in any of
+              We export regularly by air and sea as an IEC holder. If you are in any of
               these regions, we can quote you directly.
             </p>
           </div>
@@ -279,7 +279,7 @@ export default function ExportAndUAEPage() {
                 Ready to place an export order?
               </h3>
               <p style={{ color: "#737373" }}>
-                Send us your machine list and destination. We respond within the business day.
+                Send us your machine list and destination. We respond within the hour.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 flex-shrink-0">
@@ -299,7 +299,7 @@ export default function ExportAndUAEPage() {
                 📞 Call Chennai
               </a>
               <a
-                href="https://wa.me/919382861514"
+                href="https://wa.me/919962061514"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3.5 rounded-xl font-bold text-sm border text-center transition-all duration-200 hover:bg-white/5"

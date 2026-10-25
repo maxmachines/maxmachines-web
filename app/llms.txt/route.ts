@@ -38,6 +38,7 @@ We supply machines Pan-India and for export.
 
 ## Markets Served
 India (Pan-India supply), UAE, Middle East, Africa, South Asia, Export.
+We export regularly by air and sea to UAE, the Middle East, Africa and South Asia. IEC holder. Certificate of Origin available.
 
 ## How to Buy
 Enquiries are handled by phone, WhatsApp, or email.
