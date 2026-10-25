@@ -39,6 +39,7 @@ interface ProductDetail {
   variants?: Variant[];
   faqs?: FaqItem[];
   seo?: { seoTitle?: string; metaDescription?: string; keywords?: string[] };
+  geoTags?: { cities?: string[]; country?: string };
   subcategory: {
     name: string;
     slug: { current: string };
@@ -93,6 +94,7 @@ async function getProduct(productSlug: string): Promise<ProductDetail | null> {
       "variants": variants[] { modelNumber, size, price, availability, "specs": specs[] { specName, specValue } },
       "faqs": faqs[] { question, answer },
       "seo": seo { "seoTitle": title, "metaDescription": description, keywords },
+      "geoTags": geoTags { cities, country },
       "subcategory": subcategory-> { name, slug, "category": parentCategory-> { name, slug } }
     }`,
     { productSlug }
@@ -346,6 +348,12 @@ export default async function ProductDetailPage({
               </span>
             )}
           </div>
+          {(product.geoTags?.cities?.length ?? 0) > 0 && (
+            <p className="mt-3 text-xs" style={{ color: "#737373" }}>
+              <span style={{ color: "var(--gold)" }}>Supplied to:</span>{" "}
+              {product.geoTags!.cities!.join(", ")}
+            </p>
+          )}
         </div>
 
         {/* ── 3. Short description ────────────────────────────────────── */}
@@ -839,6 +847,7 @@ export default async function ProductDetailPage({
         ...(product.images?.[0]?.url ? { "image": product.images[0].url } : {}),
         "description": pageDescription,
         ...(product.brand ? { "brand": { "@type": "Brand", "name": product.brand } } : {}),
+        ...((product.geoTags?.cities?.length ?? 0) > 0 ? { "areaServed": product.geoTags!.cities } : {}),
         "offers": {
           "@type": "Offer",
           "url": canonicalUrl,
