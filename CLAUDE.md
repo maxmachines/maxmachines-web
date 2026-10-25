@@ -328,3 +328,19 @@ All India and global; extra focus on UAE, Middle East, Africa, South Asia.
 ### Rules for Claude Code
 - Show the diff and wait for "go" before every commit or push.
 - Append to CLAUDE.md only; never replace it.
+
+## Competitor brand mentions (added 2026-10-25)
+- Competitor brand names (e.g. Eifco, ITCO, Parmar, Bradma, Hindustan) may appear
+  on the website ONLY inside FAQ answers. Never in titles, meta descriptions,
+  descriptions, headings, or any visible line outside FAQs.
+- Backend only (sheet keyword column M, Sanity keywords) they may appear as
+  "<brand> <machine> alternative" tags.
+- Wording: "comparable Made in India alternative to X" or "same capacity, ISO
+  certified". Never claim we are their dealer, never use their logos, photos or
+  model names, never claim "better than" without proof. 3-5 brands per FAQ,
+  never long lists.
+- Approved lists live in the project memory (ways-of-working). Any brand not on
+  an approved list needs Jabs's yes first.
+- Each product type gets 2 comparison FAQs, added in the FAQs tab of the MMT
+  sheet. Before adding, find the real last row using the CSV export (the FAQs
+  tab has a filter that hides rows), then paste below it.
