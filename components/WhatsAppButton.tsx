@@ -1,7 +1,33 @@
+"use client";
+
+import { usePathname } from "next/navigation";
+import { waLink, WaContext } from "@/lib/whatsapp";
+
+function slugToName(slug: string): string {
+  return slug
+    .split("-")
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+}
+
+function ctxFromPathname(pathname: string): WaContext {
+  if (pathname === "/export-and-uae") return { type: "export" };
+  const parts = pathname.split("/").filter(Boolean);
+  if (parts[0] === "products") {
+    if (parts.length >= 4) return { type: "product", name: slugToName(parts[3]) };
+    if (parts.length === 3) return { type: "category", name: slugToName(parts[2]) };
+    if (parts.length === 2) return { type: "category", name: slugToName(parts[1]) };
+  }
+  return { type: "generic" };
+}
+
 export default function WhatsAppButton() {
+  const pathname = usePathname();
+  const href = waLink("919382861514", ctxFromPathname(pathname));
+
   return (
     <a
-      href="https://wa.me/919382861514"
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
@@ -11,7 +37,6 @@ export default function WhatsAppButton() {
         boxShadow: "0 8px 32px rgba(37,211,102,0.35)",
       }}
     >
-      {/* WhatsApp SVG */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24"

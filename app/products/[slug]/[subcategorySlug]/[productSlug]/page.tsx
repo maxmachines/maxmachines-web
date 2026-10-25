@@ -12,6 +12,7 @@ import SchemaMarkup from "@/components/SchemaMarkup";
 import EnquireButton from "@/components/EnquireButton";
 import FaqAccordion from "@/components/FaqAccordion";
 import ProductImageGallery from "@/components/ProductImageGallery";
+import { waLink } from "@/lib/whatsapp";
 import { client } from "@/sanity/lib/client";
 
 /* ─── Types ──────────────────────────────────────────────────────── */
@@ -411,7 +412,7 @@ export default async function ProductDetailPage({
                 📞 Call
               </a>
               <a
-                href="https://wa.me/919382861514"
+                href={waLink("919382861514", { type: "product", name: product.name })}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex-1 flex items-center justify-center py-3.5 rounded-xl text-sm font-bold transition-all duration-200 hover:opacity-90"

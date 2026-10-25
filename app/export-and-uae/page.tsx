@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import EnquireButton from "@/components/EnquireButton";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import { waLink } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
   title: { absolute: "Export & UAE | Max Machine Tools" },
@@ -108,7 +109,7 @@ export default function ExportAndUAEPage() {
               style={{ background: "var(--gold)", color: "#0f0f0f" }}
             />
             <a
-              href="https://wa.me/919962061514"
+              href={waLink("919962061514", { type: "export" })}
               target="_blank"
               rel="noopener noreferrer"
               className="px-8 py-3.5 rounded-xl font-bold text-sm border transition-all duration-200 hover:bg-white/5"
@@ -299,7 +300,7 @@ export default function ExportAndUAEPage() {
                 📞 Call Chennai
               </a>
               <a
-                href="https://wa.me/919962061514"
+                href={waLink("919962061514", { type: "export" })}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3.5 rounded-xl font-bold text-sm border text-center transition-all duration-200 hover:bg-white/5"

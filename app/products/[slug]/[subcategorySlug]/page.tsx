@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import EnquireButton from "@/components/EnquireButton";
 import SchemaMarkup from "@/components/SchemaMarkup";
+import { waLink } from "@/lib/whatsapp";
 import { client } from "@/sanity/lib/client";
 
 /* ─── Types ──────────────────────────────────────────────────────── */
@@ -452,7 +453,7 @@ export default async function SubcategoryPage({
                 📞 Call Chennai
               </a>
               <a
-                href="https://wa.me/919382861514"
+                href={waLink("919382861514", { type: "category", name: subcategory.name })}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3.5 rounded-xl font-bold text-sm border text-center transition-all duration-200 hover:bg-white/5"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEnquiryModal } from "@/context/EnquiryModalContext";
+import { waLink } from "@/lib/whatsapp";
 
 const offices = [
   {
@@ -157,7 +158,7 @@ export default function Contact() {
               📞 Call Chennai
             </a>
             <a
-              href="https://wa.me/919382861514"
+              href={waLink("919382861514")}
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3.5 rounded-xl font-bold text-sm border text-center transition-all duration-200 hover:bg-white/5"
