@@ -24,6 +24,7 @@ interface Subcategory {
   description?: string;
   imageUrl?: string;
   parentCategory: ParentCategory;
+  seo?: { title?: string; description?: string; keywords?: string[] };
 }
 
 interface Product {
@@ -60,7 +61,8 @@ async function getSubcategory(subcategorySlug: string): Promise<Subcategory | nu
     `*[_type == "subcategory" && slug.current == $subcategorySlug][0] {
       _id, name, slug, description,
       "imageUrl": image.asset->url,
-      "parentCategory": parentCategory->{_id, name, slug}
+      "parentCategory": parentCategory->{_id, name, slug},
+      "seo": seo { "title": title, "description": description, keywords }
     }`,
     { subcategorySlug }
   );
@@ -100,19 +102,21 @@ export async function generateMetadata({
     return { title: "Subcategory Not Found | Max Machine Tools" };
   }
 
-  const title = `${subcategory.name} | Max Machine Tools`;
+  const titleStr = subcategory.seo?.title || `${subcategory.name} | Max Machine Tools`;
   const description =
+    subcategory.seo?.description ||
     subcategory.description ||
     `Explore our range of ${subcategory.name.toLowerCase()} — supplied Pan-India and for export by Max Machine Tools.`;
 
   return {
-    title,
+    title: subcategory.seo?.title ? { absolute: subcategory.seo.title } : titleStr,
     description,
+    keywords: subcategory.seo?.keywords,
     alternates: {
       canonical: `https://www.maxmachines.in/products/${slug}/${subcategorySlug}`,
     },
     openGraph: {
-      title,
+      title: titleStr,
       description,
       url: `https://www.maxmachines.in/products/${slug}/${subcategorySlug}`,
       siteName: "Max Machine Tools",
@@ -129,7 +133,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: titleStr,
       description,
       images: [subcategory.imageUrl || "https://www.maxmachines.in/logo.png"],
     },

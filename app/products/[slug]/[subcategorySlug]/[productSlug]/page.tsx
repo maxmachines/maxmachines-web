@@ -38,7 +38,7 @@ interface ProductDetail {
   accessories?: AccessoryItem[];
   variants?: Variant[];
   faqs?: FaqItem[];
-  seo?: { seoTitle?: string; metaDescription?: string };
+  seo?: { seoTitle?: string; metaDescription?: string; keywords?: string[] };
   subcategory: {
     name: string;
     slug: { current: string };
@@ -92,7 +92,7 @@ async function getProduct(productSlug: string): Promise<ProductDetail | null> {
       "accessories": accessories[] { name, description, price, link },
       "variants": variants[] { modelNumber, size, price, availability, "specs": specs[] { specName, specValue } },
       "faqs": faqs[] { question, answer },
-      "seo": seo { seoTitle, metaDescription },
+      "seo": seo { "seoTitle": title, "metaDescription": description, keywords },
       "subcategory": subcategory-> { name, slug, "category": parentCategory-> { name, slug } }
     }`,
     { productSlug }
@@ -143,20 +143,21 @@ export async function generateMetadata({
     return { title: "Product Not Found | Max Machine Tools" };
   }
 
-  const title = product.seo?.seoTitle || `${product.name} | Max Machine Tools`;
+  const titleStr = product.seo?.seoTitle || `${product.name} | Max Machine Tools`;
   const description =
     product.seo?.metaDescription ||
     product.shortDescription ||
     `${product.name} — supplied Pan-India and for export by Max Machine Tools.`;
 
   return {
-    title,
+    title: product.seo?.seoTitle ? { absolute: product.seo.seoTitle } : titleStr,
     description,
+    keywords: product.seo?.keywords,
     alternates: {
       canonical: `https://www.maxmachines.in/products/${slug}/${subcategorySlug}/${productSlug}`,
     },
     openGraph: {
-      title,
+      title: titleStr,
       description,
       url: `https://www.maxmachines.in/products/${slug}/${subcategorySlug}/${productSlug}`,
       siteName: "Max Machine Tools",
@@ -173,7 +174,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: titleStr,
       description,
       images: [product.images?.[0]?.url || "https://www.maxmachines.in/logo.png"],
     },
@@ -264,6 +265,11 @@ export default async function ProductDetailPage({
   const siblings = subcategorySlugFromProduct ? await getSiblings(subcategorySlugFromProduct) : [];
 
   /* ── Derived values ── */
+  const pageDescription =
+    product.seo?.metaDescription ||
+    product.shortDescription ||
+    `${product.name} — supplied Pan-India and for export by Max Machine Tools.`;
+
   const images = product.images ?? [];
   const categorySlug = product.subcategory?.category?.slug?.current;
   const categoryName = product.subcategory?.category?.name;
@@ -831,7 +837,7 @@ export default async function ProductDetailPage({
         "@type": "Product",
         "name": product.name,
         ...(product.images?.[0]?.url ? { "image": product.images[0].url } : {}),
-        ...(product.shortDescription ? { "description": product.shortDescription } : {}),
+        "description": pageDescription,
         ...(product.brand ? { "brand": { "@type": "Brand", "name": product.brand } } : {}),
         "offers": {
           "@type": "Offer",
