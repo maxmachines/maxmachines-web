@@ -282,3 +282,49 @@ Still open from the 22 Oct list: 1 (re-check /products card pictures and descrip
 - This is why we do the product first and only then touch the other items: the Category and Subcategory step is part of every "let's update product" run and every picture update, not a separate job for later
 - Check list at the end of every product update: 1 product pictures and alt text, 2 YouTube link in the Google Sheet, 3 subcategory card picture and details, 4 category card picture and details, 5 publish and check the live pages. Claude must ask Jabs for any missing card picture before closing the product
 - Applies to the open items too: Press Machines (Impact Press, Toggle Press) and bandsaw are the next ones to close this way
+
+## SEO / GEO rules (added 2026-10-25)
+
+### Keywords (categories, subcategories, products - existing and future)
+Tags must be phrases buyers search: "<machine> machine", "<machine> machine
+price", "<machine> manufacturer India", "<machine> supplier India", "buy
+<machine> online India", brand + machine, model numbers, "<machine> exporter
+India", "<machine> machine UAE", "industrial <type> dealer India". Chennai and
+Ahmedabad stay as two tags. No "near me".
+
+### SEO title, meta description, geo tags
+- SEO Title: max 60 chars, ends " | Max Machine Tools".
+- Meta Description: max 160 chars; own brands end "Made in India, supplied
+  across India, UAE and export."; other brands (e.g. BRADMA) end "Supplied
+  across India, UAE and export."; no city names in title or meta.
+- Geo Tags: Chennai,Ahmedabad,Gujarat,Tamil Nadu,Pan-India,UAE,Middle
+  East,Africa,South Asia,Export (+ Government Supply where already present).
+- The site now outputs these Sanity SEO fields (seo.title, seo.description,
+  seo.keywords on categories/subcategories; products use seoTitle,
+  metaDescription, keywords, geoTags).
+
+### Brands
+Own brands: HABA, PRG, Kopis, Airdas, Velse, Modi. Also approved for use:
+Bradma, Morse, Bahco, Lenox. Any other brand: search, then ask Jabs to confirm
+before using it anywhere.
+
+### Markets
+All India and global; extra focus on UAE, Middle East, Africa, South Asia.
+
+### Built so far
+- "Supplied to:" line and areaServed JSON-LD on product pages (from geoTags)
+- FAQPage + BreadcrumbList JSON-LD; Product JSON-LD with areaServed
+- /llms.txt, /robots.txt (allow all, block /studio/ and /api/), sitemap
+- /export-and-uae page. Facts: exports regularly by air and sea, IEC holder
+  (never show the IEC number), Certificate of Origin, commercial invoice,
+  packing list, export contact +91 99620 61514, "we respond within the hour",
+  brands HABA, PRG, Kopis, Airdas, Velse, Modi
+- Floating WhatsApp button and site links use Sales 93828 61514; the export
+  page uses 99620 61514
+- Every WhatsApp link uses waLink() in lib/whatsapp.ts with the message "Hi Max
+  Machine Tools, I saw your website maxmachines.in and ..." so website leads
+  are identifiable. Never add a bare wa.me link.
+
+### Rules for Claude Code
+- Show the diff and wait for "go" before every commit or push.
+- Append to CLAUDE.md only; never replace it.
