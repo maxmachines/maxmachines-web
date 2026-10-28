@@ -344,3 +344,26 @@ All India and global; extra focus on UAE, Middle East, Africa, South Asia.
 - Each product type gets 2 comparison FAQs, added in the FAQs tab of the MMT
   sheet. Before adding, find the real last row using the CSV export (the FAQs
   tab has a filter that hides rows), then paste below it.
+
+## Update 28 Oct 2026 (newer than the notes above; where they differ, this section wins)
+- Jabs reports more WhatsApp enquiries after the recent SEO / GEO updates (waLink() pre-filled messages, export page, schema, llms.txt). The updates are working; keep going in the same direction.
+- Google Analytics monthly email (18 Sep to 15 Oct 2026), same period as the GA4 findings above: active users up 17.76%, new users up 18.56%, events up 19.31%, average engagement time up 22.98% (still only 10s). About 1.1K active and new users, 4.2K events.
+- The 404 problem is still the biggest open issue: "404: This page could not be found" had 561 views and 558 users (99.28% bounce) versus the home page at 638 views and 463 users. Work Order step 1 (find which URLs and referrers cause it, then add redirects and a helpful custom 404 page) has NOT been started yet.
+- Next step for step 1: Jabs opens GA4, Reports, Engagement, Pages and screens, changes "Page title and screen class" to "Page path and screen class", finds the 404 row and reports the top paths and referrers. Likely causes to check: old WordPress URLs (the old site was 5 years old), old YouTube / IndiaMART / JustDial links, bots, and links in the site pointing to pages that do not exist.
+- Jabs wants this 404 check done BEFORE the next press-page update.
+- Reminder: an older CLAUDE.md copy (the short version from the first project instructions, about 6 KB) exists in Claude chat. Never paste it over this file.
+
+## INCIDENT 28 Oct 2026 - certificate error caused by Hostinger (fixed) - READ THIS
+- About 23:00 IST both maxmachines.in and www.maxmachines.in showed "Your connection is not private" (ERR_CERT_DATE_INVALID). Vercel Domains showed "Invalid Configuration" on both.
+- Cause: Hostinger rolled out automatic CDN ("Hosting CDN enabled - made automatically by Hostinger", DNS history 2026-10-28). It changed the www CNAME to www.maxmachines.in.cdn.hstgr.net, deleted the A record @ 216.198.79.1 and added an ALIAS @ maxmachines.in.cdn.hstgr.net. This pulled the domain away from Vercel. Not caused by our code or the redirect.
+- Fix done: Hostinger hPanel > Domains > maxmachines.in > DNS / Nameservers > DNS history > Restore on the 2026-10-28 entry. Correct DNS now: A @ 216.198.79.1 and CNAME www dc344377a2c35a6b.vercel-dns-017.com (legacy 76.76.21.21 / cname.vercel-dns.com also work). Vercel shows Valid Configuration. Site checked working on desktop and phone.
+- Prevention done: hPanel > Websites > maxmachines.in (old WordPress site on Hostinger) > Performance > CDN > "Opt out of automatic CDN" > ticked maxmachines.in only (1 of 9 opted out). Other 8 hosted sites left as they are.
+- NEVER click "Connect domain" on the Hostinger dashboard for the old maxmachines.in WordPress site, and never press the CDN "Disable" link without checking DNS first. They can repoint the domain to Hostinger and break the live site. Ignore the "SSL failed to install" tip there.
+- If the warning ever returns: check Vercel > maxmachines-web > Settings > Domains first, then Hostinger DNS history for an automatic change, then use Restore.
+- Hostinger DNS only holds email and verification records besides the two Vercel records (Google Workspace MX, Brevo, Resend, Amazon SES). Do not use "Reset DNS records".
+
+## Brochure redirect (28 Oct 2026, not yet live)
+- The 404 traffic is old WordPress links /shop/... and /product-category/... from the old one-page PDF catalogue (about 25 links, all using maxmachines.in; thousands of copies in use). The PDF is not being re-issued; a new catalogue will come later with real new links plus ?utm_source=brochure.
+- next.config.ts now has redirects() sending /shop/:path* and /product-category/:path* to /products?utm_source=brochure&utm_medium=pdf, temporary (permanent: false). Tested on localhost:3000 (both patterns work). NOT committed or pushed yet - waiting for Jabs's go. Show git status and diff first.
+- Old PDF WhatsApp links go to 99620 61514, 93828 61514, 91760 61514 and 99621 61514 with the text "Hi, i got your reference from Digital Brochure." These cannot be redirected from the website. 91760 61514 was noted as "Coming soon" - make sure it is answered or has an auto-reply. A test copy 2023_MAX_Digital_Catalogue_new-links.pdf (all WhatsApp to 99620 61514) exists in the maxmachines folder but is not being used.
+- Claude in Chrome for this project: use the browser starting e0f32078 (Browser 1).
