@@ -10,7 +10,7 @@ READ THIS FILE FIRST in every new chat of the MaxMachines.in project. If anythin
 
 1. One step at a time. Commands in code blocks, always starting with `cd ~/Desktop/maxmachines/maxmachines-web`.
 2. The Google Sheet is the source for products. Sanity is filled by import. Categories and subcategories are filled by hand in Studio.
-3. A product is DONE only when the checklist in section 8 is fully ticked, including its category and subcategory, and the live page is checked.
+3. A product is DONE only when the checklist in section 8 is fully ticked, including its category and subcategory, and the live page is checked. SCOPE RULE: photos are the final step. Once a product has photos uploaded, EVERYTHING in section 8 must be done for it. Products without photos wait until their photos arrive.
 4. Competitor brands: search first, Jabs approves by number, names appear on the website ONLY inside FAQ answers.
 5. Photos: 1600 x 1600 on #F5F5F0, label "Model No: <model> <view>", colour check (brighten or darken), alt text on every picture.
 6. Publish only after Jabs says "yes". Commit and push only when Jabs asks. Never overwrite CLAUDE.md (append only).
@@ -81,6 +81,8 @@ Importer: clear all Sheet filters first. It cannot create Categories or Subcateg
 - FAQs: minimum 5, target 8 to 17, buyer-focused, NO phone or email in answers. Say "supplied across India and exported worldwide, including UAE" (UAE is preferred, not the only export market). Never type the brand twice ("PRG PRG").
 - Real advantages are stated as facts, never "better than" a named brand. Absolute claims are softened ("vibration free" becomes "stable, low-vibration running"; "long tool life" becomes "helps extend tool life").
 - Mechanical power press advantages (Jabs 4 Nov, all PMC models; ask about pneumatic; impact and hydraulic differ and Jabs gives theirs when each is updated): body from virgin steel plate, a single plate head to toe; one-piece main shaft, not two pieces; heavy back gear and DP gears; safety locks (keyed and bolted collars) stop the gears moving against the direction of force and protect them from damage; precise movement helps extend tool life.
+- ALL machines and products (Jabs, 4 Nov): spares are always available, and MMT gives a lifetime guarantee of spares supply even if the machine model changes (Highlight + FAQ). CONFIRMATION RULE (Jabs, 4 Nov evening): ask Jabs for each product before using this point, and the same for the point "every machine is tested before dispatch and a test video is recorded" (true for almost all machines). Never add either without his yes for that product.
+- Impact press advantages (Jabs, 4 Nov): the shaft is solid, not a pipe, so it is heavy and runs with less vibration; spring controlled load adjustment. Check with Jabs whether the same points apply to the toggle press.
 - Press accessories rules (May): Safety Sensor Curtain and PLC Control Panel are optional for all motorised hydraulic and pneumatic presses (PLC also to be added to C Frame Ram Type and C Frame 4 Guide Plate). Gun Metal Bush Movement on the 4 Pillar Press is a Highlight, not an Accessory. Air Line Pressure spec rows still to be standardised across Impact Press models.
 - Marking (June): subcategory names "Marking Impact Press", "Hydro Pneumatic Marking Presses", "VELSE Laser & Pin Marking Machines"; VELSE Fiber Laser Marking Machine models VELSE-FLMM-TABLE-20W and VELSE-FLMM-DESK-20W, standard marking range 110x110 mm (200x200 optional), MAX laser source standard (Raycus on request), PC and UPS not included.
 - One product can appear in several places through related-products sections on the page. Do not duplicate product records.
@@ -141,12 +143,21 @@ Approved lists (Jabs):
 8. Live page checked: title, FAQ count in the page data, highlights, pictures, videos, no competitor names outside FAQs. Ground truth if AI fetches disagree: Jabs runs `curl -s <url> | grep -o "<word>"` (web fetch returns stale cache)
 9. This SOP, CLAUDE.md status line and the log (section 13) updated; copies synced; commit and push when Jabs asks
 
-## 9. Retrofit to-do: run sections 4, 5 and 8 on every machine already live
+## 9. Retrofit to-do: products that already have photos (scope set by Jabs, 4 Nov 2026)
 
-Done with the full method: PRG Mechanical Power Press (4 Nov 2026).
-Competitor FAQs exist from 25 Oct but re-check against this SOP (advantages, keyword phrases, brand coverage): PRG Impact Press, PRG Pillar Drilling, PRG Radial Drilling, HABA Standard Series horizontal bandsaw, PRG Standard Series vertical bandsaw, PRG Toggle Press.
-Need the full method: HABA R and Eco horizontal bandsaws, HABA R and PRG Eco vertical bandsaws, PRG Multi Spindle Drill Head, drilling cum milling, other drilling, all Marking products (Bradma, Velse), lathes, every other product in the Sheet.
-Order: one product at a time with its category and subcategory, then the rest, then new products.
+Only products with photos uploaded are retrofitted; run sections 4, 5 and 8 on each. Tick list (status as of 4 Nov):
+- [x] PRG Mechanical Power Press: full method done; lifetime spares Highlight + FAQ written to Sheet 4 Nov (import pending)
+- [x] PRG Impact Press Machine: advantages, spares FAQ and highlights written to Sheet 4 Nov (import pending)
+- [x] PRG Toggle Press Machine: brands, accuracy and spares FAQ and highlights written to Sheet 4 Nov (import pending)
+- [x] PRG Pillar Drilling Machine: written to Sheet 4 Nov (import pending; no video yet)
+- [ ] HABA Standard Series horizontal bandsaw (competitor FAQs exist)
+- [ ] HABA R Series horizontal bandsaw
+- [ ] HABA Eco Series horizontal bandsaw (no video yet)
+- [ ] PRG Standard Series vertical metal cutting bandsaw (competitor FAQs exist)
+- [ ] HABA R Series vertical metal cutting bandsaw
+- [ ] PRG Eco Series vertical metal cutting bandsaw (no video yet)
+Check in Studio whether any other product already has pictures and add it here.
+Everything else (radial drilling, other bandsaws, tapping, milling, multi drill head, automation, pneumatic and hydraulic press, lathes, marking) is done completely, in order, when its photos arrive. Radial Drilling already has competitor FAQs from 25 Oct.
 
 ## 10. Code changes (Claude Code in Terminal)
 
@@ -191,4 +202,6 @@ Decision log (newest at the bottom; Claude appends here the day a decision is ma
 - 2026-10-24: Impact and Toggle stay separate products; a product is not finished until its category and subcategory are done; webhook built, refresh 24 hours.
 - 2026-10-25: Keyword SOP, SEO title/meta/geo SOP, brand rules, competitor-brand rules and lists, export page, WhatsApp message, structured data, llms.txt.
 - 2026-10-28: Hostinger incident fix, brochure redirect, 404 diagnosis, Google Business Profile Chennai only.
+- 2026-11-04: Scope rule: photos are the final step; a product with photos gets everything in section 8; products without photos wait. Lifetime spares guarantee point for ALL machines. Impact press advantages (solid shaft, spring controlled load adjustment).
 - 2026-11-04: Mechanical Power Press done (11 pictures, 4 videos, subcategory, FAQs, highlights, keywords). Competitor method with numbered name lists and Jabs's approved 20 mechanical press brands. PRG mechanical press advantages as facts. Colour check added to photos. Retrofit of competitor FAQs and advantages to all live machines. One master SOP with three synced copies and a same-day decision log.
+- 2026-11-04 (evening): Toggle press done in Sheet (brands Bradma, Hindustan, Precision Engineering Products/Exacta, Jeet, Bharat Machines Press, Balaji; only spares and accuracy). Impact press FAQs and highlights written. Pillar drilling done in Sheet (CI column from 25mm, MS pipe column below, belt and gear, rack and pinion, automation on request, 6 more brand tags, 5 new FAQs). NEW RULE: ask Jabs per product before using the lifetime spares point and the tested-and-test-video point.
