@@ -385,3 +385,7 @@ Product: PRG Mechanical Power Press (Press Machines category, brand PRG, Made in
 - Localhost shows published content only, so draft pictures cannot be previewed there; publish first, then check the live page
 - Still open for Press: Hydraulic Press and Pneumatic Power Press (subcategory card pictures missing on the live Press Machines page, products not started); pictures of the other Mechanical models (PMC5, PMC80, PMC100) if Jabs gets them
 - Plan: Press first, then Bradma
+
+## READ FIRST - SOP-product-update.md (added 4 Nov 2026)
+- SOP-product-update.md (same folder) is the single master for product, Sheet, photo, Sanity and competitor-brand rules and the open to-do list. Read it at the start of every chat. If it disagrees with anything above, the SOP wins.
+- Copies: this folder (master, pushed to git), the claude.ai Project doc claude/SOP-product-update.md, and a short pointer in project memory.
