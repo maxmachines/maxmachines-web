@@ -1,6 +1,6 @@
 # SOP - maxmachines.in (single master file)
 
-Version 2, 4 Nov 2026. Owner: Jabs. Built from the project notes, CLAUDE.md and every chat summary from 17 Sep to 4 Nov 2026 plus the May/June press and marking chats.
+Version 4, 5 Nov 2026 (final for the day). Sections 14 to 19 hold the knowledge, section 20 the decisions made on 5 Nov, section 21 the master status register (day 1 to date) and section 22 the single master to-do list. Owner: Jabs. Built from the project notes, CLAUDE.md and every chat summary from 17 Sep to 4 Nov 2026 plus the May/June press and marking chats.
 
 READ THIS FILE FIRST in every new chat of the MaxMachines.in project. If anything here disagrees with CLAUDE.md, project notes or memory, THIS FILE WINS.
 
@@ -14,7 +14,7 @@ READ THIS FILE FIRST in every new chat of the MaxMachines.in project. If anythin
 4. Competitor brands: search first, Jabs approves by number, names appear on the website ONLY inside FAQ answers.
 5. Photos: 1600 x 1600 on #F5F5F0, label "Model No: <model> <view>", colour check (brighten or darken), alt text on every picture.
 6. Publish only after Jabs says "yes". Commit and push only when Jabs asks. Never overwrite CLAUDE.md (append only).
-7. Every decision Jabs finalises is added to THIS file the same day (section 13 log) and Claude says "added to SOP" in one line.
+7. STATUS AND TO-DO live in sections 21 and 22 of this file. Update them the same day a task is done or added. Every decision Jabs finalises is added to THIS file the same day (section 13 log) and Claude says "added to SOP" in one line.
 8. End of session: sync the three copies (section 0).
 
 ---
@@ -81,7 +81,7 @@ Importer: clear all Sheet filters first. It cannot create Categories or Subcateg
 - FAQs: minimum 5, target 8 to 17, buyer-focused, NO phone or email in answers. Say "supplied across India and exported worldwide, including UAE" (UAE is preferred, not the only export market). Never type the brand twice ("PRG PRG").
 - Real advantages are stated as facts, never "better than" a named brand. Absolute claims are softened ("vibration free" becomes "stable, low-vibration running"; "long tool life" becomes "helps extend tool life").
 - Mechanical power press advantages (Jabs 4 Nov, all PMC models; ask about pneumatic; impact and hydraulic differ and Jabs gives theirs when each is updated): body from virgin steel plate, a single plate head to toe; one-piece main shaft, not two pieces; heavy back gear and DP gears; safety locks (keyed and bolted collars) stop the gears moving against the direction of force and protect them from damage; precise movement helps extend tool life.
-- ALL machines and products (Jabs, 4 Nov): spares are always available, and MMT gives a lifetime guarantee of spares supply even if the machine model changes (Highlight + FAQ). CONFIRMATION RULE (Jabs, 4 Nov evening): ask Jabs for each product before using this point, and the same for the point "every machine is tested before dispatch and a test video is recorded" (true for almost all machines). Never add either without his yes for that product.
+- ALL machines and products (Jabs, 4 Nov): spares are always available, and MMT gives a lifetime guarantee of spares supply even if the machine model changes (Highlight + FAQ). CONFIRMATION RULE (Jabs, 4 Nov evening): ask Jabs for each product before using this point, and the same for the point "every machine is tested before dispatch and a test video is recorded" (true for almost all machines). Never add either without his yes for that product. (5 Nov: the lifetime guarantee is never stated for items MMT only trades, such as resold brands; it is used only for what MMT makes.)
 - Impact press advantages (Jabs, 4 Nov): the shaft is solid, not a pipe, so it is heavy and runs with less vibration; spring controlled load adjustment. Check with Jabs whether the same points apply to the toggle press.
 - Press accessories rules (May): Safety Sensor Curtain and PLC Control Panel are optional for all motorised hydraulic and pneumatic presses (PLC also to be added to C Frame Ram Type and C Frame 4 Guide Plate). Gun Metal Bush Movement on the 4 Pillar Press is a Highlight, not an Accessory. Air Line Pressure spec rows still to be standardised across Impact Press models.
 - Marking (June): subcategory names "Marking Impact Press", "Hydro Pneumatic Marking Presses", "VELSE Laser & Pin Marking Machines"; VELSE Fiber Laser Marking Machine models VELSE-FLMM-TABLE-20W and VELSE-FLMM-DESK-20W, standard marking range 110x110 mm (200x200 optional), MAX laser source standard (Raycus on request), PC and UPS not included.
@@ -100,7 +100,7 @@ Importer: clear all Sheet filters first. It cannot create Categories or Subcateg
 Approved lists (Jabs):
 - Pillar drilling: Eifco, ITCO, Parmar, JMTC, Prakash, Siddhapura, UNI-TECH, LION, Dalip, KPT
 - Radial drilling: Eifco, Parmar, Prakash, YOGI, ASHU MAKE, Hi-Power, HPSM, Batliboi, PANCHAL
-- Impact press: Bradma, Hindustan, Ellora, Hammerknock, Benchmark. Toggle press: Bradma, Hindustan
+- Impact press: Bradma, Hindustan, Ellora, Hammerknock, Benchmark. Toggle press (corrected 5 Nov): Precision Engineering Products (Exacta), Jeet Machine Tools, Bharat Machines Press, Balaji. Bradma and Hindustan make impact presses, not toggle, so they are removed from toggle FAQs and tags
 - Bandsaw and vertical bandsaw: Multicut, Indotech, ITL, MEBA, Sagar, Laxmi, Laxman, Laxmen (two different brands), Vikranth, Vijay, Laxson, Krishna
 - Banka, Bhavya, Pathak, Premier: drilling, radial and bandsaw
 - Mechanical power press (4 Nov): Omkar, Jayshree, Jay Shakti, Accumax, Bhavya, Pathak, Harihar, Digvijay, Vivek, Mayank, Foreman, Shailesh, Sagar, Jayson, Acme, Everest, Mayur, Jekson, Rajesh, Raviraj. Pneumatic power press: confirm when we reach it (extra names seen: Orbital, Hammer Knock, Mercury Pneumatics, National Pneumatic, Sharma Presses, Eminence)
@@ -174,7 +174,7 @@ Everything else (radial drilling, other bandsaws, tapping, milling, multi drill 
 - The site lists only fast-moving machines (hundreds exist): specs first, photos and videos later. Client logos are all real customers: keep them. Social media is handled in the separate marketing project. No dark/light mode toggle, ever.
 - /blog and /our-clients stay hidden from Navbar and Footer until they have real content.
 - Hostinger incident 28 Oct: never click "Connect domain" for the old WordPress maxmachines.in on Hostinger; never press the CDN "Disable" link or "Reset DNS records" without checking DNS first. Correct DNS: A @ 216.198.79.1 and CNAME www dc344377a2c35a6b.vercel-dns-017.com. If the "not private" warning returns: Vercel Settings > Domains, then Hostinger DNS history, then Restore.
-- Brochure: the old PDF catalogue (thousands of copies) links to old /shop/... and /product-category/... URLs. The redirect to /products?utm_source=brochure&utm_medium=pdf was added and pushed on 28 Oct (per the chat summary; CLAUDE.md still says "not committed": verify on the live site). A new catalogue will come later.
+- Brochure: the old PDF catalogue (thousands of copies) links to old /shop/... and /product-category/... URLs. The redirect to /products?utm_source=brochure&utm_medium=pdf is LIVE (confirmed by Jabs 5 Nov: old /shop links land on /products). CLAUDE.md wording corrected 5 Nov. A new catalogue will come later.
 - Google Business Profile stays Chennai only; Ahmedabad is in the description only.
 
 ## 12. Business facts that appear on the site
@@ -183,17 +183,7 @@ Max Machine Tools (MMT), group since 1963, MMT since 2012, ISO 9001:2015, Chenna
 
 ## 13. Open items and decision log
 
-Open items (4 Nov 2026):
-- PRG Mechanical Power Press: Jabs to say which of the 10 accessories are standard and which optional (knock-out system is both a Highlight and an Accessory today). Photos missing for PMC5, PMC80, PMC100.
-- Pneumatic Power Press and Hydraulic Press: subcategories empty, products not started; pictures from Jabs; ask whether the PRG advantages apply to pneumatic. More press subcategories deferred: Die and Tools, Feeder, Automation.
-- Bradma: Stamp Marks and the missing Label Marker page. Marking Machines, Air Compressor, Die Tools for Press categories to build.
-- Card pictures missing for Lathe and Marking Solutions. Ask whether the subcategory bandsaw cards should be darkened.
-- YouTube videos missing on HABA Eco horizontal, PRG Eco vertical, PRG Pillar Drilling, PRG Toggle Press.
-- Display Order is broken globally (needs a per-subcategory fix) and a multi-subcategory schema upgrade is pending (Impact and Toggle press).
-- Website plan items still open: GA4 key events (form submitted, WhatsApp click, call click, catalogue requested); check the "Fill Form" buttons feed the same Sheet (report only); About page edits (remove Kerdoss and Laser Unlimited from leadership, shorten the Late Mr. P.R. Garg biography, fix "10+ export countries" counting Dubai and UAE twice); "we respond within the hour" versus "calls within 4 business hours" must be made the same everywhere (Jabs to choose); navigation consistency; product page template (one video, 3 photos, key specs, WhatsApp quote button); alt text and a text summary for every video; /about, /blog, /our-clients content; meta descriptions on Home and About mention Milling and Laser which are not categories.
-- Analytics: monthly GA4 review (the 404 problem is addressed by the redirect; recheck), AI traffic note (all 12 AI-assistant sessions came from ChatGPT), Vercel ISR check around 9 Nov.
-- Off-site (Jabs, slowly): Google Business Profile (Chennai, with reviews), Search Console (add property, submit sitemap.xml, request indexing for /export-and-uae and top products), YouTube videos (title with machine + brand + price India, link back in the description), IndiaMART/TradeIndia/Alibaba listings, backlinks, LinkedIn/Facebook/Instagram/WhatsApp channel links, posting rhythm (marketing project), same name-address-phone everywhere, PageSpeed check.
-- Housekeeping: empty subfolders in "Mechanical Press - NOT USABLE" and files in "_to_delete" for Jabs to bin.
+Open items: see section 22 (single master to-do list). Do not keep a second list here.
 
 Decision log (newest at the bottom; Claude appends here the day a decision is made):
 - 2026-09-17: Pages converted to server-rendered (SSG); security headers; rate limit; Open Graph; Blog and Our Clients hidden; no dark mode toggle.
@@ -207,3 +197,265 @@ Decision log (newest at the bottom; Claude appends here the day a decision is ma
 - 2026-11-04 (evening): Toggle press done in Sheet (brands Bradma, Hindustan, Precision Engineering Products/Exacta, Jeet, Bharat Machines Press, Balaji; only spares and accuracy). Impact press FAQs and highlights written. Pillar drilling done in Sheet (CI column from 25mm, MS pipe column below, belt and gear, rack and pinion, automation on request, 6 more brand tags, 5 new FAQs). NEW RULE: ask Jabs per product before using the lifetime spares point and the tested-and-test-video point.
 - 2026-11-05 (end of session): import run 4 Nov night, Errors 0, 69 updated; live pages checked (pillar drilling 17 FAQs, mechanical 18, toggle 14, impact 15). Trigger phrases: "Add to SOP" = Claude adds the point to this SOP, the project copy and memory, and logs it; "End session" = Claude syncs all copies, gives the git commands, closes the browser tabs. NEXT SESSION: HABA Standard, R, Eco horizontal bandsaws, then PRG Standard, HABA R, PRG Eco vertical bandsaws (ask per product: advantages, spares point, tested-with-video point). Open: Mechanical Press accessories standard vs optional; brochure redirect status.
 - 2026-11-05: Terminal commands rule (Jabs): every Terminal command goes in its own separate code block (one command per block, copy-paste ready), never several commands in one block or inside a sentence. Git push of the 5 Nov SOP done (commit 9338418).
+- 2026-11-05 (later): SOP made complete as v3: sections 14 to 20 added (site foundation, technical lessons, Google plan, AI visibility, marketing, product-line rules, decisions to settle). Nothing important now lives only in old chats.
+
+
+---
+
+## 14. Site foundation (moved here from CLAUDE.md and the project notes so this file is complete)
+
+- Stack: Next.js 15 (App Router), TypeScript, Tailwind CSS, Sanity CMS (project p72ubifi, dataset production), Vercel (Hobby plan), GitHub maxmachines/maxmachines-web. Local folder `~/Desktop/maxmachines/maxmachines-web`. Domain on Hostinger (DNS only). Mac at home, Windows at office (code work Mac only).
+- Design: page background #0f0f0f, second background #1a1a1a, gold #eab308, gold hover #facc15, white and grey text. Product photo panels and cards use #F5F5F0. Navbar and Footer on every page, floating WhatsApp button, social strip above the footer.
+- Components: Navbar, Footer, WhatsAppButton, SocialStrip, BrandStrip, Contact, Hero, About, Products, Stats, ProductImageGallery, CategoryCard, ContactEnquiryCTA, EnquireButton, EnquiryForm, EnquiryModal, FaqAccordion, SchemaMarkup.
+- Social strip order (Home and Contact): WhatsApp channel, YouTube, Instagram, Facebook, LinkedIn. Links: WhatsApp channel https://whatsapp.com/channel/0029Vb6Sttp1yT2HqDtufu2f, YouTube http://www.youtube.com/MaxMachineToolsModi, Instagram https://www.instagram.com/MaxMachineToolsModi/, Facebook http://www.facebook.com/MaxMachineToolsModi, LinkedIn https://linkedin.com/company/MaxMachineTools. Brand strip (brand names as pills, Home only) exists; real logos to replace the text later.
+- Pages built: / , /contact, /about, /products, category, subcategory, product pages, /export-and-uae, /studio, /llms.txt, sitemap, robots. Placeholders hidden from menus: /blog, /our-clients.
+- Contacts: Chennai HQ No 84 Armenian Street, Parrys, Chennai 600001, 044-42161514, 93828 61514, info@maxmachines.in. Ahmedabad: 3rd Floor, Chinubhai House, 7B Amrutbaug Colony, Navrangpura, Ahmedabad 380014, 93838 61514, sales@maxmachines.in. Business head Jabs 99620 61514, max@maxmachines.in. Accounts 99621 61514, accounts@maxmachines.in. Google Form for enquiries: https://forms.gle/TXjAGS67M1Nnb2Ye9.
+- Secrets: Upstash keys live in `.env.local` (this Mac) and in Vercel environment variables. Never paste them in chat, never commit `.env.local`.
+- Old WordPress site (5 years old, Hostinger, backup .wpress 839 MB) is retired. Do not reuse its URLs; the redirect in section 11 handles old links.
+- Do not move the project folder into Dropbox (Dropbox can corrupt `.git` and syncs node_modules). Git on GitHub is the backup.
+
+## 15. Technical lessons (why the rules exist)
+
+- Server-rendered pages: until 17 Sep every product page was client-side (useEffect), so Google and all AI tools received an empty "Loading" page. Fixed with async server components, generateStaticParams, generateMetadata and canonical tags. Sanity client `useCdn` must stay false for this. Any new page that reads Sanity must be server-rendered the same way.
+- 25 Oct: the site was ignoring every SEO field typed in Sanity. Fixed in generateMetadata at category, subcategory and product level. After any new page type, check that its title and meta come from Sanity.
+- Verification of live pages: web fetch tools return stale cache. Ground truth is Jabs running `curl -s <url> | grep -o "<word>"` in Terminal. Cross-check big claims with ChatGPT, Grok and Gemini (this caught /products still client-side and missing og:image).
+- Favicon set: icon.png (from Max_Logo_2026.png, 458x464), apple-touch-icon 180x180, manifest with icon-192 and icon-512. The wide public/logo.png (1920x1080, baked-in shadow) must never be used as an icon.
+- GA4 script must sit inside the head in app/layout.tsx. Search Console is verified by a meta tag in app/layout.tsx: never remove it.
+- Mac commands: `sips` does image resizing and cropping (`sips -c <height> <width>`). For patching a block in a TSX file, an inline `python3 -c` script is more reliable than `sed`. Pager stuck on `:` in Terminal: use `git --no-pager`. Heredoc pastes can drop `<a` tags: check with grep.
+- Watermark removal (Gemini star): detect the star by brightness and size, never blank a fixed corner (that cut off machine bases). Remove stray specks by keeping only the largest connected component.
+- Image processing tricks: match AI pictures to low-res originals by downscaled grayscale difference; contact-sheet grids to review many photos; `cp` then `md5sum` before deleting originals.
+- Vercel: ISR Writes 200,000 a month (see section 7). Image optimisation was moved to Sanity's own image service to ease Vercel load. Re-check usage about 9 Nov 2026 (Vercel emails at 90%).
+- Claude workspace limits: Claude cannot git commit or push (no identity), cannot pick files in Studio, cannot reach Sanity's API from its shell. Mac aliases cannot be granted as folders. Very long Dropbox paths: add the folder through "+" then Add folder in the desktop app.
+- Dropbox photo path: `/Users/jabeshbagdy/Dropbox/01 Max Machine Tools - Shared/001 Sales Coordinator - Shared/0001 Machine Photos and Catalogue/001 Edited pic for Catalogue 2.0/www.maxmachines.in - Photo uploads and related/Ready for upload`.
+
+## 16. Google: Search Console, Business Profile, Analytics (single plan)
+
+Search Console
+- DONE 25 Apr 2026: ownership verified by HTML meta tag; sitemap.xml submitted. (The earlier line in section 13 saying "add property, submit sitemap" is out of date.)
+- TO DO: request indexing for /export-and-uae and the top product pages; check Pages (indexed vs not) and Performance (queries) monthly; look for "Crawled - currently not indexed".
+- Why "power press manufacturers" did not show (25 Oct): site new to Google, no power press page then, term very competitive. Target buyer phrases (price, dealer, supplier, UAE). Health check still to be done and recorded: `site:maxmachines.in` in Google, sitemap status, robots/sitemap files, PageSpeed, SEO fields on key pages.
+
+Google Business Profile (decided by Jabs 29 Oct)
+- Chennai only. No second Ahmedabad listing. Ahmedabad, Gujarat appears only in the description as production, procurement and office.
+- Steps, in order: open the profile directly from Google (not from email links) and confirm it exists, is verified and is Chennai only; compare name, address, phones, hours, categories, website with the site; website link `?utm_source=google&utm_medium=business_profile`; add machine and office photos and products; add the Ahmedabad line to the description; post once per new machine; review in Analytics. Owner account is probably max@maxmachines.in: confirm. Collect real customer reviews.
+
+Google Analytics 4 (property 367500154)
+- Baseline taken 28 Oct (project docs `ga-baseline-2026-10-28.md`, `ga-ai-traffic-2026-10-28.md`): 30 Sep to 27 Oct, 1,328 views, 820 users, 963 sessions; Direct 800 sessions (11.75% engaged), Organic Search 132 (57.58%), AI Assistant 12, Referral 11; 404 page 377 views (28%).
+- Next review about 4 to 9 Nov 2026, same checklist: (1) 404 views fallen and "brochure / pdf" source visible; (2) Direct down, engagement up; (3) /products views up; (4) do brochure visitors reach product or contact pages; (5) who links to /blog and /our-clients; (6) key events; (7) new 404 addresses; (8) is the WhatsApp number in the old brochure answered.
+- Key events to create: contact form submitted, WhatsApp click, call click, catalogue requested. Still not done, so enquiries are not measured in GA.
+- Tag every link Jabs places outside the site with UTM (`utm_source`, `utm_medium`): brochure/pdf, google/business_profile, youtube/video, indiamart/listing, whatsapp/channel. Untagged clicks land in Direct and hide what works.
+- In GA4 the 404 breakdown needs the Pages and screens report switched from "Page title and screen class" to "Page path and screen class".
+
+## 17. AI visibility (the golden rule in practice)
+
+- Built: robots.txt allows all AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended); llms.txt generated from Sanity; JSON-LD Organization, LocalBusiness, Product (areaServed, sku/model, category), FAQPage, BreadcrumbList; specs as text tables; consistent facts everywhere.
+- Measuring: GA4 channel "AI Assistant". 28 Oct: 12 sessions, all chatgpt.com, landing on Home (5), PRG Impact Press (3), not set (2), Contact (1), Bradma Stamp Marks (1). Counts clicks only; mentions without a click and no-referrer visits are invisible (some sit in Direct). Next review: watch for perplexity.ai, gemini.google.com, claude.ai, copilot.microsoft.com.
+- Once a quarter ask ChatGPT, Gemini, Perplexity and Claude "best <machine> supplier in India / UAE" and note whether Max Machine Tools is named. Fix the facts they get wrong at the source (site, IndiaMART, Business Profile).
+- Every video needs a text summary and every picture alt text (video summaries still to do).
+- The future MAXIMUS chatbot (WhatsApp) is expected to read these product pages; keep specs in plain text for it too.
+
+## 18. Marketing and off-site (checklist; posting itself is in the separate marketing project)
+
+- YouTube: title with machine + brand + price India, link back to the product page in the description, UTM tagged. Videos still missing on HABA Eco horizontal, PRG Eco vertical, PRG Pillar Drilling, PRG Toggle Press.
+- Marketplaces and directories (IndiaMART, TradeIndia, Alibaba, JustDial): same name, address, phone and website link as the site; replies that share the catalogue use the tagged link.
+- Backlinks from own brands and suppliers. Social profiles all link to the site. WhatsApp channel posts per new machine.
+- Catalogue: old PDF stays in circulation (redirect covers it). A new catalogue with tagged links will be designed later (Adobe Express Premium via Airtel is available). Decide the one WhatsApp number it uses.
+- Bradma: demand exists for the Label Marker (old link clicked 12 times) and it has no page yet. Bradma rules: approved resold brand, never "Made in India", meta ends "Supplied across India, UAE and export.", competitor names only in FAQs. Update Bradma Stamp Marks first (a ChatGPT visitor landed there), publish in batches (webhook and ISR limits).
+
+## 19. Product-line rules (so no machine-type knowledge lives only in old chats)
+
+- HABA N series (standard/budget): worm gear shaft gearbox instead of ELECON, enamel paint instead of powder coating, front screw cylinders, no ISI/IE2 motor marking, no degree cutting. R series = premium. Blade lengths 3000/3760/4100/4860 mm, blade widths 27 mm (8N, 12N) and 34 mm (14N, 20N); 20N 3 HP; coolant pump included on all.
+- Lathes (HABA and MODI): Belt Drive (MBL/HBL) and All Geared (HAG, HABA only). Model code = prefix + centre height digits + bed width digits + bore digit (+ bed length suffix, e.g. MBL1233/7). Bore digits: 2=50, 3=79, 4=104, 5=115 or 129, 6=152, 7=178 mm. Extra Heavy Duty is MODI only and custom configurations must be mentioned in Highlights and FAQs; from bed 26 inch the bed is Planner Type Hardened. Name format: Brand + Duty Level + Belt/All Geared + Lathe Machine, bed size in brackets for HD and EHD all geared. Norton Gear Box range shown only as "With Full Norton Gear Box". Panel Board, Padel Stop and Electrical Third Shaft optional from Medium Duty.
+- Velse (own brand): positioning is "better than Bradma on customer feedback", never presented as a budget alternative; D3 tool steel for stamp marks and most punches; holders carry V prefix (V8H20, V8M40). Three Bradma holder corrections applied (625H1500, added 250H2L1000 and 312M3000). VELSE Dot Pin Marking Machine still pending. VELSE Metal Label Marking Machine is not a Velse product.
+- Press range (PRG, Made in India): nine types planned: Mechanical Power, Pneumatic Power, C Frame Ram Type, C Frame 4 Guide Plate, H Type Motorised, H Type Hand Operated, Fix Frame Ram Type, Fix Frame Piston Type, 4 Pillar Hydraulic; Impact (PIH11, PIH15, PIP25, PIP35) and Toggle (TPH9). Later: Die and Tools, Feeder, Automation subcategories; a Marking Machines category (needs the multi-subcategory schema upgrade).
+- Cross-category products: one product record shown in several places through related-products sections (Option 3), never duplicated.
+- Importer notes: subcategories must exist in Studio before import; display order is set by hand after loading; product names must not repeat (duplicates overwrite); Active must be Yes.
+
+## 20. Decisions made 5 Nov 2026 (Jabs's answers; these override older notes)
+
+1. Brochure redirect is LIVE. Old links land on /products.
+2. WhatsApp numbers: website floating button and links 93828 61514 (sales); export page and brochure 99620 61514. 91760 61514 is live on the CRM but not yet on MAXIMUS (the auto-reply chatbot): show it on the Contact page only, as "coming soon", not as a working button.
+3. Reply promise is "within the hour" everywhere (Contact page text "4 business hours" to be changed).
+4. 25 Oct rules win for SEO title, meta (no city names) and geo tags. "Government Supply" stays on products that already have it.
+5. Keywords: buyer-search phrases plus Chennai and Ahmedabad (two tags). "Export" appears inside phrases such as "exporter India".
+6. Google Business Profile: Chennai only, final. A profile exists; updating it is on the to-do list.
+7. MODI is both a brand name and the group's company name ("MODI Machines Group").
+8. Kopis = blade brand. Airdas = air compressor brand. They attach to the Cutting Blades and Air Compressor categories when built.
+9. Lifetime spares guarantee: ask per product; never for traded items.
+10. About page: remove Laser Unlimited (closed, same machines are sold under Max). Add JB Service Solutions (India) as the group's IT services offered to customers (can be marketed). Kerdoss Trade India: one plain factual line in the group list, no marketing; if shown, include the SEBI registration number and have the compliance officer approve the exact wording. Still to confirm with Jabs: shortening the Late Mr. P.R. Garg biography and the "10+ export countries" count (Dubai and UAE counted twice).
+11. Display Order is still broken: check and fix (per subcategory).
+12. The multi-subcategory schema upgrade is dropped; Impact and Toggle appear in Marking through related products.
+13. Planned categories: more than the list (Laser Marking, Shearing, Press Brake, Cutting Blades, Pneumatic Fittings, Small Automation, Vices, Chucks). Jabs will give the full list.
+14. Toggle press brands corrected (see section 5).
+15. Our Clients page stays hidden. New customers and their logos will be added later (to-do).
+16. Main web address is www.maxmachines.in (people type www). On 5 Nov `maxmachines.in` did NOT redirect (address bar unchanged), so both versions are live. To-do: in Vercel (Settings, Domains) make maxmachines.in redirect to www. Do not touch Hostinger DNS (see section 11).
+17. Vikrant Machinery (vikrantmachinery.com, Ahmedabad) is a SUPPLIER of some MMT models, not a competitor. Do not list it in competitor FAQs. Check whether the "Vikranth" name in the approved bandsaw competitor list means a different company.
+18. Full-width layout: planned for the next sitting (the site now uses a centred 1280 px box, `max-w-7xl mx-auto`, while Vikrant-style sites run edge to edge with left-aligned text).
+19. Language and design: added to the to-do list to decide later (see section 22). Jabs has no homepage design yet: next sitting Claude proposes 2 or 3 homepage design options (or template sites to learn from) and one redesign is done in a single go, so the site does not look like a generic AI-built site. Adobe Express Premium is available for design assets.
+20. Small clean-ups done by Claude: CLAUDE.md revalidate wording and redirect status corrected by an appended note; Studio address is www.maxmachines.in/studio (not localhost); April colours blue steel and orange are superseded by black and gold.
+
+## 21. MASTER STATUS REGISTER (day 1 to 5 Nov 2026)
+
+Status key: DONE = built and live. PARTLY = started, something left. PENDING = not started. CHECK = needs verifying. Conflicts raised on 5 Nov were all answered (section 20).
+Sources: project memory, every chat summary from 22 Apr to 4 Nov 2026, CLAUDE.md (391 lines, read in full), SOP v2, project docs. Chats from April to early June were read as summaries only.
+
+### 21A. Timeline (what happened, in order)
+
+| When | What |
+|---|---|
+| About 20 Apr 2026 | Project folder created (Next.js 15, Tailwind, Vercel, GitHub maxmachines/maxmachines-web). WordPress rejected for a custom build. Old WordPress site (5 years old, Hostinger) retired. |
+| 22 Apr | Sanity CMS designed: Category > Subcategory > Product > Variants. Schemas, Studio at /studio, webhook route drafted. |
+| 22-25 Apr | Homepage, Contact (form + Google Maps + Ahmedabad card), Products, Category, Subcategory and Product pages, About page, Blog placeholder, Our Clients page (200+ named clients). Enquiry modal: silently posts to the Google Form and sends a backup email by Resend. Social strip and brand strip. Google Sheet importer built (4 tabs). Sitemap, robots, JSON-LD (Organization, LocalBusiness, Product). Search Console verified and sitemap submitted. GA4 moved into head. DNS on Hostinger set for Vercel, Resend and Brevo. First CLAUDE.md. |
+| 2 May | Backup explained: GitHub (code), Vercel (deploy history, rollback), Sanity (content). |
+| 13 May | HABA HMM9R/12R/13R bandsaw data formatted; N-series PDF received. |
+| 21 May | Sanity trial email: free Starter plan is enough, public dataset is read-only, no action. |
+| 26 May | Importer overhaul: new 4-tab structure, Yes/No flags, displayOrder, native CSV export fix (gviz endpoint was mangling data). Vertical Bandsaw category imported (HABA R, PRG Standard, Eco, Special Application, Wood, AAC block). Trigger phrase "let's update product" created. |
+| 27 May | Drilling range: 7 subcategories (Pillar, Drilling cum Tapping, Pure Tapping, Drilling cum Milling, Radial, Multi Drill Heads, Automation). Spec table redesigned as one comparison table. |
+| 28 May | Press range: nine press types plus Impact (PIH11, PIH15, PIP25, PIP35) and Toggle (TPH6, TPH9, TPP6) started. |
+| 29 May | Lathe range complete: Belt Drive and All Geared (MODI and HABA). |
+| 3 Jun | Marking Solutions: Bradma full range, Velse range, PRG Hydro Pneumatic Marking Press. |
+| 16 Jun | HABA HMM8/N series bandsaws formatted; the import workflow debugged step by step. |
+| 16-17 Sep | Full audit: all product pages were client-side (empty to Google and AI tools). Session 1 server-rendering, Session 2 security (headers, Upstash rate limit), Session 3 Open Graph, Blog and Our Clients hidden, homepage products from Sanity. Cross-checked with ChatGPT, Grok, Gemini; /products and og:image gaps fixed. |
+| 18-19 Sep | Card images object-contain on #F5F5F0. Favicon set rebuilt. VMCB16RSE photos. Page refresh 60 s. Gallery made square. |
+| 9 Oct | Vercel ISR Writes at 77%: refresh raised to 3600. |
+| 17-18 Oct | Audit plan; GOLDEN RULE (AI readability) set; GA4 found 404 = half of visits. |
+| 20-21 Oct | Photo SOP (label, naming, views, group photo), single-product subcategory skip, drilling photos. |
+| 22 Oct | Categories/subcategories filled by hand rule; all 6 bandsaw products pictured and published; bandsaw cards; gradient removed. |
+| 23 Oct | Picture protection (watermark + right-click block); Sanity image service; webhook; refresh 24 h. Press pictures finished. |
+| 24 Oct | Impact and Toggle press pictures published. Standing rule: product + category + subcategory finish together. |
+| 25 Oct | Keyword SOP; SEO title/meta/geo SOP; brands; competitor-brand rules; 69 products rewritten and imported; site now outputs the Sanity SEO fields; FAQ/breadcrumb data, llms.txt, robots, /export-and-uae, WhatsApp pre-filled messages; Press Machines, Impact, Toggle published; 9 products audited. |
+| 28 Oct | GA4 review (404 = 28% of views). Brochure redirect. Hostinger CDN incident fixed. AI traffic baseline. |
+| 29 Oct | Google Business Profile decided: Chennai only. Plan for Bradma and power press. |
+| 3-4 Nov | Mechanical Power Press done (11 pictures, 4 videos, subcategory, FAQs). Competitor method. Retrofit of Impact, Toggle, Pillar Drilling. Master SOP created. |
+| 5 Nov | Import run (69 updated, 0 errors), live pages checked. SOP final pushed (commit 5987daf). This register drafted. |
+
+---
+
+### 21B. Status by area
+
+#### B1. Website build (pages and code)
+| Item | Status |
+|---|---|
+| Home, Contact, About, Products, Category, Subcategory, Product pages | DONE |
+| Enquiry modal (Google Form + Resend backup, honeypot, phone clean-up) | DONE (do not break) |
+| Server-rendered pages, canonical, generateMetadata, JSON-LD | DONE |
+| Sanity SEO fields output on all page levels | DONE (25 Oct) |
+| FAQPage, BreadcrumbList, Product JSON-LD with areaServed | DONE |
+| llms.txt, robots.txt (allow AI crawlers), sitemap | DONE |
+| /export-and-uae page | DONE |
+| WhatsApp pre-filled messages (waLink) | DONE |
+| Security headers, rate limit 5/min on /api/enquiry | DONE |
+| Open Graph / Twitter tags with logo fallback | DONE |
+| Favicon / apple icon / manifest | DONE |
+| Picture watermark + right-click block | DONE (revert with git revert 28a1fcd) |
+| Sanity webhook instant refresh, refresh 24 h | DONE |
+| Single-product subcategory skips to the product | DONE |
+| Brochure redirect /shop and /product-category to /products | DONE (confirmed by Jabs 5 Nov) |
+| Hostinger CDN incident | DONE; rules in SOP section 11 |
+| Custom helpful 404 page with links and WhatsApp | CHECK: Sept audit said 404 handling fine; plan asked for a helpful one |
+| Homepage LocalBusiness JSON-LD | CHECK: memory says "later"; Sept audit says already in layout |
+| GA4 key events (form, WhatsApp click, call click, catalogue) | PENDING |
+| Check "Fill Form" buttons feed the same Sheet (report only) | PENDING |
+| Meta descriptions on Home/About mention Milling and Laser (not categories) | PENDING |
+| About page edits (Kerdoss, Laser Unlimited, P.R. Garg bio, export count) | PENDING: decided 5 Nov, see section 20 |
+| Response-time wording made the same everywhere | PENDING: decided "within the hour" everywhere; Contact page wording still to change |
+| Navigation consistency | PENDING (likely fixed by hiding Blog/Clients; recheck) |
+| Product page template (one video, 3 photos, key specs, WhatsApp quote) | PENDING |
+| Text summary for every video; alt text on all pictures | PARTLY (alt text done on published; video summaries pending) |
+| "Don't see your machine? Ask us" button on category pages | PENDING |
+| /blog, /our-clients real content (page exists) | PENDING; hidden from menus |
+| Display Order fix per subcategory | PENDING: Jabs confirmed still broken 5 Nov; check and fix |
+| Multi-subcategory schema upgrade (Impact/Toggle in Marking) | DROPPED 5 Nov: related products method used instead |
+| Windows office setup for code work | PENDING (Mac only) |
+| Dedicated page per brand (HABA, PRG, Kopis, Airdas, Velse, Modi, Bradma...) | PENDING (in 25 Oct SEO plan) |
+| Area pages (e.g. bandsaw in Chennai/Ahmedabad hubs) | PENDING (in 25 Oct SEO plan) |
+| Export-country pages | PENDING |
+
+#### B2. Catalogue (products in the Google Sheet and Sanity)
+| Category | Data in Sheet/Sanity | Pictures | Category and subcategory cards |
+|---|---|---|---|
+| Horizontal bandsaw (HABA Standard, R, Eco) | DONE | DONE | DONE |
+| Vertical bandsaw (HABA R, PRG Standard, Eco) | DONE | DONE | DONE |
+| Vertical bandsaw: Special Application, Wood Cutting, AAC Block | DONE (data) | PENDING | PENDING |
+| Drilling: Pillar | DONE | DONE | DONE |
+| Drilling: Drilling cum Tapping, Pure Tapping, Drilling cum Milling, Radial, Multi Drill Heads, Automation | DONE (data) | PENDING | PENDING |
+| Press: Impact, Toggle | DONE | DONE | DONE |
+| Press: Mechanical Power | DONE (4 models pictured: PMC10/20/30/50) | PARTLY: PMC5, PMC80, PMC100 missing | DONE |
+| Press: Pneumatic Power, Hydraulic (7 types) | Data from May | PENDING | PENDING |
+| Press: Die and Tools, Feeder, Automation | NOT STARTED | n/a | n/a |
+| Lathe: Belt Drive, All Geared | DONE (data) | PENDING | PENDING (no card) |
+| Marking Solutions: Bradma, Velse, PRG Hydro Pneumatic | DONE (data) | PENDING | PENDING (no card) |
+| VELSE Dot Pin Marking Machine | PENDING | | |
+| Bradma Label Marker page (old link clicked 12 times) | PENDING | | |
+| Air Compressor category | PENDING | | |
+| Die Tools for Press | PENDING | | |
+| Future categories listed 18 Oct: Laser Marking, Shearing, Press Brake, Cutting Blades, Metal Pneumatic Fittings, Small Automation, Vices, Chucks | PENDING (in plan, more categories than listed; Jabs will list them) |
+
+#### B3. Retrofit of competitor FAQs, advantages, spares, keywords (products with photos)
+DONE in Sheet 4 Nov and imported 5 Nov: PRG Mechanical Power Press, Impact Press, Toggle Press, Pillar Drilling.
+PENDING (next session): HABA Standard horizontal, HABA R horizontal, HABA Eco horizontal, PRG Standard vertical, HABA R vertical, PRG Eco vertical. Ask per product: advantages, lifetime spares point, tested-with-video point.
+Videos missing: HABA Eco horizontal, PRG Eco vertical, PRG Pillar Drilling, PRG Toggle Press.
+Mechanical Press: which accessories are standard and which optional is open.
+
+#### B4. SEO, Google, AI
+| Item | Status |
+|---|---|
+| Keyword SOP, SEO title/meta/geo SOP | DONE on all 69 products and all published categories |
+| Competitor FAQs + tags | DONE for bandsaws (2 products), pillar, radial, impact, toggle, mechanical; other types pending |
+| Search Console verified, sitemap submitted (25 Apr) | DONE |
+| Request indexing for /export-and-uae and top products | PENDING |
+| Search Console monthly check; "site:" health check; PageSpeed | PENDING |
+| Google Business Profile (Chennai only) | PENDING: 6 steps, not started; whether a verified profile exists is unconfirmed |
+| Customer Google reviews | PENDING |
+| GA4 baseline 28 Oct, AI traffic baseline | DONE (review due now, 4-9 Nov) |
+| GA4 key events | PENDING |
+| UTM tags on all outside links | PARTLY (brochure only) |
+| Quarterly "ask the AI tools" check | PENDING |
+
+#### B5. Marketing and off-site (posting itself is in the separate marketing project)
+YouTube product videos with link back; IndiaMART/TradeIndia/Alibaba/JustDial listings; backlinks; social profile links; new catalogue with tagged links (Adobe Express Premium); IndiaMART reply PDF stays old until then. All PENDING, Jabs does slowly.
+
+#### B6. Connected systems (must not break; separate projects)
+Contact form > Google Form > Sheet > instant email + WhatsApp > Magic CRM (tenant MMT_001) > IndiaMART automation. MAXIMUS WhatsApp chatbot (WABA number 91760 61514, architecture decision open). Zoho Books/Flow automation. Quotation Pro. Not part of the website work but affected by number and form changes.
+
+#### B7. Infrastructure and housekeeping
+Sanity free plan (22 MB of 100 GB used); Vercel Hobby (ISR Writes 72% on 28 Oct, recheck about 9 Nov); Upstash free; Brevo and Resend DNS in place; GitHub backup. Housekeeping: empty folders in "Mechanical Press - NOT USABLE"; files in "_to_delete" for Jabs to bin; CLAUDE.md is append-only and never pasted over; the 6 KB old CLAUDE.md copy exists in chat.
+
+---
+
+
+## 22. MASTER TO-DO LIST (single list; tick and date items here)
+
+### Next sitting (product update night of 5 Nov, then following sessions)
+1. Retrofit the six remaining bandsaws (HABA Standard, R, Eco horizontal; PRG Standard, HABA R, PRG Eco vertical): ask Jabs per product about advantages, the lifetime spares point (never traded items) and the tested-with-video point. Section 9.
+2. Toggle Press: remove Bradma and Hindustan from the toggle FAQs and keyword tags in the Sheet, keep the four correct brands, import, check live.
+3. Full-width layout (left-aligned text, edge-to-edge sections), together with the design refresh: Claude proposes 2 or 3 homepage options first, Jabs chooses, then one build.
+4. Contact page: change "4 business hours" wording to "within the hour"; show 91760 61514 as "coming soon".
+5. Vercel: redirect maxmachines.in to www.maxmachines.in.
+6. Display Order: check and fix per subcategory.
+
+### Website to build or fix
+7. About page edits (decision 10) and the two open points.
+8. GA4 key events: contact form, WhatsApp click, call click, catalogue request.
+9. Header Products dropdown with all categories; Download Brochure link (after the new catalogue); Service page (installation, maintenance, spares, training: only what Jabs confirms is true); real machine photo in the hero; "Talk to an engineer" button.
+10. Language: Phase 1 Google Translate widget (about 12 languages: Hindi, Tamil, Telugu, Gujarati, Marathi, Bengali, Arabic, French, Russian, Spanish, Portuguese, Swahili). Check GA4 language and country reports first. Phase 2 real translated pages (/hi, /ar) only if the data supports it; note Vercel ISR Writes limit and Arabic right-to-left. Decide together, later.
+11. Check "Fill Form" buttons feed the same Sheet (report only). Fix Home and About meta (mention Milling and Laser). Navigation consistency. Product page template. Video text summaries. "Don't see your machine? Ask us" button. Verify custom 404 page and homepage LocalBusiness data.
+12. Brand pages and area pages (from the 25 Oct SEO plan); export-country pages.
+13. /our-clients: add new customers and logos (page stays hidden until then). /blog content.
+14. Windows office setup for code work (Mac only today).
+
+### Catalogue
+15. Pictures and cards: Mechanical Press models PMC5, PMC80, PMC100; Hydraulic and Pneumatic Power Press; Lathe and Marking cards; other Drilling subcategories; Special Application, Wood and AAC vertical bandsaws; four missing YouTube videos.
+16. New products: VELSE Dot Pin Marking Machine, Bradma Label Marker page, Die Tools for Press, Feeder and Automation (press subcategories), Air Compressor (Airdas), cutting blades (Kopis), and the further categories Jabs will list.
+17. Mechanical Press: which of the 10 accessories are standard and which optional.
+18. Competitor FAQ method for the remaining machine types; check "Vikranth" in the bandsaw list (decision 17).
+
+### Google, AI and off-site (Jabs does slowly)
+19. Analytics review now due (checklist in section 16, compare with the 28 Oct baseline). Vercel ISR Writes check about 9 Nov.
+20. Google Business Profile update (Chennai only; six steps in section 16). Collect customer reviews.
+21. Search Console: request indexing for /export-and-uae and top products; monthly check; PageSpeed.
+22. UTM tags on every outside link. YouTube videos with link back. IndiaMART, TradeIndia, Alibaba, JustDial listings. Backlinks. New catalogue with tagged links.
+23. Quarterly "ask the AI tools" check.
+
+### Housekeeping
+24. Empty folders in "Mechanical Press - NOT USABLE" and files in "_to_delete" for Jabs to bin. Project docs `plan-2026-10-29.md` is superseded by this file. CLAUDE.md stays append-only.

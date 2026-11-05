@@ -389,3 +389,14 @@ Product: PRG Mechanical Power Press (Press Machines category, brand PRG, Made in
 ## READ FIRST - SOP-product-update.md (added 4 Nov 2026)
 - SOP-product-update.md (same folder) is the single master for product, Sheet, photo, Sanity and competitor-brand rules and the open to-do list. Read it at the start of every chat. If it disagrees with anything above, the SOP wins.
 - Copies: this folder (master, pushed to git), the claude.ai Project doc claude/SOP-product-update.md, and a short pointer in project memory.
+
+## Corrections 5 Nov 2026 (newer than anything above; SOP-product-update.md v4 wins)
+- Page refresh: normal refresh is 24 hours (revalidate 86400) plus instant refresh by the Sanity webhook on publish. The "revalidate = 3600 / up to 1 hour" lines above are old. Never set it back to 60.
+- Brochure redirect (/shop/* and /product-category/* to /products?utm_source=brochure&utm_medium=pdf) is LIVE (confirmed by Jabs 5 Nov). The "not yet live" heading above is old.
+- Design colours: black #0f0f0f, #1a1a1a and gold #eab308. The April blue steel and orange note is superseded.
+- Sanity Studio address: www.maxmachines.in/studio.
+- Main address is www.maxmachines.in. Decision: make maxmachines.in redirect to www in Vercel (Domains). Do not touch Hostinger DNS.
+- Contact page promise must read "within the hour". Show 91760 61514 on the Contact page only as "coming soon".
+- Layout: full width, left-aligned text and a design refresh are planned for the next sitting. Do not start before Jabs approves a design option.
+- Vikrant Machinery is a supplier of some models, not a competitor. Toggle press competitor names: Precision Engineering Products (Exacta), Jeet, Bharat Machines Press, Balaji (Bradma and Hindustan are impact press only).
+- Everything else, including the master status register and the single to-do list, is in SOP-product-update.md sections 20 to 22. Append only; never replace this file.
