@@ -360,7 +360,7 @@ export default function ContactPage() {
             <p className="text-lg max-w-xl mx-auto" style={{ color: "#a3a3a3" }}>
               Fill our quick form and receive your catalogue instantly on WhatsApp &amp; Email.
               Our team will call you within{" "}
-              <span className="text-white font-medium">4 business hours</span>.
+              <span className="text-white font-medium">the hour</span>.
             </p>
           </div>
           <EnquiryForm />

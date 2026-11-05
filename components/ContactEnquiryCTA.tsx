@@ -45,7 +45,7 @@ export default function ContactEnquiryCTA() {
         <p className="text-lg max-w-xl mx-auto mb-10" style={{ color: "#a3a3a3" }}>
           Fill our quick form and receive your catalogue instantly on WhatsApp &amp; Email.
           Our team will call you within{" "}
-          <span className="text-white font-medium">4 business hours</span>.
+          <span className="text-white font-medium">the hour</span>.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

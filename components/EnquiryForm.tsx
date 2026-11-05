@@ -206,7 +206,7 @@ export default function EnquiryForm({ initialMachine = "", initialMessage = "" }
         <h3 className="text-2xl font-black text-white mb-3">Enquiry Received!</h3>
         <p className="text-base leading-relaxed max-w-md mx-auto" style={{ color: "#a3a3a3" }}>
           Thank you! Your enquiry has been received. Our team will contact you within{" "}
-          <span className="text-white font-semibold">4 business hours</span>.
+          <span className="text-white font-semibold">the hour</span>.
         </p>
         <button
           onClick={() => {
@@ -430,7 +430,7 @@ export default function EnquiryForm({ initialMachine = "", initialMessage = "" }
         <p className="text-xs leading-relaxed max-w-xs" style={{ color: "#ffffff" }}>
           ⚡ Submit and receive catalogue on WhatsApp &amp; Email{" "}
           <span style={{ color: "#eab308" }}>instantly</span>. Our team calls within{" "}
-          <span style={{ color: "#eab308" }}>4 business hours</span>.
+          <span style={{ color: "#eab308" }}>the hour</span>.
         </p>
       </div>
     </form>
