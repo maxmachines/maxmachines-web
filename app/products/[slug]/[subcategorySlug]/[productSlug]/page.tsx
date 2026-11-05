@@ -14,6 +14,8 @@ import FaqAccordion from "@/components/FaqAccordion";
 import ProductImageGallery from "@/components/ProductImageGallery";
 import { waLink } from "@/lib/whatsapp";
 import { client } from "@/sanity/lib/client";
+import OverviewToggle from "@/components/OverviewToggle";
+import VideoPlayer from "@/components/VideoPlayer";
 
 /* ─── Types ──────────────────────────────────────────────────────── */
 interface SpecRow { specName: string; specValue: string }
@@ -78,6 +80,10 @@ function getYouTubeId(url: string): string | null {
   if (!url || typeof url !== "string") return null;
   const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/))([a-zA-Z0-9_-]{11})/);
   return match ? match[1] : null;
+}
+
+function isYouTubeShort(url: string): boolean {
+  return url.includes("/shorts/");
 }
 
 /* ─── Data fetchers ──────────────────────────────────────────────── */
@@ -544,123 +550,39 @@ export default async function ProductDetailPage({
         {hasFullDesc && (
           <section className="mb-14">
             <SectionHeading>Overview</SectionHeading>
-            <PortableText
-              value={product.fullDescription as Parameters<typeof PortableText>[0]["value"]}
-              components={ptComponents}
-            />
+            <OverviewToggle>
+              <PortableText
+                value={product.fullDescription as Parameters<typeof PortableText>[0]["value"]}
+                components={ptComponents}
+              />
+            </OverviewToggle>
           </section>
         )}
 
-        {/* ── 7. YouTube Videos ───────────────────────────────────────── */}
+        {/* ── 7. Videos ───────────────────────────────────────────────── */}
         {hasYouTube && (
           <section className="mb-14">
             <SectionHeading>Videos</SectionHeading>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Hidden links kept in HTML for search engines */}
+            <ul className="sr-only">
               {product.youtubeUrls!.filter(getYouTubeId).map((url, i) => (
-                <iframe
+                <li key={i}><a href={url}>Watch video {i + 1}</a></li>
+              ))}
+            </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
+              {product.youtubeUrls!.filter(getYouTubeId).map((url, i) => (
+                <VideoPlayer
                   key={i}
-                  width="100%"
-                  height="220"
-                  src={`https://www.youtube.com/embed/${getYouTubeId(url)}`}
-                  frameBorder={0}
-                  allowFullScreen
-                  style={{ borderRadius: "12px", display: "block" }}
+                  videoId={getYouTubeId(url)!}
+                  isShort={isYouTubeShort(url)}
+                  productName={product.name}
                 />
               ))}
             </div>
           </section>
         )}
 
-        {/* ── 8. Variants & Pricing ───────────────────────────────────── */}
-        {hasVariants && (
-          <section className="mb-14">
-            <SectionHeading>Variants &amp; Pricing</SectionHeading>
-            <div
-              className="overflow-x-auto rounded-xl border"
-              style={{ borderColor: "rgba(234,179,8,0.14)", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
-            >
-              <table className="w-full text-sm" style={{ minWidth: "460px" }}>
-                <thead>
-                  <tr style={{ background: "rgba(234,179,8,0.08)" }}>
-                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Model</th>
-                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Size</th>
-                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Availability</th>
-                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Price</th>
-                    <th className="px-5 py-3.5" />
-                  </tr>
-                </thead>
-                <tbody>
-                  {variants.map((v, i) => {
-                    const avail = v.availability ? availabilityLabel[v.availability] : null;
-                    return (
-                      <tr
-                        key={i}
-                        style={{
-                          background: i % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)",
-                          borderTop: "1px solid rgba(234,179,8,0.07)",
-                        }}
-                      >
-                        <td className="px-5 py-3.5 font-semibold text-white">{v.modelNumber}</td>
-                        <td className="px-5 py-3.5" style={{ color: "#a3a3a3" }}>
-                          {v.size ?? <span style={{ color: "#525252" }}>—</span>}
-                        </td>
-                        <td className="px-5 py-3.5">
-                          {avail
-                            ? <span className="text-xs font-semibold" style={{ color: avail.color }}>{avail.label}</span>
-                            : <span style={{ color: "#525252" }}>—</span>
-                          }
-                        </td>
-                        <td className="px-5 py-3.5">
-                          {v.price
-                            ? <span className="font-bold" style={{ color: "var(--gold)" }}>{v.price}</span>
-                            : <span style={{ color: "#737373" }}>Request Quote</span>
-                          }
-                        </td>
-                        <td className="px-5 py-3.5">
-                          <EnquireButton
-                            productName={`${product.name} — ${v.modelNumber}${v.size ? ` (${v.size})` : ""}`}
-                            message={`I am interested in: ${product.name} — ${v.modelNumber}${v.size ? ` (${v.size})` : ""}.`}
-                            includePageUrl
-                            label="Enquire"
-                            className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all duration-200 hover:brightness-110 whitespace-nowrap"
-                            style={{ background: "var(--gold)", color: "#0f0f0f" }}
-                          />
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </section>
-        )}
-
-        {/* ── 9. PDF Downloads ────────────────────────────────────────── */}
-        {hasPdfs && (
-          <section className="mb-14">
-            <SectionHeading>PDF Downloads</SectionHeading>
-            <div className="flex flex-col gap-3">
-              {product.pdfUrls!.map((url, i) => (
-                <a
-                  key={i}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-5 py-4 rounded-xl border transition-all duration-200 hover:bg-white/5"
-                  style={{ borderColor: "rgba(234,179,8,0.2)", color: "var(--gold)", background: "var(--bg-secondary)" }}
-                >
-                  <span className="text-base">📄</span>
-                  <span className="text-sm font-semibold flex-1">
-                    {product.pdfLabels?.[i] ?? `Download PDF ${i + 1}`}
-                  </span>
-                  <span className="text-xs font-normal" style={{ color: "#737373" }}>↓ Download</span>
-                </a>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ── 10. Accessories ─────────────────────────────────────────── */}
+        {/* ── 8. Accessories ──────────────────────────────────────────── */}
         {hasAccessories && (
           <section className="mb-14">
             <SectionHeading>Accessories &amp; Add-ons</SectionHeading>
@@ -696,19 +618,7 @@ export default async function ProductDetailPage({
           </section>
         )}
 
-        {/* ── 11. FAQs ────────────────────────────────────────────────── */}
-        {hasFaqs && (
-          <section className="mb-14">
-            <SectionHeading>FAQs</SectionHeading>
-            <div className="flex flex-col gap-3">
-              {product.faqs!.map((faq, i) => (
-                <FaqAccordion key={i} faq={faq} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* ── 12. More in [subcategory] ────────────────────────────────── */}
+        {/* ── 9. More in [subcategory] ─────────────────────────────────── */}
         {moreProducts.length > 0 && (
           <section className="mb-14">
             <SectionHeading>More in {subName}</SectionHeading>
@@ -742,9 +652,9 @@ export default async function ProductDetailPage({
           </section>
         )}
 
-        {/* ── 13. Compare all models in subcategory ───────────────────── */}
+        {/* ── 10. Compare all models in subcategory ───────────────────── */}
         {siblings.length > 1 && allSpecNames.length > 0 && (
-          <section className="mb-4">
+          <section className="mb-14">
             <SectionHeading>Compare All {subName} Models</SectionHeading>
             <div
               className="overflow-x-auto rounded-xl border"
@@ -834,6 +744,107 @@ export default async function ProductDetailPage({
                   </tr>
                 </tbody>
               </table>
+            </div>
+          </section>
+        )}
+
+        {/* ── 11. Variants & Pricing ──────────────────────────────────── */}
+        {hasVariants && (
+          <section className="mb-14">
+            <SectionHeading>Variants &amp; Pricing</SectionHeading>
+            <div
+              className="overflow-x-auto rounded-xl border"
+              style={{ borderColor: "rgba(234,179,8,0.14)", WebkitOverflowScrolling: "touch" } as React.CSSProperties}
+            >
+              <table className="w-full text-sm" style={{ minWidth: "460px" }}>
+                <thead>
+                  <tr style={{ background: "rgba(234,179,8,0.08)" }}>
+                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Model</th>
+                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Size</th>
+                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Availability</th>
+                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Price</th>
+                    <th className="px-5 py-3.5" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {variants.map((v, i) => {
+                    const avail = v.availability ? availabilityLabel[v.availability] : null;
+                    return (
+                      <tr
+                        key={i}
+                        style={{
+                          background: i % 2 === 0 ? "var(--bg-secondary)" : "rgba(234,179,8,0.02)",
+                          borderTop: "1px solid rgba(234,179,8,0.07)",
+                        }}
+                      >
+                        <td className="px-5 py-3.5 font-semibold text-white">{v.modelNumber}</td>
+                        <td className="px-5 py-3.5" style={{ color: "#a3a3a3" }}>
+                          {v.size ?? <span style={{ color: "#525252" }}>—</span>}
+                        </td>
+                        <td className="px-5 py-3.5">
+                          {avail
+                            ? <span className="text-xs font-semibold" style={{ color: avail.color }}>{avail.label}</span>
+                            : <span style={{ color: "#525252" }}>—</span>
+                          }
+                        </td>
+                        <td className="px-5 py-3.5">
+                          {v.price
+                            ? <span className="font-bold" style={{ color: "var(--gold)" }}>{v.price}</span>
+                            : <span style={{ color: "#737373" }}>Request Quote</span>
+                          }
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <EnquireButton
+                            productName={`${product.name} — ${v.modelNumber}${v.size ? ` (${v.size})` : ""}`}
+                            message={`I am interested in: ${product.name} — ${v.modelNumber}${v.size ? ` (${v.size})` : ""}.`}
+                            includePageUrl
+                            label="Enquire"
+                            className="text-xs font-bold px-3 py-1.5 rounded-lg transition-all duration-200 hover:brightness-110 whitespace-nowrap"
+                            style={{ background: "var(--gold)", color: "#0f0f0f" }}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
+
+        {/* ── 12. PDF Downloads ───────────────────────────────────────── */}
+        {hasPdfs && (
+          <section className="mb-14">
+            <SectionHeading>PDF Downloads</SectionHeading>
+            <div className="flex flex-col gap-3">
+              {product.pdfUrls!.map((url, i) => (
+                <a
+                  key={i}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-5 py-4 rounded-xl border transition-all duration-200 hover:bg-white/5"
+                  style={{ borderColor: "rgba(234,179,8,0.2)", color: "var(--gold)", background: "var(--bg-secondary)" }}
+                >
+                  <span className="text-base">📄</span>
+                  <span className="text-sm font-semibold flex-1">
+                    {product.pdfLabels?.[i] ?? `Download PDF ${i + 1}`}
+                  </span>
+                  <span className="text-xs font-normal" style={{ color: "#737373" }}>↓ Download</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── 13. FAQs ────────────────────────────────────────────────── */}
+        {hasFaqs && (
+          <section className="mb-14">
+            <SectionHeading>FAQs</SectionHeading>
+            <div className="flex flex-col gap-3">
+              {product.faqs!.map((faq, i) => (
+                <FaqAccordion key={i} faq={faq} />
+              ))}
             </div>
           </section>
         )}
