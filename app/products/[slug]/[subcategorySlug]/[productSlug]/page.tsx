@@ -723,9 +723,9 @@ export default async function ProductDetailPage({
                   className="flex-shrink-0 rounded-2xl border overflow-hidden transition-all duration-200 hover:border-yellow-400/40 hover:bg-white/5 group"
                   style={{ width: "200px", background: "var(--bg-secondary)", borderColor: "rgba(234,179,8,0.14)" }}
                 >
-                  <div className="relative w-full" style={{ height: "130px", background: "rgba(234,179,8,0.04)" }}>
+                  <div className="relative w-full" style={{ height: "130px", background: "#f5f5f0" }}>
                     {s.imageUrl ? (
-                      <Image src={s.imageUrl} alt={s.name} fill className="object-cover" sizes="200px" />
+                      <Image src={s.imageUrl} alt={s.name} fill className="object-contain" sizes="200px" />
                     ) : (
                       <div className="flex items-center justify-center h-full opacity-40"><GearIcon /></div>
                     )}
