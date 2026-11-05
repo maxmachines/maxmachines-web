@@ -1,6 +1,6 @@
 # SOP - maxmachines.in (single master file)
 
-Version 4.1, 5 Nov 2026 (closed at 14:00 IST; tonight's work plan added). Sections 14 to 19 hold the knowledge, section 20 the decisions made on 5 Nov, section 21 the master status register (day 1 to date) and section 22 the single master to-do list. Owner: Jabs. Built from the project notes, CLAUDE.md and every chat summary from 17 Sep to 4 Nov 2026 plus the May/June press and marking chats.
+Version 4.2, 6 Nov 2026 (closed after the 5-6 Nov evening sitting: six bandsaws retrofitted and live, product page redesigned, redirect set). Sections 14 to 19 hold the knowledge, section 20 the decisions made on 5 Nov, section 21 the master status register (day 1 to date) and section 22 the single master to-do list. Owner: Jabs. Built from the project notes, CLAUDE.md and every chat summary from 17 Sep to 4 Nov 2026 plus the May/June press and marking chats.
 
 READ THIS FILE FIRST in every new chat of the MaxMachines.in project. If anything here disagrees with CLAUDE.md, project notes or memory, THIS FILE WINS.
 
@@ -101,7 +101,7 @@ Approved lists (Jabs):
 - Pillar drilling: Eifco, ITCO, Parmar, JMTC, Prakash, Siddhapura, UNI-TECH, LION, Dalip, KPT
 - Radial drilling: Eifco, Parmar, Prakash, YOGI, ASHU MAKE, Hi-Power, HPSM, Batliboi, PANCHAL
 - Impact press: Bradma, Hindustan, Ellora, Hammerknock, Benchmark. Toggle press (corrected 5 Nov): Precision Engineering Products (Exacta), Jeet Machine Tools, Bharat Machines Press, Balaji. Bradma and Hindustan make impact presses, not toggle, so they are removed from toggle FAQs and tags
-- Bandsaw and vertical bandsaw: Multicut, Indotech, ITL, MEBA, Sagar, Laxmi, Laxman, Laxmen (two different brands), Vijay, Laxson, Krishna (Vikranth removed 5 Nov: that name meant Vikrant Machinery, a supplier, see section 20)
+- Bandsaw (horizontal, 19 names, final 5 Nov night): Indotech, Multicut, ITL, MEBA, Laxmi, Laxman, Laxson, Laxmen (Laxman, Laxson and Laxmen are three different brands), Vikrant, Vijay, Krishna, Sagar, Accucut, SPM Tools, MSC, Banka, Bhavya, Pathak, Premier. Vertical bandsaw (17 names): the same list without SPM Tools and MSC. PRG Eco vertical (soft material and wood) uses only Jai, Umiya, Mahavir and Sagar. VIKRANT RULE (Jabs, 5 Nov night): Vikrant Machinery is a supplier (internal information, never written on the site as a maker). The name Vikrant is used ONLY as a competitor brand name inside FAQ answers and keyword tags, like any other brand. Never write that any MMT machine is made by or sourced from Vikrant. Section 20 points 17 and 25
 - Banka, Bhavya, Pathak, Premier: drilling, radial and bandsaw
 - Mechanical power press (4 Nov): Omkar, Jayshree, Jay Shakti, Accumax, Bhavya, Pathak, Harihar, Digvijay, Vivek, Mayank, Foreman, Shailesh, Sagar, Jayson, Acme, Everest, Mayur, Jekson, Rajesh, Raviraj. Pneumatic power press: confirm when we reach it (extra names seen: Orbital, Hammer Knock, Mercury Pneumatics, National Pneumatic, Sharma Presses, Eminence)
 - Other types: run the method first.
@@ -145,17 +145,17 @@ Approved lists (Jabs):
 
 ## 9. Retrofit to-do: products that already have photos (scope set by Jabs, 4 Nov 2026)
 
-Only products with photos uploaded are retrofitted; run sections 4, 5 and 8 on each. Tick list (status as of 4 Nov):
+Only products with photos uploaded are retrofitted; run sections 4, 5 and 8 on each. Tick list (status as of 6 Nov: all ten ticked; the six bandsaws were done on the night of 5-6 Nov, Sheet counts in section 13):
 - [x] PRG Mechanical Power Press: full method done; lifetime spares Highlight + FAQ written to Sheet 4 Nov (import pending)
 - [x] PRG Impact Press Machine: advantages, spares FAQ and highlights written to Sheet 4 Nov (import pending)
 - [x] PRG Toggle Press Machine: brands, accuracy and spares FAQ and highlights written to Sheet 4 Nov (import pending)
 - [x] PRG Pillar Drilling Machine: written to Sheet 4 Nov (import pending; no video yet)
-- [ ] HABA Standard Series horizontal bandsaw (competitor FAQs exist)
-- [ ] HABA R Series horizontal bandsaw
-- [ ] HABA Eco Series horizontal bandsaw (no video yet)
-- [ ] PRG Standard Series vertical metal cutting bandsaw (competitor FAQs exist)
-- [ ] HABA R Series vertical metal cutting bandsaw
-- [ ] PRG Eco Series vertical metal cutting bandsaw (no video yet)
+- [x] HABA Standard Series horizontal bandsaw - DONE 5-6 Nov 2026, imported, live
+- [x] HABA R Series horizontal bandsaw - DONE 5-6 Nov 2026, imported, live
+- [x] HABA Eco Series horizontal bandsaw (no video yet) - DONE 5-6 Nov 2026, imported, live
+- [x] PRG Standard Series vertical metal cutting bandsaw - DONE 5-6 Nov 2026, imported, live
+- [x] HABA R Series vertical metal cutting bandsaw - DONE 5-6 Nov 2026, imported, live
+- [x] PRG Eco Series vertical metal cutting bandsaw (no video yet) - DONE 5-6 Nov 2026, imported, live
 Check in Studio whether any other product already has pictures and add it here.
 Everything else (radial drilling, other bandsaws, tapping, milling, multi drill head, automation, pneumatic and hydraulic press, lathes, marking) is done completely, in order, when its photos arrive. Radial Drilling already has competitor FAQs from 25 Oct.
 
@@ -199,6 +199,17 @@ Decision log (newest at the bottom; Claude appends here the day a decision is ma
 - 2026-11-05: Terminal commands rule (Jabs): every Terminal command goes in its own separate code block (one command per block, copy-paste ready), never several commands in one block or inside a sentence. Git push of the 5 Nov SOP done (commit 9338418).
 - 2026-11-05 (14:00): Answers to the 18 questions recorded (section 20). Master status register (section 21) and single to-do list (section 22) created; tonight's plan added. Vikrant Machinery is a supplier, removed from competitor lists; Maldives to be added to the export list; P.R. Garg tribute unchanged; full width, language and design go on the to-do list.
 - 2026-11-05 (later): SOP made complete as v3: sections 14 to 20 added (site foundation, technical lessons, Google plan, AI visibility, marketing, product-line rules, decisions to settle). Nothing important now lives only in old chats.
+- 2026-11-05/06 (night sitting, SOP v4.2): 
+  * Toggle Press fixed in the Sheet (Bradma and Hindustan out of the toggle FAQs and tags; 13 FAQs).
+  * Vikrant clean-up done, then the rule refined: Vikrant is a competitor NAME only (section 20 points 17 and 25). Bandsaw lists finalised (section 5).
+  * Six bandsaws retrofitted in the Sheet with Jabs's real advantages (Standard: heavy wheel, ELECON gearbox, hydraulic cylinder for longer blade life, heavy vice, special-casting wheel that does not wear; R series: German-style arm, safety, wider vice opening; Eco: economical basic model; PRG Standard vertical: proven, simple; HABA R vertical: safety; PRG Eco vertical: low budget, soft material and wood). Lifetime spares and tested-with-video points were confirmed per product. Counts (FAQs / highlights): HABA Standard horizontal row 3 (17 / 13); HABA R horizontal row 2 (16 / 15); HABA Eco horizontal row 4 (17 / 12); PRG Standard vertical row 6 (17 / 15); HABA R vertical row 5 (20 / 19); PRG Eco vertical row 7 (14 / 12). Toggle Press 13 FAQs.
+  * Import run: 69 updated, Errors 0. All six checked live.
+  * Gotcha: a hidden-row filter on the FAQs tab shifted a paste (it landed in B26 instead of B12). Always remove the filter BEFORE any paste or import, restore from the snapshot, re-paste and CSV-diff.
+  * Bandsaw category meta description edited and published in Studio.
+  * Code (all committed, pushed and verified live): 378f647 "More in" photos now object-contain on #f5f5f0 (no cropping); 3db4e6f product page reorder (section 20 point 27), Overview with Read more (components/OverviewToggle.tsx, text stays in server HTML, button only when text overflows), video thumbnails with click-to-play (components/VideoPlayer.tsx, Shorts in a 9:16 card, video links kept in the HTML for Google); de8e06c reply promise "within the hour".
+  * Vercel: maxmachines.in to www set to 308.
+  * Verification method: before and after snapshot of 113 pages (text hash, title, meta, FAQ count, link and image counts) kept in browser localStorage on the production site; after the deploy only /contact differed, as planned. Use it for every future code change ("always check the old and new page").
+  * Known cosmetic points: the video row looks uneven when one wide video sits beside two tall Shorts; "More in" cards could go from 130 px to 160 px.
 
 
 ---
@@ -276,7 +287,7 @@ Google Analytics 4 (property 367500154)
 
 1. Brochure redirect is LIVE. Old links land on /products.
 2. WhatsApp numbers: website floating button and links 93828 61514 (sales); export page and brochure 99620 61514. 91760 61514 is live on the CRM but not yet on MAXIMUS (the auto-reply chatbot): show it on the Contact page only, as "coming soon", not as a working button.
-3. Reply promise is "within the hour" everywhere (Contact page text "4 business hours" to be changed).
+3. Reply promise is "within the hour" everywhere. DONE 5 Nov night (commit de8e06c): the four "4 business hours" lines in app/contact/page.tsx, components/EnquiryForm.tsx (2) and components/ContactEnquiryCTA.tsx now say "the hour". The enquiry-form success message (after submit) was not tested live, to avoid triggering real automation; check it the next time Jabs sends a test enquiry.
 4. 25 Oct rules win for SEO title, meta (no city names) and geo tags. "Government Supply" stays on products that already have it.
 5. Keywords: buyer-search phrases plus Chennai and Ahmedabad (two tags). "Export" appears inside phrases such as "exporter India".
 6. Google Business Profile: Chennai only, final. A profile exists; updating it is on the to-do list.
@@ -289,15 +300,18 @@ Google Analytics 4 (property 367500154)
 13. Planned categories: more than the list (Laser Marking, Shearing, Press Brake, Cutting Blades, Pneumatic Fittings, Small Automation, Vices, Chucks). Jabs will give the full list.
 14. Toggle press brands corrected (see section 5).
 15. Our Clients page stays hidden. New customers and their logos will be added later (to-do).
-16. Main web address is www.maxmachines.in (people type www). On 5 Nov `maxmachines.in` did NOT redirect (address bar unchanged), so both versions are live. To-do: in Vercel (Settings, Domains) make maxmachines.in redirect to www. Do not touch Hostinger DNS (see section 11).
-17. Vikrant Machinery (vikrantmachinery.com, Ahmedabad) is a SUPPLIER: MMT gets some machines from them, but sells them under MMT's own brand (HABA, PRG), never under Vikrant's brand. Decision (Jabs 5 Nov): remove "Vikranth" (the old spelling) from the bandsaw competitor list, from comparison FAQs and from keyword tags. The rest of the list stays as it is. Nobody writes that a machine is made by Vikrant on the website. Their site is a good reference for ideas only (never copy text or pictures).
+16. Main web address is www.maxmachines.in (people type www). On 5 Nov `maxmachines.in` did NOT redirect (address bar unchanged), so both versions are live. DONE 5 Nov night: in Vercel (Settings, Domains) maxmachines.in now redirects to www.maxmachines.in with a permanent 308 (it was 307) and was verified. Do not touch Hostinger DNS (see section 11).
+17. Vikrant Machinery (vikrantmachinery.com, Ahmedabad) is a SUPPLIER: MMT gets some machines from them, but sells them under MMT's own brand (HABA, PRG), never under Vikrant's brand. Earlier decision (Jabs 5 Nov, morning): remove "Vikranth" (the old, wrong spelling). REVERSED in part the same night, see point 25. Nobody writes that a machine is made by Vikrant on the website. Their site is a good reference for ideas only (never copy text or pictures).
 18. Full-width layout: planned for the next sitting (the site now uses a centred 1280 px box, `max-w-7xl mx-auto`, while Vikrant-style sites run edge to edge with left-aligned text).
 19. Language and design: added to the to-do list to decide later (see section 22). Jabs has no homepage design yet: next sitting Claude proposes 2 or 3 homepage design options (or template sites to learn from) and one redesign is done in a single go, so the site does not look like a generic AI-built site. Adobe Express Premium is available for design assets.
 20. Small clean-ups done by Claude: CLAUDE.md revalidate wording and redirect status corrected by an appended note; Studio address is www.maxmachines.in/studio (not localhost); April colours blue steel and orange are superseded by black and gold.
 21. Late Mr. P.R. Garg tribute on the About page: leave as it is (decided 5 Nov).
 22. Export countries on the About page: add Maldives. More countries are added when the customer list is updated. With Maldives the list has 11 countries (Dubai and UAE are the same country), so "10+" is true. Tidy the Dubai/UAE duplicate when the customer list is done.
 23. Leadership line for Jabs: as decided in point 10 (Laser Unlimited out, JB Service Solutions in, Kerdoss one factual line, compliance officer approves the wording).
-24. Tonight's work (5 Nov evening) is planned in section 22, "TONIGHT'S PLAN".
+24. Tonight's work (5 Nov evening) was planned in section 22, "TONIGHT'S PLAN" and is done (see the 5-6 Nov log in section 13).
+25. (Jabs, 5 Nov night) VIKRANT final: "Vikrant" (correct spelling) is a bandsaw brand that buyers search, so it IS a competitor name, added to the bandsaw lists (horizontal and vertical) together with Accucut. SPM Tools and MSC are added to horizontal only. This is allowed only inside FAQ answers and keyword tags. The fact that MMT gets some machines from Vikrant Machinery stays internal and is never written on the site. MSC is a manufacturer name.
+26. (Jabs, 5 Nov night) Comparison FAQs: vary the question wording from product to product so the 'I am comparing' opening does not repeat. Where the same wording would repeat, change it.
+27. (Jabs, 5 Nov night) Product page section order (same template for every product): photos, Specifications, Overview (short with Read more), Videos, Accessories, More in, Compare All Models, Variants and Pricing, PDF Downloads, FAQs last (FAQs are for Google and AI tools, not for customers). Customers (MSME) look at pictures and videos first; corporates read the detail.
 
 ## 21. MASTER STATUS REGISTER (day 1 to 5 Nov 2026)
 
@@ -333,6 +347,7 @@ Sources: project memory, every chat summary from 22 Apr to 4 Nov 2026, CLAUDE.md
 | 29 Oct | Google Business Profile decided: Chennai only. Plan for Bradma and power press. |
 | 3-4 Nov | Mechanical Power Press done (11 pictures, 4 videos, subcategory, FAQs). Competitor method. Retrofit of Impact, Toggle, Pillar Drilling. Master SOP created. |
 | 5 Nov | Import run (69 updated, 0 errors), live pages checked. SOP final pushed (commit 5987daf). This register drafted. |
+| 5-6 Nov (night) | Toggle fix, Vikrant clean-up, six bandsaws retrofitted and imported (0 errors), "More in" photo fix, product page reorder, Read more, video thumbnails, "within the hour", maxmachines.in 308 redirect. SOP v4.2. |
 
 ---
 
@@ -398,7 +413,7 @@ Sources: project memory, every chat summary from 22 Apr to 4 Nov 2026, CLAUDE.md
 
 #### B3. Retrofit of competitor FAQs, advantages, spares, keywords (products with photos)
 DONE in Sheet 4 Nov and imported 5 Nov: PRG Mechanical Power Press, Impact Press, Toggle Press, Pillar Drilling.
-PENDING (next session): HABA Standard horizontal, HABA R horizontal, HABA Eco horizontal, PRG Standard vertical, HABA R vertical, PRG Eco vertical. Ask per product: advantages, lifetime spares point, tested-with-video point.
+DONE 5-6 Nov and imported (0 errors, live): HABA Standard, R and Eco horizontal; PRG Standard, HABA R and PRG Eco vertical bandsaws. Nothing pending in this retrofit. Rule for future machines: ask per product about advantages, lifetime spares point, tested-with-video point.
 Videos missing: HABA Eco horizontal, PRG Eco vertical, PRG Pillar Drilling, PRG Toggle Press.
 Mechanical Press: which accessories are standard and which optional is open.
 
@@ -431,7 +446,7 @@ Sanity free plan (22 MB of 100 GB used); Vercel Hobby (ISR Writes 72% on 28 Oct,
 
 ## 22. MASTER TO-DO LIST (single list; tick and date items here)
 
-### TONIGHT'S PLAN (5 Nov 2026 evening, product update sitting)
+### TONIGHT'S PLAN (5 Nov 2026 evening, product update sitting) - DONE except items 7 (Display Order) and 8 (full width and design), which move to the open list below
 Rules for the sitting: one step at a time, every Terminal command in its own code box, Claude in Chrome on Browser 1 (e0f3...), nothing published, committed or pushed without Jabs's yes.
 1. Start: Claude reads all three copies of this SOP (folder, project, git). They were identical at 14:00 IST (git commit 747e089 plus the 4.1 edits).
 2. Toggle Press fix: remove Bradma and Hindustan from the toggle FAQs and the toggle keyword tags in the Sheet; keep Precision Engineering (Exacta), Jeet, Bharat Machines Press, Balaji. Read the Sheet by CSV first, show Jabs the exact rows to change, write, verify by CSV diff.
@@ -443,12 +458,15 @@ Rules for the sitting: one step at a time, every Terminal command in its own cod
 8. Full-width layout and design: Claude shows 2 or 3 homepage design options first; no code until Jabs picks one. Tonight if time allows, otherwise the next sitting.
 9. End: say "End session": Claude updates sections 21 and 22 and the log, syncs the three copies, gives the git commands (one per box).
 
-### Next sitting (product update night of 5 Nov, then following sessions)
-1. Retrofit the six remaining bandsaws (HABA Standard, R, Eco horizontal; PRG Standard, HABA R, PRG Eco vertical): ask Jabs per product about advantages, the lifetime spares point (never traded items) and the tested-with-video point. Section 9.
-2. Toggle Press: remove Bradma and Hindustan from the toggle FAQs and keyword tags in the Sheet, keep the four correct brands, import, check live.
+### OPEN LIST AFTER THE 5-6 NOV SITTING (6 Nov 2026; items below marked DONE are finished, the rest are open)
+Next sitting, in this order: (a) Studio: Display Order, card picture, description and SEO fields for the bandsaw subcategories without pictures (Horizontal Semi Auto, Fully Auto, Double Column, Special Application, Wood Cutting, AAC Block; Special Application has no Display Order); (b) full-width layout and homepage design: Claude proposes 2 or 3 options, no code until Jabs picks one; (c) About page edits; (d) GA4 key events; (e) analytics review and Vercel ISR Writes check about 9 Nov; (f) optional polish: "More in" card box 130 to 160 px, uneven video row; (g) test the enquiry-form success message with a test enquiry.
+
+### Older list (kept for reference)
+1. DONE 5-6 Nov: six bandsaws retrofitted (section 9).
+2. DONE 5 Nov night: Toggle Press fixed, imported, live.
 3. Full-width layout (left-aligned text, edge-to-edge sections), together with the design refresh: Claude proposes 2 or 3 homepage options first, Jabs chooses, then one build.
-4. Contact page: change "4 business hours" wording to "within the hour"; show 91760 61514 as "coming soon".
-5. Vercel: redirect maxmachines.in to www.maxmachines.in.
+4. "Within the hour" DONE 5 Nov night (de8e06c). Still open: show 91760 61514 on the Contact page as "coming soon" (decision 2).
+5. DONE 5 Nov night: maxmachines.in redirects to www with 308.
 6. Display Order: check and fix per subcategory.
 
 ### Website to build or fix
