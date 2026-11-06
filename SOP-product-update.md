@@ -1,6 +1,6 @@
 # SOP - maxmachines.in (single master file)
 
-Version 4.4, 6 Nov 2026 late night (after the 5-6 Nov sitting: six bandsaws retrofitted and live, product page redesigned, redirect set; fortnightly visibility check; tomorrow's work list; section 23 GET-TO-THE-TOP PLAN from the Google and AI research of 6 Nov). Sections 14 to 19 hold the knowledge, section 20 the decisions made on 5 Nov, section 21 the master status register (day 1 to date) and section 22 the single master to-do list. Owner: Jabs. Built from the project notes, CLAUDE.md and every chat summary from 17 Sep to 4 Nov 2026 plus the May/June press and marking chats.
+Version 4.5, 7 Nov 2026 just after midnight IST (Google Business Profile category, description, hours, website link and phone changes saved; 24-hour approval check and 30-day review rules added; previous v4.4: after the 5-6 Nov sitting: six bandsaws retrofitted and live, product page redesigned, redirect set; fortnightly visibility check; tomorrow's work list; section 23 GET-TO-THE-TOP PLAN from the Google and AI research of 6 Nov). Sections 14 to 19 hold the knowledge, section 20 the decisions made on 5 Nov, section 21 the master status register (day 1 to date) and section 22 the single master to-do list. Owner: Jabs. Built from the project notes, CLAUDE.md and every chat summary from 17 Sep to 4 Nov 2026 plus the May/June press and marking chats.
 
 READ THIS FILE FIRST in every new chat of the MaxMachines.in project. If anything here disagrees with CLAUDE.md, project notes or memory, THIS FILE WINS.
 
@@ -16,6 +16,7 @@ READ THIS FILE FIRST in every new chat of the MaxMachines.in project. If anythin
 6. Publish only after Jabs says "yes". Commit and push only when Jabs asks. Never overwrite CLAUDE.md (append only).
 7. STATUS AND TO-DO live in sections 21 and 22 of this file. Update them the same day a task is done or added. Every decision Jabs finalises is added to THIS file the same day (section 13 log) and Claude says "added to SOP" in one line.
 8. End of session: sync the three copies (section 0).
+9. APPROVAL CHECK RULE: every change saved on Google Business Profile, IndiaMART, JustDial or any other listing is checked 24 hours later (approved, rejected or reverted?) at the START of the next session; the table is in section 23D. All profiles and rankings are reviewed every 30 days for the first few months (section 23D).
 
 ---
 
@@ -327,6 +328,11 @@ Purpose: see whether Google and the AI tools know our pages, show them, and send
 27. (Jabs, 5 Nov night) Product page section order (same template for every product): photos, Specifications, Overview (short with Read more), Videos, Accessories, More in, Compare All Models, Variants and Pricing, PDF Downloads, FAQs last (FAQs are for Google and AI tools, not for customers). Customers (MSME) look at pictures and videos first; corporates read the detail.
 28. (Jabs, 6 Nov late night) Modi Machines is the OLD concern, stopped in 2012; the website www.modimachines.in is still maintained. On 6 Nov the site said it is "now part of Max Machine Tools", links to maxmachines.in, shows the old address 70 Armenian Street (Max is at 84 Armenian Street) and shares Max phone numbers and a modi@ email. Directory listings named "Modi Machine Tools" or "Modi Machine Impex" (Parrys) exist on ExportersIndia and TradeIndia (seen 6 Nov) and AI tools (Gemini, Claude) flagged them as a naming risk. Rule: one identity for Max Machine Tools; the old Modi name is handled in section 23 step 1 and P4 (decision on each listing by Jabs: update to point to Max, or leave). Keep modimachines.in as a link source to maxmachines.in.
 29. (Jabs, 6 Nov late night) Customer reviews: Jabs collects them from real customers. Claude supplies only the request message (Google, and JustDial or IndiaMART), never sample reviews written for customers; customers write in their own words and only what is true; no payment or gifts for reviews.
+30. (6 Nov 2026, Jabs) Google Business Profile category: primary changed from "Machine shop" to "Industrial equipment supplier"; additional "Metal machinery supplier" and "Tools Wholesaler"; "Machine shop" and "Machining manufacturer" removed, because they brought machining job-work calls instead of machine buyers. Do NOT add any sentence about "no job work" in the description (it looks negative); the category fix is the cure.
+31. (6 Nov 2026, Jabs) Business hours everywhere (Google profile, website contact page, IndiaMART, JustDial): Monday to Saturday 10 AM to 7 PM, Sunday closed. Phone on Google: 99620 61514 primary, 044 4216 1514 and 93828 61514 additional.
+32. (6 Nov 2026, Jabs) Every listing change must be re-checked after 24 hours for approval, and all profiles are reviewed every 30 days for the first few months (section 23D).
+
+---
 
 ## 21. MASTER STATUS REGISTER (day 1 to 5 Nov 2026)
 
@@ -476,6 +482,8 @@ Rules for the sitting: one step at a time, every Terminal command in its own cod
 ### PRIORITY ADDED 6 Nov late night (Jabs): run the GET-TO-THE-TOP PLAN in section 23, step by step in this order: (P1) Google Business Profile audit and fix, (P2) IndiaMART, (P3) JustDial, (P4) smaller portals and the old Modi listings, (P5) review requests to customers, (P6) site pages. Claude looks at each logged-in page with Claude in Chrome, lists exact changes, Jabs approves each change before anything is saved.
 
 ### TOMORROW'S WORK (Fri 6 Nov 2026 onward; one item at a time, in this order; Jabs on mobile tonight, the Mac copy of this SOP and the git commit are synced at the start of the next Mac sitting)
+
+(ADDED 7 Nov 2026 00:00) FIRST STEP of the next session: 24-hour approval check of the five Google Business Profile changes (table in section 23D), then continue P1: products with our real photos, exterior photo, review replies, review link and QR.
 1. Studio: Display Order, card picture, description and SEO fields for the bandsaw subcategories without pictures (Horizontal Semi Auto, Fully Auto, Double Column, Special Application, Wood Cutting, AAC Block). Special Application has no Display Order. Then check Display Order on the other subcategories.
 2. Full-width layout and homepage design: Claude proposes 2 or 3 options (or template sites to learn from); no code until Jabs picks one; one build in a single go.
 3. About page edits (decisions 10 and 22): Laser Unlimited out, JB Service Solutions in, one factual Kerdoss line (compliance officer approves the wording), Maldives added to the export list.
@@ -566,7 +574,7 @@ LAYER 8 - MEASURE
 - Expect Google profile and directory changes to show in weeks; AI tools slower; judge only after 4 weeks.
 
 ### 23C. Execution checklist (tick and date here)
-- [ ] P1 Google Business Profile: audit, category, products, description, photos, link with UTM
+- [ ] P1 Google Business Profile (IN PROGRESS, 6-7 Nov 2026): DONE and saved (pending Google review): category, description (612 characters), hours 10-7, website link with UTM, extra phone 93828 61514. STILL TO DO: products with our real photos and links (PRG presses, HABA bandsaws, Velse/Bradma marking, tapping), exterior photo, review replies, review link and QR, location notice check, short name (rejected, low priority)
 - [ ] P2 IndiaMART: wrong prices fixed, specs complete, photos and videos, categories, reply to reviews
 - [ ] P3 JustDial: categories, photos, products, reply to reviews
 - [ ] P4 Smaller portals and old Modi listings: table of all listings, mismatches fixed
@@ -575,3 +583,16 @@ LAYER 8 - MEASURE
 - [ ] P7 YouTube links to product pages; supplier and Modi site links
 - [ ] P8 First 15-day check on 21 Nov 2026 against section 23A
 - [ ] Optional: Google Ads test
+
+### 23D. Approval checks and reviews (rule from Jabs, 6 Nov 2026)
+RULE 1 - 24-HOUR APPROVAL CHECK: Google, IndiaMART, JustDial and other portals can reject, delay or revert an edit. 24 hours after any change, Claude opens the listing (Jabs's logged-in Chrome, Browser 1) and checks every changed field: approved, still pending, rejected or reverted. If rejected or reverted, Claude says why and proposes a fix. Claude does this as the FIRST step of the next session after a change, because Claude can only check while a session is open.
+RULE 2 - 30-DAY REVIEW for the first few months: every 30 days review every profile and listing (Google Business Profile, IndiaMART, JustDial, TradeIndia, ExportersIndia and the rest in the P4 table) for correctness, new reviews to reply to, photos, and whether the fortnightly Google and AI checks (section 16) are improving. First 30-day review: 6 Dec 2026, together with the 15-day check of that date; then 5 Jan 2027, 4 Feb 2027, 6 Mar 2027; after that decide with Jabs.
+
+Pending approval checks (tick when verified):
+| Changed on | What | Check on or after | Result |
+|---|---|---|---|
+| 6 Nov 2026 night | GBP category (Industrial equipment supplier; Metal machinery supplier; Tools Wholesaler) | 7 Nov 2026 night | |
+| 6 Nov 2026 night | GBP description (612 characters) | 7 Nov 2026 night | |
+| 6 Nov 2026 night | GBP hours Mon-Sat 10 to 7, Sunday closed | 7 Nov 2026 night | |
+| 6 Nov 2026 night | GBP website link with UTM (the website field already showed the new link right after saving; confirm it still holds) | 7 Nov 2026 night | |
+| 6 Nov 2026 night | GBP extra phone 93828 61514 | 7 Nov 2026 night | |
