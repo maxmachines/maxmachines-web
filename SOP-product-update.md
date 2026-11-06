@@ -591,8 +591,8 @@ RULE 2 - 30-DAY REVIEW for the first few months: every 30 days review every prof
 Pending approval checks (tick when verified):
 | Changed on | What | Check on or after | Result |
 |---|---|---|---|
-| 6 Nov 2026 night | GBP category (Industrial equipment supplier; Metal machinery supplier; Tools Wholesaler) | 7 Nov 2026 night | |
-| 6 Nov 2026 night | GBP description (612 characters) | 7 Nov 2026 night | |
-| 6 Nov 2026 night | GBP hours Mon-Sat 10 to 7, Sunday closed | 7 Nov 2026 night | |
-| 6 Nov 2026 night | GBP website link with UTM (the website field already showed the new link right after saving; confirm it still holds) | 7 Nov 2026 night | |
-| 6 Nov 2026 night | GBP extra phone 93828 61514 | 7 Nov 2026 night | |
+| 6 Nov 2026 night | GBP category (Industrial equipment supplier; Metal machinery supplier; Tools Wholesaler) | 7 Nov 2026 night | APPROVED and live, seen 7 Nov 00:05 IST |
+| 6 Nov 2026 night | GBP description (612 characters) | 7 Nov 2026 night | APPROVED and live, seen 7 Nov 00:05 IST |
+| 6 Nov 2026 night | GBP hours Mon-Sat 10 to 7, Sunday closed | 7 Nov 2026 night | APPROVED and live, seen 7 Nov 00:05 IST |
+| 6 Nov 2026 night | GBP website link with UTM (the website field already showed the new link right after saving; confirm it still holds) | 7 Nov 2026 night | APPROVED and live, seen 7 Nov 00:05 IST |
+| 6 Nov 2026 night | GBP extra phone 93828 61514 | 7 Nov 2026 night | STILL PENDING at 00:05 IST (re-check 7 Nov) |
