@@ -1,6 +1,6 @@
 # SOP - maxmachines.in (single master file)
 
-Version 4.3, 6 Nov 2026 (after the 5-6 Nov evening sitting: six bandsaws retrofitted and live, product page redesigned, redirect set; fortnightly visibility check and tomorrow's work list added). Sections 14 to 19 hold the knowledge, section 20 the decisions made on 5 Nov, section 21 the master status register (day 1 to date) and section 22 the single master to-do list. Owner: Jabs. Built from the project notes, CLAUDE.md and every chat summary from 17 Sep to 4 Nov 2026 plus the May/June press and marking chats.
+Version 4.4, 6 Nov 2026 late night (after the 5-6 Nov sitting: six bandsaws retrofitted and live, product page redesigned, redirect set; fortnightly visibility check; tomorrow's work list; section 23 GET-TO-THE-TOP PLAN from the Google and AI research of 6 Nov). Sections 14 to 19 hold the knowledge, section 20 the decisions made on 5 Nov, section 21 the master status register (day 1 to date) and section 22 the single master to-do list. Owner: Jabs. Built from the project notes, CLAUDE.md and every chat summary from 17 Sep to 4 Nov 2026 plus the May/June press and marking chats.
 
 READ THIS FILE FIRST in every new chat of the MaxMachines.in project. If anything here disagrees with CLAUDE.md, project notes or memory, THIS FILE WINS.
 
@@ -213,6 +213,8 @@ Decision log (newest at the bottom; Claude appends here the day a decision is ma
 
 - 2026-11-06 (Jabs, 01:50, on mobile): visibility check every 15 days added at the end of section 16 (Search Console, own Google searches, AI tools, GA4, enquiries; first due 21 Nov 2026). The quarterly AI check in section 17 and section 22 now says every 15 days. Tomorrow's work list added at the top of section 22. SOP v4.3 saved to the Project copy; the Mac master and git copy need syncing at the next Mac sitting (Mac was not linked on mobile).
 
+- 2026-11-06 (23:00 to 00:00, research): Google and AI check from Jabs's Chennai Chrome (details and findings in section 23). Plan to get on top agreed in outline; Jabs asked that all plans go into the SOP first, then the Google profile audit. Modi Machines facts recorded (section 20 point 28). Review rule recorded (point 29).
+
 
 ---
 
@@ -323,6 +325,8 @@ Purpose: see whether Google and the AI tools know our pages, show them, and send
 25. (Jabs, 5 Nov night) VIKRANT final: "Vikrant" (correct spelling) is a bandsaw brand that buyers search, so it IS a competitor name, added to the bandsaw lists (horizontal and vertical) together with Accucut. SPM Tools and MSC are added to horizontal only. This is allowed only inside FAQ answers and keyword tags. The fact that MMT gets some machines from Vikrant Machinery stays internal and is never written on the site. MSC is a manufacturer name.
 26. (Jabs, 5 Nov night) Comparison FAQs: vary the question wording from product to product so the 'I am comparing' opening does not repeat. Where the same wording would repeat, change it.
 27. (Jabs, 5 Nov night) Product page section order (same template for every product): photos, Specifications, Overview (short with Read more), Videos, Accessories, More in, Compare All Models, Variants and Pricing, PDF Downloads, FAQs last (FAQs are for Google and AI tools, not for customers). Customers (MSME) look at pictures and videos first; corporates read the detail.
+28. (Jabs, 6 Nov late night) Modi Machines is the OLD concern, stopped in 2012; the website www.modimachines.in is still maintained. On 6 Nov the site said it is "now part of Max Machine Tools", links to maxmachines.in, shows the old address 70 Armenian Street (Max is at 84 Armenian Street) and shares Max phone numbers and a modi@ email. Directory listings named "Modi Machine Tools" or "Modi Machine Impex" (Parrys) exist on ExportersIndia and TradeIndia (seen 6 Nov) and AI tools (Gemini, Claude) flagged them as a naming risk. Rule: one identity for Max Machine Tools; the old Modi name is handled in section 23 step 1 and P4 (decision on each listing by Jabs: update to point to Max, or leave). Keep modimachines.in as a link source to maxmachines.in.
+29. (Jabs, 6 Nov late night) Customer reviews: Jabs collects them from real customers. Claude supplies only the request message (Google, and JustDial or IndiaMART), never sample reviews written for customers; customers write in their own words and only what is true; no payment or gifts for reviews.
 
 ## 21. MASTER STATUS REGISTER (day 1 to 5 Nov 2026)
 
@@ -469,6 +473,8 @@ Rules for the sitting: one step at a time, every Terminal command in its own cod
 8. Full-width layout and design: Claude shows 2 or 3 homepage design options first; no code until Jabs picks one. Tonight if time allows, otherwise the next sitting.
 9. End: say "End session": Claude updates sections 21 and 22 and the log, syncs the three copies, gives the git commands (one per box).
 
+### PRIORITY ADDED 6 Nov late night (Jabs): run the GET-TO-THE-TOP PLAN in section 23, step by step in this order: (P1) Google Business Profile audit and fix, (P2) IndiaMART, (P3) JustDial, (P4) smaller portals and the old Modi listings, (P5) review requests to customers, (P6) site pages. Claude looks at each logged-in page with Claude in Chrome, lists exact changes, Jabs approves each change before anything is saved.
+
 ### TOMORROW'S WORK (Fri 6 Nov 2026 onward; one item at a time, in this order; Jabs on mobile tonight, the Mac copy of this SOP and the git commit are synced at the start of the next Mac sitting)
 1. Studio: Display Order, card picture, description and SEO fields for the bandsaw subcategories without pictures (Horizontal Semi Auto, Fully Auto, Double Column, Special Application, Wood Cutting, AAC Block). Special Application has no Display Order. Then check Display Order on the other subcategories.
 2. Full-width layout and homepage design: Claude proposes 2 or 3 options (or template sites to learn from); no code until Jabs picks one; one build in a single go.
@@ -517,3 +523,55 @@ Next sitting, in this order: (a) Studio: Display Order, card picture, descriptio
 
 ### Housekeeping
 24. Empty folders in "Mechanical Press - NOT USABLE" and files in "_to_delete" for Jabs to bin. Project docs `plan-2026-10-29.md` is superseded by this file. CLAUDE.md stays append-only.
+
+## 23. GET-TO-THE-TOP PLAN (research of 6 Nov 2026, about 23:00 IST; Jabs's Chennai Chrome; Claude web search)
+
+PURPOSE: Max Machine Tools must show up when a buyer searches Google or asks an AI tool for power press, bandsaw and marking machine suppliers in Chennai. Jabs noticed small shops (Quality Machine Tools, Industrial Machine Tools, Orient Machine Tools, Techno Machine Tools, Premier Machine Tools) listed above us although they have little or no website.
+
+### 23A. What we found (facts, 6 Nov 2026)
+1. Google ranks PAGES, not business quality. Small shops appear through their IndiaMART, JustDial, TradeIndia, ExportersIndia, Aajjo and Yellow Pages pages, which sit on very strong domains. Some have an IndiaMART-managed website (premiermachinetools.net says "managed by IndiaMART") or their own (technomachinetools.co.in, gmtengineers.co.in).
+2. By NAME we are fine: "Max Machine Tools Chennai" shows maxmachines.in first with sitelinks and an accurate AI Overview. Google has indexed about 40 pages (`site:maxmachines.in`). The old WordPress address `maxmachines.in/shop/vices` is still listed in Google.
+3. By MACHINE TYPE we are not on page 1: "power press machine manufacturers in Chennai", "stamp marking machine dealers Chennai", "PRG mechanical power press Made in India". Page 1 is IndiaMART, JustDial, competitor sites, and our own YouTube and Facebook posts. For "horizontal bandsaw machine manufacturer Chennai" our Google Business Profile does appear in the map list, and JustDial lists us at 4.9 (52 ratings) among bandsaw manufacturers.
+4. Google Business Profile: 5.0 stars, 43 reviews, but the category is "Machine shop". Map winners for power press were categorised "hydraulic equipment supplier" and "machining manufacturer"; for marking "laser equipment supplier". Google matches by category, review words (one review that says "PRG vertical bandsaw" helped us) and website words.
+5. JustDial: Max Machine Tools 5.0 / 4.9 from about 51 to 52 ratings. IndiaMART: 4.5 from 64 reviews, 16 years, GST and TrustSEAL. Premier Machine Tools: 17 years, 4.0 from 84 reviews, TrustSEAL, prices on every product, but many wrong specs. Quality Machine Tools: 2.8 from 6 ratings, no badge.
+6. Our IndiaMART page shows wrong prices that Google quotes: PRG Hydraulic Press 300 Ton at Rs 25,000; Power Press Machine Rs 50,000; Hydraulic Press Rs 25,000 per piece. Fix them. Our site shows "Request Quote" (no prices); competitors show prices.
+7. Our YouTube is a strong asset: PRG mechanical press videos with 54K and 47K views (2018, 2014) rank on Google. Channel 8.4K followers. Facebook page 5.4K followers.
+8. Competitor Bhavya Machine Tools runs Google Ads (sponsored result on page 1).
+9. AI tools (same question: best power press suppliers in Chennai): Premier Machine Tools and GMT Engineers appeared in all four; Presstech in three. Max Machine Tools was named by none. Each tool uses different sources: Gemini = Google Maps data (Business Profile, stars, categories); ChatGPT = supplier websites and forUdyog; Perplexity = JustDial, TradeIndia, ExportersIndia (also Kompass); Claude = IndiaMART, TradeIndia, ExportersIndia, Aajjo. When asked by NAME, Perplexity found and read maxmachines.in and described us correctly, but said proof is mostly company-provided and that Marking Solutions shows no brands or technologies.
+10. Gemini's own list of signals (asked 6 Nov): same name, address and phone on GBP, Bing Places, IndiaMART, JustDial, TradeIndia; crawlable product pages with explicit specs (tonnage, stroke, bed size; cutting capacity, blade speed); reviews that name the product, installation, delivery and service; verified badges and GST; GBP categories (industrial equipment supplier, machinery manufacturer) and Products tab with photos. It also flagged legacy "Modi Machine Tools" listings.
+11. Techno Machine Tools did NOT appear on page 1 for generic power press searches; he appears for his own name (IndiaMART page first) and has his own website. Do not assume every small shop ranks everywhere.
+12. Caveats: WebSearch is not Google; Chrome results are for Jabs's Chennai browser on 6 Nov; ChatGPT was a guest session; AI answers change daily; one source on AI ranking factors has unverified numbers.
+
+### 23B. The plan (layers, in order of effort and payoff)
+LAYER 1 - ONE IDENTITY (name, address, phone, email, hours, website, description)
+- Name: Max Machine Tools. Address: No 84, Armenian Street, Parrys, Chennai 600001. Phone and email as in section 12. List EVERY listing we appear on (GBP, IndiaMART, JustDial, TradeIndia, ExportersIndia, Aajjo, Dial4Trade, IndiaTradeBird, Indian Yellow Pages, Kompass, Facebook, LinkedIn, YouTube, Bing Places) with its link and status in a table; fix every mismatch. IndiaMART shows a virtual number (+91 80476 84394): normal, but keep the same business name and address.
+- Old Modi listings (decision 28): find each, record the address on it (old address 70 Armenian Street), decide with Jabs: update to "now part of Max Machine Tools, 84 Armenian Street" with a link to maxmachines.in, or leave.
+LAYER 2 - GOOGLE BUSINESS PROFILE (Chennai only, decision 6)
+- Primary category: replace "Machine shop" with the best matching machinery or industrial equipment supplier category available in the list; add secondary categories for the other lines (power press, metal cutting, marking, lathe, drilling) as Google offers them. Add Products and Services entries for power press, bandsaw and marking with photos and short descriptions; a full description with the three lines; website link with UTM (`?utm_source=google&utm_medium=business_profile`); hours; photos (machines, shop, team); a post for each new machine; answers to common questions; appointment or message links as available.
+- Check the profile while logged in; Jabs approves every edit.
+LAYER 3 - DIRECTORIES (AI tools copy these)
+- IndiaMART: fix wrong prices; complete every spec field for each product; add photos and videos; correct categories; keep response time and response rate high; reply to all reviews; show GST and TrustSEAL; link to maxmachines.in where allowed.
+- JustDial: right categories (power press, bandsaw, marking machine dealers and manufacturers); photos; products with prices or price ranges; reply to reviews; keep the rating above 4.5.
+- TradeIndia, ExportersIndia, Aajjo, Dial4Trade, IndiaTradeBird, Indian Yellow Pages, Kompass: claim or create, make them match, add the product list; TradeIndia is cited by Perplexity for bandsaws.
+LAYER 4 - REVIEWS ENGINE
+- Every delivered order gets a review request within 3 days (Google first, then JustDial or IndiaMART). Targets: Google 43 to 100 reviews; reviews that name the machine. Message texts are saved in the project chat of 6 Nov (two versions: Google, JustDial or IndiaMART); rules in decision 29. Track counts every 15 days.
+LAYER 5 - OUR WEBSITE
+- Pages: "Power press machine in Chennai", "bandsaw machine in Chennai", "marking machines in Chennai" and the Ahmedabad versions, each with spec tables, models, photos, video, FAQs and the proof below. Describe the Marking Solutions section (brands and technologies). Proof on the site: review counts with links to Google, JustDial and IndiaMART; ISO 9001:2015; named clients when Jabs gives permission; years. Decide whether to show "starting from" prices (Jabs). Buyer guides (how to choose a press tonnage, bandsaw capacity). Fix Home and About meta (Milling and Laser wording). Clean up old WordPress URLs still in Google (check Search Console, remove or redirect `maxmachines.in/shop/...`).
+LAYER 6 - OFF-SITE LINKS AND VIDEO
+- YouTube descriptions and pinned comments link to the matching product page (UTM tagged); old high-view PRG videos first. Ask brand suppliers (Bradma, Velse, Morse, Bahco, Lenox where applicable) to list us as a dealer with a link. Link from www.modimachines.in to the relevant maxmachines.in pages. LinkedIn and Facebook post per new machine with the site link.
+LAYER 7 - OPTIONAL ADS
+- A small Google Ads test for 2 or 3 high-intent searches (for example power press machine Chennai) with a monthly cap; only if Jabs decides.
+LAYER 8 - MEASURE
+- The 15-day check (end of section 16) with this fixed query set. Google searches: power press machine manufacturers in Chennai; stamp marking machine dealers Chennai; horizontal bandsaw machine manufacturer Chennai; vertical bandsaw machine Chennai; PRG mechanical power press Made in India; impact marking machine Chennai; power press machine Ahmedabad; pneumatic power press price India; Max Machine Tools Chennai; site:maxmachines.in. AI questions (ChatGPT, Gemini, Perplexity, Claude): "Who are the best power press machine manufacturers and suppliers in Chennai? Give a short list with names, and cite sources." and the same for bandsaw and marking machines, plus "Is Max Machine Tools Chennai a good supplier?". Record: position, whether we are named, sources used. Baseline = this section 23A.
+- Expect Google profile and directory changes to show in weeks; AI tools slower; judge only after 4 weeks.
+
+### 23C. Execution checklist (tick and date here)
+- [ ] P1 Google Business Profile: audit, category, products, description, photos, link with UTM
+- [ ] P2 IndiaMART: wrong prices fixed, specs complete, photos and videos, categories, reply to reviews
+- [ ] P3 JustDial: categories, photos, products, reply to reviews
+- [ ] P4 Smaller portals and old Modi listings: table of all listings, mismatches fixed
+- [ ] P5 Review requests sent to customers (2 message versions); tracking sheet
+- [ ] P6 Website pages: city pages, Marking Solutions text, proof section, guides, old URL cleanup
+- [ ] P7 YouTube links to product pages; supplier and Modi site links
+- [ ] P8 First 15-day check on 21 Nov 2026 against section 23A
+- [ ] Optional: Google Ads test
