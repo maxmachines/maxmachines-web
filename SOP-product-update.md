@@ -1,6 +1,6 @@
 # SOP - maxmachines.in (single master file)
 
-Version 4.2, 6 Nov 2026 (closed after the 5-6 Nov evening sitting: six bandsaws retrofitted and live, product page redesigned, redirect set). Sections 14 to 19 hold the knowledge, section 20 the decisions made on 5 Nov, section 21 the master status register (day 1 to date) and section 22 the single master to-do list. Owner: Jabs. Built from the project notes, CLAUDE.md and every chat summary from 17 Sep to 4 Nov 2026 plus the May/June press and marking chats.
+Version 4.3, 6 Nov 2026 (after the 5-6 Nov evening sitting: six bandsaws retrofitted and live, product page redesigned, redirect set; fortnightly visibility check and tomorrow's work list added). Sections 14 to 19 hold the knowledge, section 20 the decisions made on 5 Nov, section 21 the master status register (day 1 to date) and section 22 the single master to-do list. Owner: Jabs. Built from the project notes, CLAUDE.md and every chat summary from 17 Sep to 4 Nov 2026 plus the May/June press and marking chats.
 
 READ THIS FILE FIRST in every new chat of the MaxMachines.in project. If anything here disagrees with CLAUDE.md, project notes or memory, THIS FILE WINS.
 
@@ -211,6 +211,8 @@ Decision log (newest at the bottom; Claude appends here the day a decision is ma
   * Verification method: before and after snapshot of 113 pages (text hash, title, meta, FAQ count, link and image counts) kept in browser localStorage on the production site; after the deploy only /contact differed, as planned. Use it for every future code change ("always check the old and new page").
   * Known cosmetic points: the video row looks uneven when one wide video sits beside two tall Shorts; "More in" cards could go from 130 px to 160 px.
 
+- 2026-11-06 (Jabs, 01:50, on mobile): visibility check every 15 days added at the end of section 16 (Search Console, own Google searches, AI tools, GA4, enquiries; first due 21 Nov 2026). The quarterly AI check in section 17 and section 22 now says every 15 days. Tomorrow's work list added at the top of section 22. SOP v4.3 saved to the Project copy; the Mac master and git copy need syncing at the next Mac sitting (Mac was not linked on mobile).
+
 
 ---
 
@@ -258,11 +260,20 @@ Google Analytics 4 (property 367500154)
 - Tag every link Jabs places outside the site with UTM (`utm_source`, `utm_medium`): brochure/pdf, google/business_profile, youtube/video, indiamart/listing, whatsapp/channel. Untagged clicks land in Direct and hide what works.
 - In GA4 the 404 breakdown needs the Pages and screens report switched from "Page title and screen class" to "Page path and screen class".
 
+FORTNIGHTLY VISIBILITY CHECK (every 15 days; decided by Jabs 6 Nov 2026; first check due 21 Nov 2026, then 6 Dec, 21 Dec and so on)
+Purpose: see whether Google and the AI tools know our pages, show them, and send customers. Claude runs the steps it can; Jabs does the ones that need his Google login. Write the result as one dated line in section 13 and keep a small table (date, tool, question, result).
+1. Search Console (Jabs logs in, Claude reads the screenshots): Pages report - are the new and changed product pages Indexed; "Crawled - currently not indexed" list; URL Inspection on 2 or 3 key product URLs and "Request indexing" if not indexed. Performance report - last 28 days vs the previous check: total impressions, clicks, average position; top queries; top pages; any query with "bandsaw", "Chennai", "Ahmedabad" or a competitor name; which of the six retrofitted bandsaw pages gained.
+2. Own Google searches (private window): "horizontal bandsaw machine Chennai", "vertical bandsaw Ahmedabad", "bandsaw machine manufacturer India", "Made in India alternative to <approved competitor> bandsaw", "power press machine price India", "pillar drilling machine Chennai". Note: does maxmachines.in appear, which page, what position. Also `site:maxmachines.in bandsaw` to see what Google has stored.
+3. Ask the AI tools (ChatGPT, Gemini, Perplexity, Claude), the same 5 buyer questions each time, e.g. "Who supplies bandsaw machines in Chennai?", "Best Made in India horizontal bandsaw manufacturer", "Which company exports power presses from India to UAE?". Note: is Max Machine Tools named, is maxmachines.in cited as a source, and what wrong facts they state (fix wrong facts at the source: site, IndiaMART, Business Profile). Perplexity shows sources most clearly.
+4. Google Analytics 4: compare with the 28 Oct baseline (section 16) - Organic Search sessions, AI Assistant sessions (chatgpt.com, perplexity.ai, gemini.google.com, claude.ai, copilot.microsoft.com), Direct share, 404 views, /products and bandsaw page views. Once the key events exist: contact form, WhatsApp click, call click.
+5. Enquiries: count real enquiries since the last check (Sheet, WhatsApp, calls) and ask each new customer "How did you find us?"; note any that mention Google, ChatGPT or a competitor.
+6. Reality check: Google needs 2 to 8 weeks to show changes on updated pages; AI tools are slower and less predictable. Keywords in the Sheet do not rank a page alone; titles, content, FAQs, structured data and links from other sites do. Do not judge a change before 4 weeks.
+
 ## 17. AI visibility (the golden rule in practice)
 
 - Built: robots.txt allows all AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended); llms.txt generated from Sanity; JSON-LD Organization, LocalBusiness, Product (areaServed, sku/model, category), FAQPage, BreadcrumbList; specs as text tables; consistent facts everywhere.
 - Measuring: GA4 channel "AI Assistant". 28 Oct: 12 sessions, all chatgpt.com, landing on Home (5), PRG Impact Press (3), not set (2), Contact (1), Bradma Stamp Marks (1). Counts clicks only; mentions without a click and no-referrer visits are invisible (some sit in Direct). Next review: watch for perplexity.ai, gemini.google.com, claude.ai, copilot.microsoft.com.
-- Once a quarter ask ChatGPT, Gemini, Perplexity and Claude "best <machine> supplier in India / UAE" and note whether Max Machine Tools is named. Fix the facts they get wrong at the source (site, IndiaMART, Business Profile).
+- Every 15 days (was quarterly; Jabs 6 Nov) ask ChatGPT, Gemini, Perplexity and Claude the buyer questions in the FORTNIGHTLY VISIBILITY CHECK (end of section 16) and note whether Max Machine Tools is named. Fix the facts they get wrong at the source (site, IndiaMART, Business Profile).
 - Every video needs a text summary and every picture alt text (video summaries still to do).
 - The future MAXIMUS chatbot (WhatsApp) is expected to read these product pages; keep specs in plain text for it too.
 
@@ -430,7 +441,7 @@ Mechanical Press: which accessories are standard and which optional is open.
 | GA4 baseline 28 Oct, AI traffic baseline | DONE (review due now, 4-9 Nov) |
 | GA4 key events | PENDING |
 | UTM tags on all outside links | PARTLY (brochure only) |
-| Quarterly "ask the AI tools" check | PENDING |
+| "Ask the AI tools" check (now every 15 days, see end of section 16) | PENDING: first due 21 Nov 2026 |
 
 #### B5. Marketing and off-site (posting itself is in the separate marketing project)
 YouTube product videos with link back; IndiaMART/TradeIndia/Alibaba/JustDial listings; backlinks; social profile links; new catalogue with tagged links (Adobe Express Premium); IndiaMART reply PDF stays old until then. All PENDING, Jabs does slowly.
@@ -457,6 +468,18 @@ Rules for the sitting: one step at a time, every Terminal command in its own cod
 7. If time is left: Contact page wording "within the hour" and "coming soon" number (short Claude Code prompt, diff first, wait for go); www redirect in Vercel (Jabs clicks, Claude guides); Display Order check.
 8. Full-width layout and design: Claude shows 2 or 3 homepage design options first; no code until Jabs picks one. Tonight if time allows, otherwise the next sitting.
 9. End: say "End session": Claude updates sections 21 and 22 and the log, syncs the three copies, gives the git commands (one per box).
+
+### TOMORROW'S WORK (Fri 6 Nov 2026 onward; one item at a time, in this order; Jabs on mobile tonight, the Mac copy of this SOP and the git commit are synced at the start of the next Mac sitting)
+1. Studio: Display Order, card picture, description and SEO fields for the bandsaw subcategories without pictures (Horizontal Semi Auto, Fully Auto, Double Column, Special Application, Wood Cutting, AAC Block). Special Application has no Display Order. Then check Display Order on the other subcategories.
+2. Full-width layout and homepage design: Claude proposes 2 or 3 options (or template sites to learn from); no code until Jabs picks one; one build in a single go.
+3. About page edits (decisions 10 and 22): Laser Unlimited out, JB Service Solutions in, one factual Kerdoss line (compliance officer approves the wording), Maldives added to the export list.
+4. Contact page: show 91760 61514 as "coming soon" (decision 2).
+5. GA4 key events: contact form, WhatsApp click, call click, catalogue request.
+6. Analytics review against the 28 Oct baseline (now due) and Vercel ISR Writes check about 9 Nov.
+7. Search Console: request indexing for the six retrofitted bandsaw pages and /export-and-uae (starts the fortnightly check; section 16).
+8. Test the enquiry-form success message with a test enquiry.
+9. Optional polish: "More in" card box 130 to 160 px; uneven video row.
+10. Next product when photos arrive: "let's update product".
 
 ### OPEN LIST AFTER THE 5-6 NOV SITTING (6 Nov 2026; items below marked DONE are finished, the rest are open)
 Next sitting, in this order: (a) Studio: Display Order, card picture, description and SEO fields for the bandsaw subcategories without pictures (Horizontal Semi Auto, Fully Auto, Double Column, Special Application, Wood Cutting, AAC Block; Special Application has no Display Order); (b) full-width layout and homepage design: Claude proposes 2 or 3 options, no code until Jabs picks one; (c) About page edits; (d) GA4 key events; (e) analytics review and Vercel ISR Writes check about 9 Nov; (f) optional polish: "More in" card box 130 to 160 px, uneven video row; (g) test the enquiry-form success message with a test enquiry.
@@ -490,7 +513,7 @@ Next sitting, in this order: (a) Studio: Display Order, card picture, descriptio
 20. Google Business Profile update (Chennai only; six steps in section 16). Collect customer reviews.
 21. Search Console: request indexing for /export-and-uae and top products; monthly check; PageSpeed.
 22. UTM tags on every outside link. YouTube videos with link back. IndiaMART, TradeIndia, Alibaba, JustDial listings. Backlinks. New catalogue with tagged links.
-23. Quarterly "ask the AI tools" check.
+23. FORTNIGHTLY VISIBILITY CHECK every 15 days (section 16): first due 21 Nov 2026, then 6 Dec, 21 Dec.
 
 ### Housekeeping
 24. Empty folders in "Mechanical Press - NOT USABLE" and files in "_to_delete" for Jabs to bin. Project docs `plan-2026-10-29.md` is superseded by this file. CLAUDE.md stays append-only.
