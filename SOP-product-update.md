@@ -1,6 +1,6 @@
 # SOP - maxmachines.in (single master file)
 
-Version 4.5, 7 Nov 2026 just after midnight IST (Google Business Profile category, description, hours, website link and phone changes saved; 24-hour approval check and 30-day review rules added; previous v4.4: after the 5-6 Nov sitting: six bandsaws retrofitted and live, product page redesigned, redirect set; fortnightly visibility check; tomorrow's work list; section 23 GET-TO-THE-TOP PLAN from the Google and AI research of 6 Nov). Sections 14 to 19 hold the knowledge, section 20 the decisions made on 5 Nov, section 21 the master status register (day 1 to date) and section 22 the single master to-do list. Owner: Jabs. Built from the project notes, CLAUDE.md and every chat summary from 17 Sep to 4 Nov 2026 plus the May/June press and marking chats.
+Version 4.8, 9 Nov 2026 about 02:00 IST (P2 IndiaMART closed for the agreed scope: 44 active listings improved, average score 88, rules and brand facts logged in section 23E; previous v4.7: Google Business Profile products: six entries updated with our own photos and new-site links, one-photo-per-machine rule, review request approach, reply rule; previous v4.6: Google Business Profile recheck: extra phone still pending, short name dropped, chat pre-fill not supported; previous v4.5: Google Business Profile category, description, hours, website link and phone changes saved; 24-hour approval check and 30-day review rules added; previous v4.4: after the 5-6 Nov sitting: six bandsaws retrofitted and live, product page redesigned, redirect set; fortnightly visibility check; tomorrow's work list; section 23 GET-TO-THE-TOP PLAN from the Google and AI research of 6 Nov). Sections 14 to 19 hold the knowledge, section 20 the decisions made on 5 Nov, section 21 the master status register (day 1 to date) and section 22 the single master to-do list. Owner: Jabs. Built from the project notes, CLAUDE.md and every chat summary from 17 Sep to 4 Nov 2026 plus the May/June press and marking chats.
 
 READ THIS FILE FIRST in every new chat of the MaxMachines.in project. If anything here disagrees with CLAUDE.md, project notes or memory, THIS FILE WINS.
 
@@ -143,6 +143,7 @@ Approved lists (Jabs):
 7. Category and Subcategory done (card, description, display order, SEO, keywords) and published
 8. Live page checked: title, FAQ count in the page data, highlights, pictures, videos, no competitor names outside FAQs. Ground truth if AI fetches disagree: Jabs runs `curl -s <url> | grep -o "<word>"` (web fetch returns stale cache)
 9. This SOP, CLAUDE.md status line and the log (section 13) updated; copies synced; commit and push when Jabs asks
+10. Google Business Profile: the machine has a product entry with ONE photo of that machine (our own photo, a group picture for a range), a description in its own words and a link to its page on the new site (rule in section 16, GBP PHOTO AND PRODUCT RULE). Added at the same sitting as the website update.
 
 ## 9. Retrofit to-do: products that already have photos (scope set by Jabs, 4 Nov 2026)
 
@@ -216,6 +217,19 @@ Decision log (newest at the bottom; Claude appends here the day a decision is ma
 
 - 2026-11-06 (23:00 to 00:00, research): Google and AI check from Jabs's Chennai Chrome (details and findings in section 23). Plan to get on top agreed in outline; Jabs asked that all plans go into the SOP first, then the Google profile audit. Modi Machines facts recorded (section 20 point 28). Review rule recorded (point 29).
 
+- 2026-11-08 (evening, Jabs): GBP recheck in the owner account (max@maxmachines.in, Browser 1). Category, description, hours and website link are live. Extra phone 93828 61514 is STILL PENDING (Google: may take up to 7 days; recheck by 14 Nov). Short name "maxmachinetools" was NOT approved and the field cannot be edited: DROPPED, low priority, do not retry. Chat link kept as wa.me/919962061514: Google strips a ?text= pre-filled message on save, so "I found your profile on Google" cannot be set there; ask new customers how they found us instead (section 16 step 5).
+
+- 2026-11-08 (late night, Jabs): GBP PRODUCTS and review approach (owner account max@maxmachines.in, Browser 1).
+  * Mechanical Power Press product updated earlier today: APPROVED and live by 22:10 IST.
+  * NEW product "PRG Impact and Toggle Press Machines" published (category Power Press): one all-models photo (prg-impact-toggle-press-machines-all-models.png: PIH11, PIH15, PIP25, PIP35, TPH9), link to the PRG Impact Press page (live; toggle press has no page of its own yet, point the link there when it does). Approved by Google within about 15 minutes.
+  * Updated with our own group photos, new descriptions and links to the NEW site category pages (the old links pointed to old WooCommerce /shop/ addresses): "Metal Cutting Bandsaw (Horizontal)" = HMM8, HMM8N, HMM9R photo (horizontal-bandsaw-manual-card.png); "Metal Cutting Bandsaw (Vertical)" = VMCB16RSE, VMCB18, VMCB18E photo (vertical-bandsaw-metal-cutting-card.png); "Drilling Machine" = PRG pillar drilling group photo PPD12RS to PPD40HR (prg-pillar-drilling-machine-group.png). Horizontal and vertical approved; drilling machine pending at 22:30 IST.
+  * The old "Special" Metal Cutting Bandsaw (orange machine with boxes behind it) was NOT deleted: Jabs said keep it. Renamed "VMCB16RSE Vertical Metal Cutting Bandsaw", own photo (vmcb16rse-vertical-bandsaw-machine-front.png), description says built for export markets and export orders ONLY (no "Supplied across India"). Still marked Special. Pending review at 22:55 IST. The orange machine's model was assumed to be VMCB16RSE: Jabs to confirm.
+  * RULE (Jabs): ONE photo per machine on Google. Each time a machine is updated on the website, its product entry and photo are added or updated on Google in the same sitting. When about 15 machines are updated, add more photos to each machine in the Google Photos section (batch upload, several files at once). A product entry holds only one photo; extra photos go to the Photos section of the profile. Section 16 and section 8 item 10 carry the rule.
+  * RULE (Jabs): do not repeat the same sentence in every product description. DONE 8 Nov 23:50 IST: endings reworded in all five entries (horizontal bandsaw, vertical bandsaw, drilling machine, Impact and Toggle Press, Mechanical Power Press); the export-only VMCB16RSE already differed. New descriptions pending review at 23:50 IST (check 9 Nov). Gotcha: in the Google description box cmd+End does NOT jump to the end on a Mac; retype the whole description instead of editing the tail, and read the full text first.
+  * Review link (g.page/r/CShu8ROgwJ_FEBM/review) and QR found. Review requests: Claude writes only the REQUEST message (with three prompts: what you bought, how was the service, which city) and the QR card text; Claude does NOT write sample reviews, and customers are not given text to copy and paste (fake or scripted reviews break Google's policy and can remove all reviews). Customers write in their own words; voice typing helps them. Reviews that name the machine and the city help ranking when customers say them naturally.
+  * Review replies: from now on reply to EVERY new review within 1 to 2 days. The ten old reviews without replies are skipped (too old), decided by Jabs.
+  * Still to do on the Google profile: Drilling cum Milling entry (no group photo yet); stock-photo entries (Jewellery Welding, Laser Marking, Roll Marking, Vices, Metal Punches, Hydraulic Press, Lathe) need our own photos; Pneumatic Press (only a sketch); Bradma and Velse marking, tapping; exterior photo; QR card design (Adobe Express Premium); recheck extra phone by 14 Nov.
+  * 8 Nov 23:40 IST (Jabs): GOOGLE PROFILE CLOSED for now. QR card dropped (only the review link is shared when needed). Exterior photos on the profile (two shopfront photos 11 years old, Street View also present) are accepted as enough; a fresh exterior and an interior photo can come later with other photo updates. Drilling cum Milling, the seven stock-photo entries and the new entries follow the website updates machine by machine under the one-photo rule. NEXT: P2 IndiaMART.
 
 ---
 
@@ -253,6 +267,7 @@ Search Console
 - Why "power press manufacturers" did not show (25 Oct): site new to Google, no power press page then, term very competitive. Target buyer phrases (price, dealer, supplier, UAE). Health check still to be done and recorded: `site:maxmachines.in` in Google, sitemap status, robots/sitemap files, PageSpeed, SEO fields on key pages.
 
 Google Business Profile (decided by Jabs 29 Oct)
+- GBP PHOTO AND PRODUCT RULE (Jabs, 8 Nov 2026): one product entry per machine with ONE photo of that machine (a group picture for a range), a description in its own words (never the same closing line twice) and a link to the page on the new site with `?utm_source=google&utm_medium=business_profile`. Added at the same sitting as the website update. After about 15 machines are updated, add more photos for each machine in the Photos section (several files at once). Export-only machines say so and do not say "Supplied across India". Do NOT delete a product entry without asking Jabs.
 - Chennai only. No second Ahmedabad listing. Ahmedabad, Gujarat appears only in the description as production, procurement and office.
 - Steps, in order: open the profile directly from Google (not from email links) and confirm it exists, is verified and is Chennai only; compare name, address, phones, hours, categories, website with the site; website link `?utm_source=google&utm_medium=business_profile`; add machine and office photos and products; add the Ahmedabad line to the description; post once per new machine; review in Analytics. Owner account is probably max@maxmachines.in: confirm. Collect real customer reviews.
 
@@ -483,7 +498,7 @@ Rules for the sitting: one step at a time, every Terminal command in its own cod
 
 ### TOMORROW'S WORK (Fri 6 Nov 2026 onward; one item at a time, in this order; Jabs on mobile tonight, the Mac copy of this SOP and the git commit are synced at the start of the next Mac sitting)
 
-(ADDED 7 Nov 2026 00:00) FIRST STEP of the next session: 24-hour approval check of the five Google Business Profile changes (table in section 23D), then continue P1: products with our real photos, exterior photo, review replies, review link and QR.
+(ADDED 7 Nov 2026 00:00) FIRST STEP of the next session: 24-hour approval check of the five Google Business Profile changes (table in section 23D), then continue P1: products with our real photos, exterior photo, review replies, review link and QR. (UPDATE 8 Nov late night: six product entries are done; see section 23C P1 and the 8 Nov late night log entry for what is left; first step of the next session is the approval check of the 8 Nov product edits in 23D.)
 1. Studio: Display Order, card picture, description and SEO fields for the bandsaw subcategories without pictures (Horizontal Semi Auto, Fully Auto, Double Column, Special Application, Wood Cutting, AAC Block). Special Application has no Display Order. Then check Display Order on the other subcategories.
 2. Full-width layout and homepage design: Claude proposes 2 or 3 options (or template sites to learn from); no code until Jabs picks one; one build in a single go.
 3. About page edits (decisions 10 and 22): Laser Unlimited out, JB Service Solutions in, one factual Kerdoss line (compliance officer approves the wording), Maldives added to the export list.
@@ -574,8 +589,8 @@ LAYER 8 - MEASURE
 - Expect Google profile and directory changes to show in weeks; AI tools slower; judge only after 4 weeks.
 
 ### 23C. Execution checklist (tick and date here)
-- [ ] P1 Google Business Profile (IN PROGRESS, 6-7 Nov 2026): DONE and saved (pending Google review): category, description (612 characters), hours 10-7, website link with UTM, extra phone 93828 61514. STILL TO DO: products with our real photos and links (PRG presses, HABA bandsaws, Velse/Bradma marking, tapping), exterior photo, review replies, review link and QR, location notice check, short name (rejected, low priority)
-- [ ] P2 IndiaMART: wrong prices fixed, specs complete, photos and videos, categories, reply to reviews
+- [x] P1 Google Business Profile (CLOSED 8 Nov 2026 23:40 IST by Jabs: QR card DROPPED, share the review link when needed; exterior photos are enough, add an interior photo later with the next photo update; Drilling cum Milling, stock-photo entries and new entries (Pneumatic Press, Bradma/Velse marking, tapping) are done one by one AFTER each machine is updated on the website. Only open Google items: 24-hour approval check on 9 Nov, extra phone check by 14 Nov, reply to every new review within 1-2 days. Older detail follows) (was IN PROGRESS, 6-7 Nov 2026): DONE and saved (pending Google review): category, description (612 characters), hours 10-7, website link with UTM, extra phone 93828 61514. PRODUCTS DONE 8 Nov (one photo each, new-site links): Mechanical Power Press, Impact and Toggle Press, Horizontal Bandsaw, Vertical Bandsaw, Drilling Machine, VMCB16RSE export bandsaw. STILL TO DO: Drilling cum Milling; replace stock photos (Jewellery Welding, Laser Marking, Roll Marking, Vices, Metal Punches, Hydraulic Press, Lathe); Pneumatic Press, Bradma/Velse marking, tapping when photos arrive; exterior photo; QR card; reply to each NEW review within 1-2 days (old ten skipped); location notice check; short name (rejected, DROPPED 8 Nov). P1 FINAL STEP (Jabs, 8 Nov): customer review requests (message with three prompts, review link g.page/r/CShu8ROgwJ_FEBM/review, QR card); no sample reviews, see decision log 8 Nov late night
+- [x] P2 IndiaMART (CLOSED 9 Nov 2026 about 02:00 IST for the agreed scope: the 44 ACTIVE listings only, 59 inactive out of scope; details, scores and open items in section 23E; still open: photos of 1000 px or more, PDFs, review replies, 24-hour approval check)
 - [ ] P3 JustDial: categories, photos, products, reply to reviews
 - [ ] P4 Smaller portals and old Modi listings: table of all listings, mismatches fixed
 - [ ] P5 Review requests sent to customers (2 message versions); tracking sheet
@@ -583,6 +598,47 @@ LAYER 8 - MEASURE
 - [ ] P7 YouTube links to product pages; supplier and Modi site links
 - [ ] P8 First 15-day check on 21 Nov 2026 against section 23A
 - [ ] Optional: Google Ads test
+
+### 23E. P2 IndiaMART record (9 Nov 2026; Jabs's Chrome, seller.indiamart.com/product/manageproducts/)
+
+SCOPE: only the 44 ACTIVE listings. The 59 inactive are out of scope. Score-100 listings are skipped. Jabs said "rest all leave" at the end, so listings not touched below stay as they are.
+
+RULES FROM JABS (apply to every portal):
+- One confirmed decision at a time; do not repeat a question; once a job starts finish it.
+- ONE photo per machine on Google, updated in the same sitting as the website.
+- Never delete a product entry without asking Jabs.
+- Never write anything negative about any machine. VMCB16RSE is sold in India and exported; the other two vertical models are simply not exported (give no reason).
+- Do not repeat the same sentence across descriptions.
+- Claude writes only review-request messages, never review text.
+
+BRAND FACTS (set on listings, use everywhere):
+- HABA is MMT's own brand. Drilling machines are PRG. Bandsaw blades are KOPIS (exclusive to MMT). Chucks: MMT sells VELSE, Sharp and Zither (listing brand VELSE, specs from Zither). Machine vices: Unique. Marking: Bradma (roll marking and punches), VELSE (fiber laser). Air compressor and dryer: Airdas. Fittings: Cmatic (Italy).
+- Roll Marking Machine belongs in group "marking machine", not Bandsaw.
+
+IndiaMART SCORE (hover or click the Score circle): name 3+ words 10; primary photo at least 1000 px 10; 1 secondary photo 10; 2 or more photos 10; price with unit 15; description over 100 characters 5; video 10; PDF brochure 5; config specs 15; other specs 10. Photo, video and PDF uploads need Jabs.
+
+EDIT MECHANICS: description editor needs a second Save click sometimes; mandatory specs use "As per model" when the source has no data; fill option dialogs bottom-up; group chip changes the group; the displayed title is auto-built from specs and brand, so a stale prefix or suffix can remain until the page is refreshed.
+
+WORK DONE (descriptions and specs written from maxmachines.in pages, uploaded catalogues and dealer pages): Laser Marking, Bradma punch set, Light, Medium and Heavy All Geared lathes, four presses (hand operated hydraulic 5 to 150 ton, 4 pillar 5 to 300 ton, C frame hydraulic 10 to 300 ton, mechanical clutch 10 to 300 ton) with corrections, 30 ft all geared lathe (centre height 406 to 558 mm, bed up to 6400 mm), Cut Off, Pillar Drilling (PRG), Radial Drilling, Power Chucks, Machine Vice, Roll Marking, Bimetal Blades (KOPIS, 6.4 to 80 mm), Airdas Air Compressor and Air Dryer (from the Airdas catalogue), Turret Milling (M4 and M5), Fully Automatic Bandsaw 7 inch specs (score 75 after Jabs filled them).
+
+SCORES AT CLOSE (9 Nov 2026 about 02:00 IST), average 88, thirteen at 100:
+100: Pneumatic Power Press; 7 Feet Belt Heavy Lathe; Vertical Band Saw (PRG); Pure Tapping; Drilling cum Milling PDM25/40H; Metal Band Saw; 30 Feet Belt Extra Heavy Lathe; Mechanical Clutch Press; Manual Metal Cutting Band Saw; KOPIS Bi Metal Blades; Light Duty Lathe Cone Pulley; Medium Duty Lathe; HABA Automatic Bandsaw Industrial.
+95: PRG Impact Press; HMA9RE; Cut Off; 4 Pillar C/H Frame Press; 4 Pillar Gun Metal Press.
+90: VMCB16RSE; Bradma Punch Set; VELSE Laser; Drilling cum Tapping; HABA Heavy Lathe; 30 Feet All Geared Lathe; Pillar Drilling; Medium All Geared Lathe; Hand Operated Press; Radial Drilling; PRG FDM40H.
+85: Hydraulic Hacksaw; HABA Automatic Bandsaw; Roll Marking.
+80: Light Duty All Geared Lathe; Air Dryer.
+75: Power Chucks; Standard Fittings; Anti Spatter; Push in and Push On Fitting; Push-on Fittings; Brass and SS Push-in Fittings; Fully Automatic Bandsaw 7 inch.
+70: Air Compressor.
+60: Turret Milling; Machine Vice.
+
+OPEN ITEMS (Jabs):
+1. Photos of 1000 px or more and a second photo, plus PDF brochures: Turret Milling, Machine Vice, Air Compressor, Power Chucks, Fully Automatic Bandsaw 7 inch (needs primary photo, second photo and HMA9RE PDF), VMCB16RSE, Drilling cum Tapping.
+2. Cmatic catalogue for the four fittings listings (4 to 6 specs missing each).
+3. Left as they are by Jabs: Anti Spatter (6 specs), Hydraulic Hacksaw (5 specs), PRG FDM40H (6 specs), HABA Automatic Bandsaw (4 specs), Metal Band Saw type listings with missing specs but score 100.
+4. Stale titles to recheck after a page refresh: Pillar Drilling still says "Ralliwolf"; Hand Operated Press says "5 to 100 tons"; 4 Pillar Press says "Capacity: 10 - 800Tons"; PRG Hydraulic says "Capacity: 300 Ton"; Roll Marking says "Pneumatic"; KOPIS blades title says "Size: 1150 mm to 15000 mm" (not in the catalogue). Fix only with Jabs's yes.
+5. Unverified values: 4 Pillar Press Automation Grade "Fully Automatic"; Heavy Lathe Automation Grade set to Manual; Machine Vice brand "Unique" not read back; Air Dryer "Lubrication Style: Auto" field is nonsense, left.
+6. 4 Pillar press range is 5 to 300 ton on the website (Jabs said 10 to 300); listing uses 5 to 300.
+7. Reply to IndiaMART reviews (P5 later) and the 24-hour approval check of all P2 edits.
 
 ### 23D. Approval checks and reviews (rule from Jabs, 6 Nov 2026)
 RULE 1 - 24-HOUR APPROVAL CHECK: Google, IndiaMART, JustDial and other portals can reject, delay or revert an edit. 24 hours after any change, Claude opens the listing (Jabs's logged-in Chrome, Browser 1) and checks every changed field: approved, still pending, rejected or reverted. If rejected or reverted, Claude says why and proposes a fix. Claude does this as the FIRST step of the next session after a change, because Claude can only check while a session is open.
@@ -595,4 +651,17 @@ Pending approval checks (tick when verified):
 | 6 Nov 2026 night | GBP description (612 characters) | 7 Nov 2026 night | APPROVED and live, seen 7 Nov 00:05 IST |
 | 6 Nov 2026 night | GBP hours Mon-Sat 10 to 7, Sunday closed | 7 Nov 2026 night | APPROVED and live, seen 7 Nov 00:05 IST |
 | 6 Nov 2026 night | GBP website link with UTM (the website field already showed the new link right after saving; confirm it still holds) | 7 Nov 2026 night | APPROVED and live, seen 7 Nov 00:05 IST |
-| 6 Nov 2026 night | GBP extra phone 93828 61514 | 7 Nov 2026 night | STILL PENDING at 00:05 IST (re-check 7 Nov) |
+| 6 Nov 2026 night | GBP extra phone 93828 61514 | 7 Nov 2026 night | STILL PENDING at 8 Nov 20:00 IST (Google: up to 7 days; re-check by 14 Nov) |
+| 6-7 Nov 2026 | GBP short name "maxmachinetools" | 8 Nov 2026 | NOT APPROVED; field not editable; DROPPED (8 Nov, Jabs) |
+| 8 Nov 2026 | GBP product: Mechanical Power Press (updated) | 9 Nov 2026 | APPROVED and live, seen 8 Nov 22:10 IST |
+| 8 Nov 2026 | GBP products: Impact and Toggle Press (new), Horizontal Bandsaw, Vertical Bandsaw | 9 Nov 2026 | APPROVED, seen 8 Nov 22:30 IST (confirm still live) |
+| 8 Nov 2026 22:30 | GBP product: Drilling Machine (photo, description, link) | 9 Nov 2026 | PENDING at 22:30 IST |
+| 8 Nov 2026 22:55 | GBP product: VMCB16RSE bandsaw (renamed, new photo and description; CORRECTED 9 Nov 00:05 IST: sold in India AND exported, not export-only) | 9 Nov 2026 | PENDING at 00:05 IST |
+
+- 2026-11-09 00:05 IST (Jabs): VMCB16RSE is sold in India (many sold, orders in hand) and exported. It is NOT export-only. The other two vertical models are not exported (internal only; give no reason and write nothing negative about any machine on the site, Google or IndiaMART). GBP entry corrected the same night. Never write export-only for VMCB16RSE. IndiaMART P2 started: Batch 1 of 5 (score-100 listings skipped): Vertical Metal Cutting Band Saw, Impact Press, Drilling Cum Milling, Drilling Cum Tapping, HABA Automatic Bandsaw; GA4 and Search Console checks stay in P8 (21 Nov).
+
+- 2026-11-09 00:12 IST: IndiaMART score rule found (hover the Score circle): Primary Photo is worth 10 points and needs width or height of at least 1000 px; also name 3+ words (10), 1 secondary photo (10), 2+ photos (10), price (15), description over 100 characters (5), video (10), PDF (5), config specs (15), other specs (10). A product shows 90 when only the primary photo is too small. IndiaMART #1 (HABA R VMCB16RSE) updated 9 Nov 00:08 IST: title, description, specs, all saved; only the primary photo is below 1000 px, so replace it from Dropbox.
+
+- 2026-11-09 00:35 IST: IndiaMART P2 Batch 1 progress (text, specs, title done by Claude from website pages; Jabs approved the method: no per-product approval needed from here): #1 HABA R Vertical Bandsaw VMCB16RSE (score 90, primary photo under 1000 px, left as is by Jabs), #2 PRG Impact Press (95; needs PDF; stroke length entered as "As per model"), #3 PRG Drilling Cum Milling PDM25/PDM40H/FDM40H (100), #4 PRG Drilling Cum Tapping PDT20R/25R/40R/40HR (specs saved, score still 90). #5 HABA Automatic Bandsaw (Rs 3,50,000) and HMA9RE are NOT done: the website page Horizontal Bandsaw Fully Auto is "Coming Soon" with no machines, so build the website page first, then update IndiaMART. IndiaMART tips: after renaming, a category dialog opens; close it with X or Cancel to keep categories; Enter does not save a title, click Save; the list reorders after saves so find the pencil again each time.
+
+- 2026-11-09 02:00 IST: P2 IndiaMART closed for the agreed scope (44 active listings, average 88, thirteen at 100). Full record, rules, brand facts and open items in section 23E. Next: P3 JustDial.
