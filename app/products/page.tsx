@@ -37,6 +37,7 @@ export const metadata: Metadata = {
     description: "Explore our comprehensive range of industrial machinery.",
     images: ["https://www.maxmachines.in/logo.png"],
   },
+  alternates: { canonical: "https://www.maxmachines.in/products" },
 };
 
 interface Category {

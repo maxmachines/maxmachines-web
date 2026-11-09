@@ -1,6 +1,11 @@
 export const revalidate = 86400;
 
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "https://www.maxmachines.in/" },
+};
 import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Products from "@/components/Products";

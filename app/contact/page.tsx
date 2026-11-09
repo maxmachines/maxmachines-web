@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import SocialStrip from "@/components/SocialStrip";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import EnquiryForm from "@/components/EnquiryForm";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "https://www.maxmachines.in/contact" },
+};
 
 /* ─── SVG Background ─────────────────────────────────────────── */
 const TechnicalDrawingBackground = () => (
