@@ -242,7 +242,7 @@ export default async function ProductsPage() {
                 📞 Call Chennai
               </Link>
               <Link
-                href={waLink("919382861514")}
+                href={waLink("919962061514")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3.5 rounded-xl font-bold text-sm border text-center transition-all duration-200 hover:bg-white/5"

@@ -23,7 +23,7 @@ function ctxFromPathname(pathname: string): WaContext {
 
 export default function WhatsAppButton() {
   const pathname = usePathname();
-  const href = waLink("919382861514", ctxFromPathname(pathname));
+  const href = waLink("919962061514", ctxFromPathname(pathname));
 
   return (
     <a

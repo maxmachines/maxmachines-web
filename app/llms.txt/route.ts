@@ -46,8 +46,7 @@ We respond to every enquiry. No order is too small or too large.
 Quotations are provided on request.
 
 ## Contact
-Phone / WhatsApp (Chennai): +91 99620 61514
-Sales WhatsApp: +91 93828 61514
+Phone / WhatsApp: +91 99620 61514
 Email: max@maxmachines.in
 Website: https://www.maxmachines.in
 Enquiry form: https://forms.gle/TXjAGS67M1Nnb2Ye9
