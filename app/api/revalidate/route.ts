@@ -19,6 +19,9 @@ export async function POST(req: NextRequest) {
   revalidatePath("/", "page");
   revalidatePath("/about", "page");
   revalidatePath("/products", "layout"); // /products and everything under it
+  revalidatePath("/blog", "layout"); // /blog and every post
+  revalidatePath("/sitemap.xml");
+  revalidatePath("/llms.txt");
 
   return NextResponse.json({ revalidated: true, type: body?._type ?? null, at: Date.now() });
 }

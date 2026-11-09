@@ -1,4 +1,5 @@
 import { client } from '@/sanity/lib/client'
+import { getPosts } from '@/lib/blog-posts'
 
 export default async function sitemap() {
   const baseUrl = 'https://www.maxmachines.in'
@@ -54,5 +55,14 @@ export default async function sitemap() {
     priority: 0.9,
   }))
 
-  return [...staticPages, ...categoryPages, ...subcategoryPages, ...productPages]
+  const blogPosts = await getPosts()
+  const blogPages = blogPosts
+    .map((p) => ({
+      url: `${baseUrl}/blog/${p.slug}`,
+      lastModified: new Date(p.updated ?? p.date),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    }))
+
+  return [...staticPages, ...categoryPages, ...subcategoryPages, ...productPages, ...blogPages]
 }

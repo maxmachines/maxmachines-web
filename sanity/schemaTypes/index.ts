@@ -8,11 +8,14 @@ import { accessoryItem } from './objects/accessoryItem'
 import { faqItem } from './objects/faqItem'
 import { videoItem } from './objects/videoItem'
 import { pdfDownload } from './objects/pdfDownload'
+import { blogSection } from './objects/blogSection'
+import { linkItem } from './objects/linkItem'
 
 // Documents
 import { category } from './documents/category'
 import { subcategory } from './documents/subcategory'
 import { product } from './documents/product'
+import { blogPost } from './documents/blogPost'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -24,10 +27,13 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     faqItem,
     videoItem,
     pdfDownload,
+    blogSection,
+    linkItem,
 
     // Documents
     category,
     subcategory,
     product,
+    blogPost,
   ],
 }

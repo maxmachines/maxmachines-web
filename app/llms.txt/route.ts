@@ -1,5 +1,6 @@
 import { client } from "@/sanity/lib/client";
 import { NextResponse } from "next/server";
+import { getPosts } from "@/lib/blog-posts";
 
 export const revalidate = 86400;
 
@@ -10,6 +11,11 @@ export async function GET() {
 
   const categoryLines = categories
     .map((c) => `- ${c.name}: https://www.maxmachines.in/products/${c.slug}`)
+    .join("\n");
+
+  const guidePosts = await getPosts();
+  const guideLines = guidePosts
+    .map((p) => `- ${p.title}: https://www.maxmachines.in/blog/${p.slug}`)
     .join("\n");
 
   const text = `# Max Machine Tools — llms.txt
@@ -30,6 +36,10 @@ GST: 33AAWFM0648L1ZS.
 
 ## Product Categories (live from catalog)
 ${categoryLines}
+
+## Guides (blog)
+Practical buying and usage guides: https://www.maxmachines.in/blog
+${guideLines}
 
 ## What We Supply
 Industrial machinery including bandsaw machines, lathe machines, drilling machines,

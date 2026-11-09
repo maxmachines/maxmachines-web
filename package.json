@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "import-products": "npx ts-node --project tsconfig.scripts.json scripts/import-from-sheets.ts"
+    "import-products": "npx ts-node --project tsconfig.scripts.json scripts/import-from-sheets.ts",
+    "import-blog": "npx ts-node --project tsconfig.scripts.json scripts/import-blog.ts"
   },
   "dependencies": {
     "@sanity/image-url": "^2.1.1",

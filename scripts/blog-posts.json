@@ -1,0 +1,120 @@
+[
+  {
+    "slug": "how-to-cut-graphite-on-a-vertical-bandsaw",
+    "title": "How to Cut Graphite Blocks on a Vertical Bandsaw",
+    "description": "How to cut graphite blocks on a vertical bandsaw: the right KOPIS blade, dry cutting, speed, dust control and machine protection.",
+    "category": "How To",
+    "date": "2026-11-09",
+    "updated": "2026-11-09",
+    "readTime": "5 min read",
+    "intro": "Graphite is soft, but it is one of the hardest materials on a bandsaw. It wears blades quickly and its fine dust can damage the machine and harm the operator. This guide covers the blade to use, how to cut, and how to protect your machine and your people, based on the advice we give customers who cut large graphite blocks.",
+    "sections": [
+      {
+        "heading": "Why is graphite hard on a bandsaw?",
+        "paragraphs": [
+          "Graphite cuts with very little force, but it is extremely abrasive. Cutting it is like cutting compressed sand, and it wears the cutting edge of the blade fast.",
+          "It also does not make normal chips. It makes a fine dust that spreads everywhere. This dust needs proper handling to protect the operator and the machine."
+        ],
+        "bullets": [],
+        "steps": []
+      },
+      {
+        "heading": "Which bandsaw blade is best for cutting graphite?",
+        "paragraphs": [
+          "For a solid block such as 250mm x 250mm, the most important thing is clearing the heavy dust out of the cut. This needs a coarse tooth pitch, which gives bigger gullets to carry the dust out.",
+          "Our first choice is a carbide blade from the KOPIS Pluto series. Pluto Pro is the one built for abrasive materials, including graphite. Carbide teeth resist wear far better than bi-metal, so the blade lasts longer, cuts straight and gives a better finish.",
+          "If the starting cost of the blade is the main concern, a bi-metal blade from the KOPIS Fighter series can be used. Please know that graphite will wear a bi-metal edge much faster than carbide, so expect a shorter blade life."
+        ],
+        "bullets": [
+          "Best choice: KOPIS Pluto Pro (carbide), coarse pitch such as 2/3 TPI for large blocks.",
+          "Budget option: KOPIS Fighter series (bi-metal), coarse pitch, with shorter blade life.",
+          "Blade width and thickness must match your machine, so confirm your bandsaw model before ordering."
+        ],
+        "steps": []
+      },
+      {
+        "heading": "Should graphite be cut dry or with coolant?",
+        "paragraphs": [
+          "Always cut graphite completely dry. Never use coolant. Coolant mixed with graphite dust turns into a thick, abrasive paste that quickly damages the guides, bearings and wheels of the bandsaw."
+        ],
+        "bullets": [],
+        "steps": []
+      },
+      {
+        "heading": "What blade speed and feed should be used?",
+        "paragraphs": [
+          "A carbide blade can run much faster than a bi-metal blade, and the higher speed gives a smoother finish. A bi-metal blade must run slower, because high speed burns it quickly from friction. Follow the speed range given for your blade and machine.",
+          "Keep the feed steady and moderate, with constant positive pressure. The teeth should cut into the graphite, not rub against it."
+        ],
+        "bullets": [],
+        "steps": []
+      },
+      {
+        "heading": "How do you protect the machine from graphite dust?",
+        "paragraphs": [
+          "Graphite dust conducts electricity. If it gets into the electrical cabinet, motor or drive, it can cause short circuits and serious damage."
+        ],
+        "bullets": [
+          "Seal all electrical enclosures well, IP65 or higher if possible.",
+          "If possible, keep the electrical cabinet under light positive pressure with clean, dry air.",
+          "Cover exposed guides, screws and bearings with bellows or heavy-duty wipers, because the dust acts like a grinding powder on moving parts."
+        ],
+        "steps": []
+      },
+      {
+        "heading": "How do you keep the operator safe?",
+        "paragraphs": [
+          "Fine graphite dust is a health risk if breathed in for long periods. Safety equipment is not optional for this job."
+        ],
+        "bullets": [
+          "Use a strong industrial dust collector or vacuum right at the cutting zone.",
+          "Wear a proper dust respirator (N95, P100 or FFP3).",
+          "Wear tight-fitting goggles to protect the eyes from dust.",
+          "Wear long sleeves and gloves to avoid skin irritation."
+        ],
+        "steps": []
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Can I cut graphite on a normal vertical bandsaw?",
+        "a": "Yes, but the machine needs protection. Seal the electrical parts, cover the moving parts and use a dust collector at the cutting zone, because graphite dust is abrasive and conducts electricity."
+      },
+      {
+        "q": "Which KOPIS blade should I use for graphite?",
+        "a": "KOPIS Pluto Pro (carbide) is the first choice for graphite because it is built for abrasive materials. KOPIS Fighter (bi-metal) is the lower-cost option with a shorter blade life."
+      },
+      {
+        "q": "What tooth pitch is best for a large graphite block?",
+        "a": "A coarse pitch such as 2/3 TPI is recommended for large solid blocks, because the bigger gullets carry the dust out of the cut."
+      },
+      {
+        "q": "Can I use coolant when cutting graphite?",
+        "a": "No. Graphite must be cut dry. Coolant mixes with the dust and forms an abrasive paste that damages guides, bearings and wheels."
+      },
+      {
+        "q": "Why does a bi-metal blade wear out so fast on graphite?",
+        "a": "Graphite is very abrasive and wears down the cutting edge quickly. Bi-metal teeth wear much faster than carbide teeth, and running them at high speed makes it worse."
+      },
+      {
+        "q": "What safety gear is needed when cutting graphite?",
+        "a": "A dust respirator (N95, P100 or FFP3), tight-fitting goggles, long sleeves and gloves, along with a dust collector at the cutting zone."
+      }
+    ],
+    "related": [
+      {
+        "label": "Vertical bandsaw machines",
+        "href": "/products"
+      }
+    ],
+    "keywords": [
+      "how to cut graphite",
+      "graphite cutting bandsaw",
+      "bandsaw blade for graphite",
+      "KOPIS Pluto Pro",
+      "KOPIS Fighter",
+      "vertical bandsaw Chennai",
+      "bandsaw blades India"
+    ]
+  }
+]

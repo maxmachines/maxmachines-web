@@ -33,6 +33,7 @@ export default function Footer() {
             { label: "About", href: "/about" },
             { label: "Products", href: "/products" },
             { label: "Export & UAE", href: "/export-and-uae" },
+            { label: "Blog", href: "/blog" },
             { label: "Contact Us", href: "/contact" },
           ].map(({ label, href }) => (
             <a
