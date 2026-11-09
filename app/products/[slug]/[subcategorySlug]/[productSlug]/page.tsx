@@ -70,11 +70,6 @@ const countryFlags: Record<string, string> = {
 const countryLabels: Record<string, string> = {
   india: "India", taiwan: "Taiwan", japan: "Japan", italy: "Italy", usa: "USA",
 };
-const availabilityLabel: Record<string, { label: string; color: string }> = {
-  in_stock: { label: "In Stock", color: "#22c55e" },
-  on_order: { label: "On Order", color: "#eab308" },
-  discontinued: { label: "Discontinued", color: "#ef4444" },
-};
 
 function getYouTubeId(url: string): string | null {
   if (!url || typeof url !== "string") return null;
@@ -483,41 +478,6 @@ export default async function ProductDetailPage({
                       })}
                     </tr>
                   ))}
-                  <tr style={{ background: "rgba(234,179,8,0.04)", borderTop: "1px solid rgba(234,179,8,0.14)" }}>
-                    <td
-                      className="px-5 py-3 font-medium sticky left-0"
-                      style={{ color: "#a3a3a3", background: "rgba(20,16,4,0.98)", minWidth: "180px" }}
-                    >
-                      Price
-                    </td>
-                    {variants.map((v, i) => (
-                      <td key={i} className="px-4 py-3">
-                        {v.price
-                          ? <span className="font-bold" style={{ color: "var(--gold)" }}>{v.price}</span>
-                          : <span style={{ color: "#737373" }}>Request Quote</span>
-                        }
-                      </td>
-                    ))}
-                  </tr>
-                  <tr style={{ background: "rgba(234,179,8,0.02)", borderTop: "1px solid rgba(234,179,8,0.07)" }}>
-                    <td
-                      className="px-5 py-3 font-medium sticky left-0"
-                      style={{ color: "#a3a3a3", background: "rgba(15,15,15,0.98)", minWidth: "180px" }}
-                    >
-                      Availability
-                    </td>
-                    {variants.map((v, i) => {
-                      const avail = v.availability ? availabilityLabel[v.availability] : null;
-                      return (
-                        <td key={i} className="px-4 py-3">
-                          {avail
-                            ? <span className="text-xs font-semibold" style={{ color: avail.color }}>{avail.label}</span>
-                            : <span style={{ color: "#525252" }}>—</span>
-                          }
-                        </td>
-                      );
-                    })}
-                  </tr>
                 </tbody>
               </table>
             </div>
@@ -598,10 +558,6 @@ export default async function ProductDetailPage({
                     <p className="text-xs leading-relaxed flex-1" style={{ color: "#a3a3a3" }}>{acc.description}</p>
                   )}
                   <div className="flex items-center justify-between gap-2 pt-1">
-                    {acc.price
-                      ? <span className="text-sm font-bold" style={{ color: "var(--gold)" }}>{acc.price}</span>
-                      : <span className="text-xs" style={{ color: "#525252" }}>Price on request</span>
-                    }
                     {acc.link && (
                       <a
                         href={acc.link}
@@ -761,14 +717,11 @@ export default async function ProductDetailPage({
                   <tr style={{ background: "rgba(234,179,8,0.08)" }}>
                     <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Model</th>
                     <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Size</th>
-                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Availability</th>
-                    <th className="text-left px-5 py-3.5 font-semibold" style={{ color: "var(--gold)" }}>Price</th>
                     <th className="px-5 py-3.5" />
                   </tr>
                 </thead>
                 <tbody>
                   {variants.map((v, i) => {
-                    const avail = v.availability ? availabilityLabel[v.availability] : null;
                     return (
                       <tr
                         key={i}
@@ -780,18 +733,6 @@ export default async function ProductDetailPage({
                         <td className="px-5 py-3.5 font-semibold text-white">{v.modelNumber}</td>
                         <td className="px-5 py-3.5" style={{ color: "#a3a3a3" }}>
                           {v.size ?? <span style={{ color: "#525252" }}>—</span>}
-                        </td>
-                        <td className="px-5 py-3.5">
-                          {avail
-                            ? <span className="text-xs font-semibold" style={{ color: avail.color }}>{avail.label}</span>
-                            : <span style={{ color: "#525252" }}>—</span>
-                          }
-                        </td>
-                        <td className="px-5 py-3.5">
-                          {v.price
-                            ? <span className="font-bold" style={{ color: "var(--gold)" }}>{v.price}</span>
-                            : <span style={{ color: "#737373" }}>Request Quote</span>
-                          }
                         </td>
                         <td className="px-5 py-3.5">
                           <EnquireButton
