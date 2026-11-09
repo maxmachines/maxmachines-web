@@ -862,17 +862,6 @@ export default async function ProductDetailPage({
         ...(product.variants?.[0]?.modelNumber ? { "sku": product.variants[0].modelNumber, "model": product.variants[0].modelNumber } : {}),
         ...(subName ? { "category": subName } : {}),
         ...((product.geoTags?.cities?.length ?? 0) > 0 ? { "areaServed": product.geoTags!.cities } : {}),
-        "offers": {
-          "@type": "Offer",
-          "url": canonicalUrl,
-          "priceCurrency": "INR",
-          "price": product.variants?.[0]?.price ?? "Contact for price",
-          "availability": "https://schema.org/InStock",
-          "seller": {
-            "@type": "Organization",
-            "name": "Max Machine Tools"
-          }
-        }
       }} />
       <SchemaMarkup data={{
         "@context": "https://schema.org",
