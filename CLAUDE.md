@@ -400,3 +400,12 @@ Product: PRG Mechanical Power Press (Press Machines category, brand PRG, Made in
 - Layout: full width, left-aligned text and a design refresh are planned for the next sitting. Do not start before Jabs approves a design option.
 - Vikrant Machinery is a supplier of some models, not a competitor. Toggle press competitor names: Precision Engineering Products (Exacta), Jeet, Bharat Machines Press, Balaji (Bradma and Hindustan are impact press only).
 - Everything else, including the master status register and the single to-do list, is in SOP-product-update.md sections 20 to 22. Append only; never replace this file.
+
+## Corrections 10 Nov 2026 (newer than anything above; SOP-product-update.md v5.1 wins)
+- The site runs Next.js 16.2.4 (not 15).
+- /about and /blog are built and live. /blog is in the Navbar and Footer and runs on Sanity (document type blogPost; `npm run import-blog` reads scripts/blog-posts.json). /our-clients exists but stays hidden from menus until it has real content.
+- NO price, NO availability and NO pricing wording anywhere on the website (Enquire buttons only). Product JSON-LD has no offers.
+- WhatsApp chat number everywhere on the website is 99620 61514, always through waLink() in lib/whatsapp.ts.
+- Share image rule: before a link is posted anywhere, check `curl -s <url> | grep -o '<meta property="og:image"[^>]*>'`. A blog post needs a cover picture in Studio first. Add ?v=2 to refresh a cached WhatsApp preview.
+- Any new static page must carry alternates.canonical.
+- SOP COPIES RULE: ONE master, claude/SOP-product-update.md in the claude.ai Project, always the latest. Update the project copy first, then the Mac folder copy at the end of the session, then git push. No addendum or pending-notes files. Check the Version line of the Mac copy before overwriting. Append only to this file; never replace it.
