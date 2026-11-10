@@ -39,7 +39,7 @@ export async function generateMetadata({
       description: post.description,
       url,
       siteName: "Max Machine Tools",
-      images: [{ url: "https://www.maxmachines.in/logo.png", width: 1200, height: 1200, alt: "Max Machine Tools" }],
+      images: [{ url: post.coverUrl ? `${post.coverUrl}?w=1200&h=630&fit=crop&auto=format` : "https://www.maxmachines.in/logo.png", width: 1200, height: 630, alt: post.coverAlt || post.title }],
       locale: "en_IN",
       type: "article",
       publishedTime: post.date,
