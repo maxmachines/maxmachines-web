@@ -1,6 +1,6 @@
 # SOP - maxmachines.in (single master file)
 
-Version 5.1, 10 Nov 2026 night. COMPLETE MERGE. This file contains everything from: Mac copy v4.8 (9 Nov 02:00, which held the Google Business Profile products work v4.6-4.7 and the IndiaMART P2 record v4.8), the Project copy v5.0 (9 Nov night: Search Console, IndiaMART new listings, workstreams), and the pending notes of 9-10 Nov (blog on Sanity, share image rule, webhook fix, whole-site price wording, indexing on 10 Nov). Nothing from the earlier versions was left out; where two versions said different things the later one wins and the difference is noted. Previous: v5.0 (project only, 9 Nov), v4.8 (Mac only, 9 Nov), v4.5. Owner: Jabs.
+Version 5.1, 10 Nov 2026 night (end of session 23:30). COMPLETE MERGE. This file contains everything from: Mac copy v4.8 (9 Nov 02:00, which held the Google Business Profile products work v4.6-4.7 and the IndiaMART P2 record v4.8), the Project copy v5.0 (9 Nov night: Search Console, IndiaMART new listings, workstreams), and the pending notes of 9-10 Nov (blog on Sanity, share image rule, webhook fix, whole-site price wording, indexing on 10 Nov). Nothing from the earlier versions was left out; where two versions said different things the later one wins and the difference is noted. Previous: v5.0 (project only, 9 Nov), v4.8 (Mac only, 9 Nov), v4.5. Owner: Jabs.
 
 READ THIS FILE FIRST in every new chat of the MaxMachines.in project. The addendum files (SOP-addendum-search-console-2026-11-09.md, SOP-addendum-indiamart-2026-11-09.md) and SOP-pending-notes-2026-11-09.md are SUPERSEDED by this file. If anything here disagrees with CLAUDE.md, project notes or memory, THIS FILE WINS.
 
@@ -258,6 +258,7 @@ Max Machine Tools (MMT), group since 1963, MMT since 2012, ISO 9001:2015, Chenna
 - 2026-11-10: Graphite post source restored (868ac1e): scripts/blog-posts.json brought back in step with Sanity. Content now live: Pluto Pro pitch "coarse pitch such as 2/3 or 3/4 TPI depending on the block size"; FAQ on tooth pitch; section on clean-up and support (vacuum not compressed air); section "Which bandsaw can cut graphite?" naming HABA VMCB16RSE (three blade speeds, VFD optional, seal electricals) with link. No cutting size stated until the factory confirms it. RULE: after any blog edit the JSON and Sanity must match; the live page is checked every time.
 - 2026-11-10: Search Console indexing continued (quota reached at the 12th request). Remaining list in section 25.3.
 - 2026-11-10 (night): SOP FULL MERGE v5.1. Found that the Mac copy was v4.8 (Google profile products, IndiaMART P2 record) while the project copy was a separate v5.0; both merged into this file. COPIES RULE fixed by Jabs (section 0): project copy is always the latest; folder copy overwritten at the end of the session; then git; no addendum or pending-notes files.
+- 2026-11-10 (end of session): SOP v5.1 synced to project, Mac and git (89f7d88); CLAUDE.md note pushed (b473740); old addendum files deleted; share image check finished (nothing to fix). Next: indexing resumes 11 Nov at the all-geared lathe subcategory.
 
 ---
 
@@ -445,7 +446,7 @@ Website build
 | Price, availability and pricing wording removed (whole site) | DONE 9-10 Nov |
 | WhatsApp chat number unified to 99620 61514 | DONE 9 Nov |
 | Blog share image = cover picture | DONE 10 Nov (d7fbe0d) |
-| Share image check on other page types | PENDING (section 27) |
+| Share image check on other page types | DONE 10 Nov: product, category, subcategory use own picture; /products uses logo (accepted); home, about, contact, export, blog list assumed logo (accepted, not curled) |
 | Custom helpful 404 page; homepage LocalBusiness JSON-LD | CHECK |
 | GA4 key events | PENDING |
 | "Fill Form" buttons feed the same Sheet (report only) | PENDING |
@@ -531,7 +532,7 @@ Infrastructure: Sanity free plan (22 MB of 100 GB used); Vercel Hobby (ISR Write
 7. Quotation Pro: send the quotation PDF with the WhatsApp message.
 
 ### C. Website to build or fix (in suggested order)
-1. SHARE IMAGE CHECK (section 27) on /, /products, category, subcategory, product pages, /about, /contact, /export-and-uae, /blog; fix any that show only the logo (diff first, wait for "go").
+1. SHARE IMAGE CHECK: DONE 10 Nov (section 27). Nothing to fix.
 2. Studio: Display Order, card picture, description and SEO fields for bandsaw subcategories without pictures (Horizontal Semi Auto, Fully Auto, Double Column, Special Application, Wood Cutting, AAC Block); Special Application has no Display Order. Then Display Order on the other subcategories. Build the Horizontal Fully Auto page (HABA Automatic Bandsaw, HMA9RE) so IndiaMART and Google can be updated after it.
 3. About page edits (decisions 10 and 22). Contact page "coming soon" number (decision 2).
 4. GA4 key events (contact form, WhatsApp click, call click, catalogue request) and the analytics review against the 28 Oct baseline.
@@ -557,8 +558,8 @@ Infrastructure: Sanity free plan (22 MB of 100 GB used); Vercel Hobby (ISR Write
 - UTM tags on every outside link; YouTube videos with links back; backlinks; JustDial, TradeIndia and other portals.
 
 ### F. Housekeeping and SOP
-- CLAUDE.md: APPEND a note (Next.js 16.2.4; /about and /blog exist, /our-clients hidden; blog on Sanity; no price display; WhatsApp 99620 61514; share image rule). Append only, never overwrite.
-- Delete from the project: SOP-pending-notes-2026-11-09.md and the two superseded addendum files, when Jabs agrees. Delete SOP-pending-notes-2026-11-09.md from the Mac folder (and git) after this sync.
+- CLAUDE.md: DONE 10 Nov (commit b473740, appended corrections note). Append only, never overwrite.
+- DONE 10 Nov: pending-notes and the two addendum files deleted from the project; pending-notes removed from the Mac folder and git (commit 89f7d88).
 - Empty folders in "Mechanical Press - NOT USABLE" and files in "_to_delete" for Jabs to bin. Project doc `plan-2026-10-29.md` is superseded by this file.
 
 ## 23. GET-TO-THE-TOP PLAN (research of 6 Nov 2026, about 23:00 IST; Jabs's Chennai Chrome; Claude web search)
@@ -803,6 +804,6 @@ Jabs's note: some of this is not website work, but it is recorded here so everyt
 - WHATSAPP CACHE: WhatsApp keeps the old preview for a link it has already seen. To test or re-share after a fix, add `?v=2` (then `?v=3`...) at the end of the link, for example `.../how-to-cut-graphite-on-a-vertical-bandsaw?v=2`. Jabs confirmed the picture shows with the fresh link. Post the `?v=2` link, not the old one.
 - RULE FOR ALL FUTURE PAGES: every page type is checked for its share image BEFORE the link is posted anywhere (WhatsApp channel, LinkedIn, Facebook, Instagram bio, IndiaMART replies).
   - Blog posts: DONE (cover picture). Every blog post needs a cover picture uploaded in Studio before it is shared (no cover = logo preview).
-  - STILL TO CHECK (not verified): home /, /products, category and subcategory pages, product pages (should use the first product picture), /about, /contact, /export-and-uae, /blog list page. Each should show a relevant picture wherever a good one exists; the logo is acceptable only where nothing better exists. Fix = code change in generateMetadata, same pattern as the blog (diff first, wait for "go").
+  - CHECKED 10 Nov (curl, live): product page = own Sanity picture (1600x1600); category = own card picture (1600x900); subcategory = own picture (1600x700); /products = logo.png (accepted: nothing single fits). Home, /about, /contact, /export-and-uae and /blog list: not curled, logo assumed and accepted. No code change needed.
   - Any new Sanity page type (brand pages, area pages, KOPIS blade pages) must set openGraph images from its own picture, logo only as fallback.
 - The fortnightly check (section 16 step 7) tests 2 or 3 key links.
