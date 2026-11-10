@@ -704,10 +704,10 @@ export default async function ProductDetailPage({
           </section>
         )}
 
-        {/* ── 11. Variants & Pricing ──────────────────────────────────── */}
+        {/* ── 11. Models and Variants ──────────────────────────────────── */}
         {hasVariants && (
           <section className="mb-14">
-            <SectionHeading>Variants &amp; Pricing</SectionHeading>
+            <SectionHeading>Models and Variants</SectionHeading>
             <div
               className="overflow-x-auto rounded-xl border"
               style={{ borderColor: "rgba(234,179,8,0.14)", WebkitOverflowScrolling: "touch" } as React.CSSProperties}

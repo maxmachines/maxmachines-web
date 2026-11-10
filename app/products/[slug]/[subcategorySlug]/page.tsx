@@ -392,7 +392,7 @@ export default async function SubcategoryPage({
             <p className="text-sm max-w-xl mx-auto" style={{ color: "#a3a3a3" }}>
               {products.length === 0
                 ? "We're adding our full range to the catalog. Contact us for the complete list."
-                : "Click a machine to view full specifications, variants, and pricing."}
+                : "Click a machine to view full specifications and variants."}
             </p>
           </div>
 
