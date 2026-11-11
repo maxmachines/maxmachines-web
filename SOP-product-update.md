@@ -1,6 +1,6 @@
 # SOP - maxmachines.in (single master file)
 
-Version 5.1, 10 Nov 2026 night (end of session 23:30). COMPLETE MERGE. This file contains everything from: Mac copy v4.8 (9 Nov 02:00, which held the Google Business Profile products work v4.6-4.7 and the IndiaMART P2 record v4.8), the Project copy v5.0 (9 Nov night: Search Console, IndiaMART new listings, workstreams), and the pending notes of 9-10 Nov (blog on Sanity, share image rule, webhook fix, whole-site price wording, indexing on 10 Nov). Nothing from the earlier versions was left out; where two versions said different things the later one wins and the difference is noted. Previous: v5.0 (project only, 9 Nov), v4.8 (Mac only, 9 Nov), v4.5. Owner: Jabs.
+Version 5.2, 11 Nov 2026 night (end of session 22:50). Built on v5.1 (10 Nov, complete merge). v5.2 adds: indexing progress of 11 Nov (section 25.3), Vercel ISR Writes check done (section 7), monthly limits check (sections 16 and 22), Product snippets email repeat (section 25.4), log entries of 11 Nov (section 13). Nothing from earlier versions was left out. Previous: v5.1 (10 Nov), v5.0 (project only, 9 Nov), v4.8 (Mac only, 9 Nov), v4.5. Owner: Jabs.
 
 READ THIS FILE FIRST in every new chat of the MaxMachines.in project. The addendum files (SOP-addendum-search-console-2026-11-09.md, SOP-addendum-indiamart-2026-11-09.md) and SOP-pending-notes-2026-11-09.md are SUPERSEDED by this file. If anything here disagrees with CLAUDE.md, project notes or memory, THIS FILE WINS.
 
@@ -24,6 +24,7 @@ READ THIS FILE FIRST in every new chat of the MaxMachines.in project. The addend
 14. BLOG RULE: Sanity is the truth for a live post; scripts/blog-posts.json is the import source and must be kept in step. After ANY blog edit check the live page (section 27).
 15. GOOGLE PROFILE RULE: ONE photo per machine on Google, added in the same sitting as the website update; never delete a product entry without asking Jabs (section 16).
 16. FINISH WHAT IS STARTED: once a work item is started, finish it before moving on; do not ask "shall we jump to the next thing" mid-task. Never write anything negative about any machine anywhere.
+17. MONTHLY LIMITS CHECK (Jabs, 11 Nov): once a month check usage and limits on Vercel, Sanity, Upstash and GitHub (section 16, last block). First due about 11 Dec 2026.
 
 ---
 
@@ -154,7 +155,7 @@ Approved lists (Jabs):
 - Category and Subcategory (never done by the importer): Image (category field "Icon / Image"), Description (one short line, facts already on the site only), Display Order (check the others first; lower shows first), SEO Meta (title max 60, meta max 160, Keywords as tags). Studio gotcha: the first tag typed in an empty box often vanishes: type all, screenshot, re-add. SEO title above 60 characters shows a warning.
 - Studio Vision (raw perspective) shows the published and draft versions of any document: use it to see what is really live in Sanity (the Sanity API itself is blocked for Claude).
 - Webhook "Refresh website on publish" (manage.sanity.io > API > Webhooks) posts to /api/revalidate. FILTER (fixed 10 Nov): `_type in ["category", "subcategory", "product", "blogPost"]`. The webhook description text still says category, subcategory or product: harmless. A publish shows live in about a minute. Vercel Redeploy only if it does not. Bulk imports fire many webhook calls. app/api/revalidate/route.ts revalidates /, /about, the /products layout, the /blog layout, /sitemap.xml and /llms.txt (no code change was needed for blogPost).
-- Vercel free tier: ISR Writes limit 200,000 a month (153,518 reached on 9 Oct with a 60 second refresh; fixed; 72% on 28 Oct). Every new Sanity page must keep revalidate at 3600 or higher. Re-check now (due 9 Nov, not done yet).
+- Vercel free tier: ISR Writes limit 200,000 a month (153,518 reached on 9 Oct with a 60 second refresh; fixed; 72% on 28 Oct). Every new Sanity page must keep revalidate at 3600 or higher. CHECKED 11 Nov 22:40 IST: 53,888 of 200,000 = 27% for 12 Oct to 11 Nov (daily writes mostly 500 to 2,000 since early November; Reads 123,398 units, no concern). Vercel emails at 90%. Next check: the monthly limits check (section 16). Sanity plan: free; only storage seen (22 MB of 100 GB); API request count NOT checked yet (Jabs 11 Nov: not now; covered by the monthly check).
 
 ## 8. DONE means all of these are ticked (per product)
 
@@ -259,6 +260,11 @@ Max Machine Tools (MMT), group since 1963, MMT since 2012, ISO 9001:2015, Chenna
 - 2026-11-10: Search Console indexing continued (quota reached at the 12th request). Remaining list in section 25.3.
 - 2026-11-10 (night): SOP FULL MERGE v5.1. Found that the Mac copy was v4.8 (Google profile products, IndiaMART P2 record) while the project copy was a separate v5.0; both merged into this file. COPIES RULE fixed by Jabs (section 0): project copy is always the latest; folder copy overwritten at the end of the session; then git; no addendum or pending-notes files.
 - 2026-11-10 (end of session): SOP v5.1 synced to project, Mac and git (89f7d88); CLAUDE.md note pushed (b473740); old addendum files deleted; share image check finished (nothing to fix). Next: indexing resumes 11 Nov at the all-geared lathe subcategory.
+- 2026-11-11: Product snippets structured data email repeated (WNC-10030322): NO ACTION, same old-crawl notice already accepted (section 25.4). Never add fake prices or copy the 43 business reviews onto products.
+- 2026-11-11 (evening): Search Console indexing resumed: 11 Indexing requests made, all "Indexing requested" (list in section 25.3). HABA Extra Heavy Duty all-geared lathe bed 26 was already on Google and skipped. Stopped at 11 (quota stopped the 12th on 10 Nov).
+- 2026-11-11 (22:40 IST): Vercel ISR Writes check DONE: 53,888 of 200,000 (27%), healthy. Sanity API usage not checked (Jabs: no need now).
+- 2026-11-11 (Jabs): MONTHLY LIMITS CHECK added (section 16): Vercel, Sanity, Upstash, GitHub once a month; Vercel emails at 90% (confirmed); Sanity and Upstash email warnings NOT confirmed; make sure these emails do not land in spam. First check about 11 Dec 2026.
+- 2026-11-11 (end of session): SOP v5.2 saved in the project, then synced to the Mac folder (late, after the Mac folder was linked).
 
 ---
 
@@ -323,6 +329,13 @@ FORTNIGHTLY VISIBILITY CHECK (every 15 days; decided by Jabs 6 Nov; first due 21
 5. Enquiries: count real enquiries since the last check (Sheet, WhatsApp, calls) and ask each new customer "How did you find us?"; note any that mention Google, ChatGPT or a competitor.
 6. Reality check: Google needs 2 to 8 weeks to show changes on updated pages; AI tools are slower and less predictable. Keywords in the Sheet do not rank a page alone; titles, content, FAQs, structured data and links from other sites do. Judge only after 4 weeks.
 7. Share image test: run the og:image check (section 27) on 2 or 3 key links.
+
+MONTHLY LIMITS CHECK (Jabs, 11 Nov 2026; first due about 11 Dec 2026, then 11 Jan, 11 Feb). Claude opens each usage page in Jabs's logged-in Chrome (Browser 1) and writes one dated line in section 13 with the numbers and the percentage of the limit:
+1. Vercel: team Usage page (vercel.com/maxmachines-6712s-projects/~/usage), Incremental Static Regeneration > Writes (limit 200,000 a month) and Reads; also Fast Data Transfer and Function usage. The chart needs a few seconds to load. 11 Nov baseline: 53,888 of 200,000 (27%).
+2. Sanity: manage.sanity.io usage page for project p72ubifi: API requests and API CDN requests against the free-plan limits, dataset size, assets, bandwidth. Not yet checked: the first check sets the baseline (storage 22 MB of 100 GB).
+3. Upstash (enquiry rate limit): commands per day and monthly total against the free plan.
+4. GitHub: normally nothing to check; confirm no warning or billing email.
+5. Confirm warning emails (Vercel, Sanity, Upstash, Search Console) are not landing in spam or promotions. Vercel emails at 90% (confirmed); Sanity and Upstash warnings are NOT confirmed, so this monthly check is the safety net.
 
 ## 17. AI visibility (the golden rule in practice)
 
@@ -393,6 +406,7 @@ FORTNIGHTLY VISIBILITY CHECK (every 15 days; decided by Jabs 6 Nov; first due 21
 38. (10 Nov) Share image rule (section 27).
 39. (8-9 Nov, Jabs) Google profile: one photo per machine, same sitting as the website; reply to every new review within 1 to 2 days; never delete a product entry without asking; QR card dropped; VMCB16RSE sold in India and exported; nothing negative about any machine; do not repeat the same sentence across descriptions (section 4 and 16).
 40. (10 Nov, Jabs) Copies rule: project copy is always the latest; folder copy overwritten at the end; then git; no addendum or pending-notes files (section 0).
+41. (11 Nov, Jabs) Monthly limits check of Vercel, Sanity, Upstash and GitHub (section 16). Sanity API usage need not be checked right now.
 
 ---
 
@@ -425,6 +439,7 @@ Status key: DONE = built and live. PARTLY = started. PENDING = not started. CHEC
 | 8 Nov | GBP products: six entries with own photos and new-site links; review approach; GBP closed for now. IndiaMART P2 on the 44 active listings (average 88). SOP v4.8 (Mac only). |
 | 9 Nov | Canonical tags; offers and price display removed; WhatsApp number unified; Search Console work; 13 IndiaMART listings; blog built on Sanity and first post live; SOP v5.0 (project only). |
 | 10 Nov | Blog share image fix; whole-site price wording removed; webhook covers blogPost; graphite post restored; IndiaMART 24-hour check passed; indexing continued; SOP full merge v5.1 and copies rule. |
+| 11 Nov | Product snippets email repeat (no action); 11 indexing requests (lathes); Vercel ISR Writes 27%; monthly limits check added; SOP v5.2. |
 
 ### 21B. Status by area
 
@@ -507,19 +522,20 @@ Marketing and off-site: YouTube links, IndiaMART/TradeIndia/Alibaba/JustDial lis
 
 Connected systems (must not break; separate projects): contact form > Google Form > Sheet > instant email + WhatsApp > Magic CRM (tenant MMT_001) > IndiaMART automation. MAXIMUS WhatsApp chatbot (number 91760 61514, architecture decision open). Zoho Books/Flow automation. Quotation Pro (section 26 point 6).
 
-Infrastructure: Sanity free plan (22 MB of 100 GB used); Vercel Hobby (ISR Writes check overdue since 9 Nov; Vercel emails at 90%); Upstash free; Brevo and Resend DNS in place; GitHub backup.
+Infrastructure: Sanity free plan (22 MB of 100 GB used); Vercel Hobby (ISR Writes 27% on 11 Nov, healthy; Vercel emails at 90%; usage re-checked monthly, section 16); Upstash free; Brevo and Resend DNS in place; GitHub backup.
 
 ---
 
 ## 22. MASTER TO-DO LIST (single list; tick and date items here; replaces all older lists)
 
 ### A. Date-locked (do on or after the date)
-- 11 Nov (quota reset): Search Console indexing, inspect first (section 25.3 remaining list), 10 to 12 a day.
+- 12 Nov (quota reset): Search Console indexing, inspect first, 10 to 11 a day. Resume at the MODI Medium Duty belt lathe (section 25.3 remaining list).
 - About 13-14 Nov: Google profile extra phone 93828 61514 check (Google says up to 7 days); then follow the GBP list in section 16.
-- About 16 Nov: re-check the pages requested on 9 and 10 Nov. Judge only after 4 weeks.
+- About 16 Nov: re-check the pages requested on 9, 10 and 11 Nov. Judge only after 4 weeks.
 - 21 Nov: duplicate canonical validation result; FIRST fortnightly visibility check (section 16). Then 6 Dec (with the first 30-day review), 21 Dec.
 - Early Dec: Google profile November report against October.
-- Vercel ISR Writes check (overdue; Vercel emails at 90%).
+- About 11 Dec: FIRST monthly limits check (Vercel, Sanity, Upstash, GitHub; section 16). Then 11 Jan, 11 Feb.
+- DONE 11 Nov: Vercel ISR Writes check (27%).
 - DONE 10 Nov: IndiaMART 24-hour approval check.
 
 ### B. New workstreams (Jabs, 9 Nov; plan and order in section 26)
@@ -719,7 +735,8 @@ Numbers are in section 16 (Search Console October and Business Profile October).
 - Requested 9 Nov (all showed "Indexing requested"): HABA Standard, R and Eco horizontal bandsaws; HABA R, PRG Standard and PRG Eco vertical bandsaws; PRG Impact Press; PRG Mechanical Power Press; PRG Pillar Drilling; Press Machines category; Toggle Press category.
 - 10 Nov: indexing continued in Search Console (inspect first) until the quota stopped it at the 12th request, in the order of the list below (/blog, the graphite post and the pneumatic URLs first). The all-geared lathe subcategory was where the quota stopped. The exact per-URL results are in Search Console URL Inspection; not copied here.
 - Checked indexed on 9 Nov, no request needed: /export-and-uae, horizontal bandsaw subcategory, PRG toggle press product, hydraulic press category, drilling machine category.
-- REMAINING TO INSPECT AND REQUEST (10 to 12 a day, resume at the all-geared lathe subcategory): belt-drive lathe subcategory and the lathe products; marking solutions subcategories and products (Bradma/Velse); special application, wood and AAC vertical bandsaws; double column, fully auto and semi auto horizontal bandsaw subcategories; PRG drilling products under radial, tapping and multi-head; any hydraulic press products and pneumatic URLs not confirmed on 10 Nov. Full list: https://www.maxmachines.in/sitemap.xml.
+- REQUESTED 11 Nov (all "Indexing requested"; each said "URL is not on Google"): lathe-machine/all-geared-lathe-machine and lathe-machine/belt-drive-lathe-machine (subcategories); haba-light-duty-all-geared-lathe-machine; haba-medium-duty-all-geared-lathe-machine; haba-heavy-duty-all-geared-lathe-machine-bed-13 and -15; haba-extra-heavy-duty-all-geared-lathe-machine-bed-18 and -22; haba-light-duty-belt-lathe-machine; haba-medium-duty-belt-lathe-machine; modi-light-duty-belt-lathe-machine. SKIPPED (already on Google): haba-extra-heavy-duty-all-geared-lathe-machine-bed-26.
+- REMAINING TO INSPECT AND REQUEST (10 to 11 a day, resume 12 Nov at modi-medium-duty-belt-lathe-machine): modi-heavy-duty-belt-lathe-machine-bed-13-15; haba-heavy-duty-belt-lathe-machine-bed-13-15; modi-extra-heavy-duty-belt-lathe-machine-bed-18, -20, -22, -24, -26, -30; the lathe-machine category page; marking solutions subcategories and products (Bradma/Velse); special application, wood and AAC vertical bandsaws; double column, fully auto and semi auto horizontal bandsaw subcategories; PRG drilling products under radial, tapping and multi-head; any hydraulic press products and pneumatic URLs not confirmed on 10 Nov. Full list: https://www.maxmachines.in/sitemap.xml.
 - Method: click the top inspection box (about [450, 19]), type the full URL, press Enter, wait about 7-8 seconds, take a screenshot (the Request indexing button sits at about [1114, 235] or [1110, 221] depending on state); if "not on Google" click Request indexing and WAIT about 25 seconds for "Indexing requested" before dismissing (dismissing early at about [918, 330] cancels it). Guessed deep-link inspect URLs give 404. Judge results only after 4 weeks (21 Nov check).
 - Honest note: indexing requests are a minor lever (max about 10 minutes a day). The bigger levers are section 23 (profiles, directories, reviews) and real content (section 26 blog).
 
