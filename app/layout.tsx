@@ -118,7 +118,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Max Machines — Legacy of Precision Since 1963",
     description:
-      "Industrial machinery supplier based in Chennai and Ahmedabad since 1963.",
+      "Max Machine Tools: manufacturer, supplier and exporter of industrial machines including Lathe, Drilling, Power Press, Bandsaw and Marking. Since 1963.",
     images: ["https://www.maxmachines.in/logo.png"],
   },
 };
