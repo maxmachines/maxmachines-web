@@ -1,8 +1,10 @@
 # SOP - maxmachines.in (single master file)
 
-Version 5.2, 11 Nov 2026 night (end of session 22:50). Built on v5.1 (10 Nov, complete merge). v5.2 adds: indexing progress of 11 Nov (section 25.3), Vercel ISR Writes check done (section 7), monthly limits check (sections 16 and 22), Product snippets email repeat (section 25.4), log entries of 11 Nov (section 13). Nothing from earlier versions was left out. Previous: v5.1 (10 Nov), v5.0 (project only, 9 Nov), v4.8 (Mac only, 9 Nov), v4.5. Owner: Jabs.
+Version 5.3, 12 Nov 2026 night (end of session 23:55 IST). Built on v5.2 (11 Nov night). v5.3 adds: GA4 review of 12 Nov (section 16, project file claude/ga-review-2026-11-12.md), indexing of 12 Nov (section 25.3), Home meta description fix LIVE (section 20 points 42 to 45, section 21B), Home title decision, homepage design decision, 15-day review of the Home meta (section 16 step 8), log entries of 12 Nov (section 13), tomorrow's plan (section 22A). Nothing from earlier versions was left out; where two versions said different things the later one wins and the difference is noted. Previous: v5.2 (11 Nov), v5.1 (10 Nov, complete merge), v5.0 (project only, 9 Nov), v4.8 (Mac only, 9 Nov), v4.5. Owner: Jabs.
 
 READ THIS FILE FIRST in every new chat of the MaxMachines.in project. The addendum files (SOP-addendum-search-console-2026-11-09.md, SOP-addendum-indiamart-2026-11-09.md) and SOP-pending-notes-2026-11-09.md are SUPERSEDED by this file. If anything here disagrees with CLAUDE.md, project notes or memory, THIS FILE WINS.
+
+COPY STATUS (13 Nov 00:10 IST): project copy and Mac folder copy are both v5.3 (Mac synced 13 Nov after the Mac was linked). Git commit of the Mac file is the only step left (Jabs, section 0). The code commits of 12 Nov (746db1c and a second commit for the twitter description) are already pushed to GitHub.
 
 ---
 
@@ -25,6 +27,7 @@ READ THIS FILE FIRST in every new chat of the MaxMachines.in project. The addend
 15. GOOGLE PROFILE RULE: ONE photo per machine on Google, added in the same sitting as the website update; never delete a product entry without asking Jabs (section 16).
 16. FINISH WHAT IS STARTED: once a work item is started, finish it before moving on; do not ask "shall we jump to the next thing" mid-task. Never write anything negative about any machine anywhere.
 17. MONTHLY LIMITS CHECK (Jabs, 11 Nov): once a month check usage and limits on Vercel, Sanity, Upstash and GitHub (section 16, last block). First due about 11 Dec 2026.
+18. HOME META RULE (Jabs, 12 Nov): review the Home page meta description (and title) every 15 days as part of the fortnightly check (section 16 step 8). Name only categories that are live; when a new category (Blades, Chucks, Automation and so on) goes live, add it to the list in the Home meta description the same day. The wording uses "including", so it never claims to be the full list.
 
 ---
 
@@ -38,13 +41,15 @@ THE RULE (Jabs, 10 Nov):
 3. At the END of the session ("End session"), Claude copies the project copy to the Mac folder (`SOP-product-update.md` in maxmachines-web), overwriting it, and then Jabs runs the git commands. Order: project first, folder second, git last.
 4. BEFORE overwriting the Mac copy, Claude stages the Mac file and checks its Version line. If the Mac version is NEWER than the project version, STOP and merge first. Never overwrite blindly.
 5. If the project copy fails to save because of size: split the content, do not leave the Mac as the only newest copy. Tell Jabs at once.
-6. How to write to the Mac: stage with device_stage_files, save the final file under /mnt/user-data/outputs, write with device_commit_files using expectedMtimeMs, then re-stage and compare the byte size to confirm it really saved (once a write reported success but the Mac file was unchanged).
+6. How to write to the Mac: stage with device_stage_files, save the final file under /mnt/user-data/outputs, write with device_commit_files using expectedMtimeMs, then re-stage and compare the byte size to confirm it really saved (once a write reported success but the Mac file was unchanged). If no folder is connected, call device_request_folder_access for ~/Desktop/maxmachines/maxmachines-web first (Jabs approves).
 7. Memory mirror = project memory has only a short pointer plus the DONE checklist (topics/sop-pointer). No details there.
 8. Start of every chat: Claude reads this file, says in one line if the Mac copy differs (when the Mac is linked), uses this file. Handoff message for Jabs to type in a new chat: "Read claude/SOP-product-update.md first. Then tell me in one line what is pending."
-9. Claude cannot commit or push from its workspace (no git identity). Jabs runs git in Terminal. Use `git --no-pager diff --stat` so the pager does not get stuck. Claude gives the exact commands, one per code block.
-10. CLAUDE.md keeps tech and site-structure notes. It is APPEND ONLY (overwrites on 22 and 25 Oct had to be restored with `git show HEAD:CLAUDE.md > CLAUDE.md`). An old 6 KB copy exists in chat: never paste it over the real one. CLAUDE.md still says Next.js 15 (site runs 16.2.4) and lists /about, /blog, /our-clients as still to build: correct by appended note (to-do F).
+9. Claude cannot commit or push from its workspace (no git identity). Jabs runs git in Terminal (or tells Claude Code to commit and push after his "go"). Use `git --no-pager diff --stat` so the pager does not get stuck. Claude gives the exact commands, one per code block.
+10. CLAUDE.md keeps tech and site-structure notes. It is APPEND ONLY (overwrites on 22 and 25 Oct had to be restored with `git show HEAD:CLAUDE.md > CLAUDE.md`). An old 6 KB copy exists in chat: never paste it over the real one. The correcting note about Next.js 16.2.4, /about and /blog was appended on 10 Nov (commit b473740).
 11. Trigger phrases: "let's update product" (section 2), "Add to SOP", "End session".
 12. Do not update the SOP in the middle of work unless a decision is finalised or Jabs asks; the full tidy-up (status, to-do, copies) happens at "End session".
+13. Writing the project copy: `project_write` with local_path is refused for this large file; send the full text as inline content (the project doc must have been read or written earlier in the same chat).
+14. If the Mac folder is not linked at "End session" (11 and 12 Nov cases): update the project copy only, write the COPY STATUS note at the top, and sync the Mac at the next session with the Mac linked. (Note: the 11 Nov sitting did reach the Mac, so the Mac copy found on 13 Nov was v5.2, not v5.1.)
 
 ## 1. Working rules with Jabs
 
@@ -155,7 +160,8 @@ Approved lists (Jabs):
 - Category and Subcategory (never done by the importer): Image (category field "Icon / Image"), Description (one short line, facts already on the site only), Display Order (check the others first; lower shows first), SEO Meta (title max 60, meta max 160, Keywords as tags). Studio gotcha: the first tag typed in an empty box often vanishes: type all, screenshot, re-add. SEO title above 60 characters shows a warning.
 - Studio Vision (raw perspective) shows the published and draft versions of any document: use it to see what is really live in Sanity (the Sanity API itself is blocked for Claude).
 - Webhook "Refresh website on publish" (manage.sanity.io > API > Webhooks) posts to /api/revalidate. FILTER (fixed 10 Nov): `_type in ["category", "subcategory", "product", "blogPost"]`. The webhook description text still says category, subcategory or product: harmless. A publish shows live in about a minute. Vercel Redeploy only if it does not. Bulk imports fire many webhook calls. app/api/revalidate/route.ts revalidates /, /about, the /products layout, the /blog layout, /sitemap.xml and /llms.txt (no code change was needed for blogPost).
-- Vercel free tier: ISR Writes limit 200,000 a month (153,518 reached on 9 Oct with a 60 second refresh; fixed; 72% on 28 Oct). Every new Sanity page must keep revalidate at 3600 or higher. CHECKED 11 Nov 22:40 IST: 53,888 of 200,000 = 27% for 12 Oct to 11 Nov (daily writes mostly 500 to 2,000 since early November; Reads 123,398 units, no concern). Vercel emails at 90%. Next check: the monthly limits check (section 16). Sanity plan: free; only storage seen (22 MB of 100 GB); API request count NOT checked yet (Jabs 11 Nov: not now; covered by the monthly check).
+- Vercel free tier (Hobby): ISR Writes limit 200,000 a month (153,518 reached on 9 Oct with a 60 second refresh; fixed; 72% on 28 Oct). CHECKED 11 Nov 22:40 IST: 53,888 of 200,000 = 27% for 12 Oct to 11 Nov; daily writes peaked about 4,000 in mid-October and have mostly been 500 to 2,000 a day since early November (even with the 10 Nov imports and webhook calls); Reads 123,398 units, no limit concern. Vercel emails at 90%. Every new Sanity page must keep revalidate at 3600 or higher. Next check: the monthly limits check (section 16).
+- Sanity plan: free. Usage seen so far is storage only (22 MB of 100 GB). The API request count against the free-plan limit has NOT been checked (the site reads with useCdn false, so reads count as API requests, but pages rebuild at most hourly). Jabs (11 Nov): no need to check now; covered by the monthly limits check.
 
 ## 8. DONE means all of these are ticked (per product)
 
@@ -187,6 +193,7 @@ Only products with photos uploaded are retrofitted; run sections 4, 5 and 8 on e
 - Any new static page must carry alternates.canonical (rule from 9 Nov).
 - Any new Sanity page type must set openGraph images from its own picture in generateMetadata (section 27).
 - Verification method for code changes: before and after snapshot of the pages (text hash, title, meta, FAQ count, link and image counts) kept in browser localStorage on the production site (113 pages on 6 Nov; "always check the old and new page").
+- Claude Code runs whatever is typed into it as a command or message (12 Nov: Jabs typed a curl line inside Claude Code by mistake and it simply ran it, harmless). Terminal commands for Jabs are typed in a normal Terminal tab, not inside Claude Code, unless the step says "paste into Claude Code".
 
 ## 11. Never change or break (decisions already made)
 
@@ -196,9 +203,10 @@ Only products with photos uploaded are retrofitted; run sections 4, 5 and 8 on e
 - /blog is VISIBLE (Navbar and Footer link, since 9 Nov, replacing the old "hidden until content" rule). /our-clients stays hidden from Navbar and Footer until it has real content.
 - Blog rules: the blog names the HABA VMCB16RSE bandsaw with a link to its page (/products/vertical-bandsaw-machine/metal-cutting-vertical-bandsaw/haba-r-series-vertical-metal-cutting-bandsaw). KOPIS blades are not on the site yet: WHEN A KOPIS BLADE PRODUCT PAGE IS ADDED, UPDATE THE BLADE LINK IN THE GRAPHITE POST (and any other post naming KOPIS blades). Re-check blog links whenever a linked product is added, renamed or removed. When a YouTube video of a how-to exists, add its link to that post (the blog has no video field yet: add one, or put the link in the text).
 - Hostinger incident 28 Oct: never click "Connect domain" for the old WordPress maxmachines.in on Hostinger; never press the CDN "Disable" link or "Reset DNS records" without checking DNS first. Correct DNS: A @ 216.198.79.1 and CNAME www dc344377a2c35a6b.vercel-dns-017.com. If the "not private" warning returns: Vercel Settings > Domains, then Hostinger DNS history, then Restore.
-- Brochure: the old PDF catalogue (thousands of copies) links to old /shop/... and /product-category/... URLs. The redirect (307) to /products?utm_source=brochure&utm_medium=pdf is LIVE (confirmed 5 Nov). A new catalogue will come later (section 26).
+- Brochure: the old PDF catalogue (thousands of copies) links to old /shop/... and /product-category/... URLs. The redirect (307) to /products?utm_source=brochure&utm_medium=pdf is LIVE (confirmed 5 Nov; working per GA review 12 Nov). A new catalogue will come later (section 26).
 - Google Business Profile stays Chennai only; Ahmedabad is in the description only.
 - No price, no availability and no pricing wording on the site until online selling starts (9-10 Nov). Left on purpose: "pricing, or logistical support" on Home/Contact and the export quotation line.
+- Brevo: the website does not use Brevo (only DNS records on the domain stay for it); never delete the Brevo DNS records. A Brevo notice of 12 Nov about the unused API key "Zoho WA email alert" belongs to the Zoho automation (it stopped earlier because of an issue; Jabs will check it), not to the website.
 
 ## 12. Business facts that appear on the site
 
@@ -260,11 +268,21 @@ Max Machine Tools (MMT), group since 1963, MMT since 2012, ISO 9001:2015, Chenna
 - 2026-11-10: Search Console indexing continued (quota reached at the 12th request). Remaining list in section 25.3.
 - 2026-11-10 (night): SOP FULL MERGE v5.1. Found that the Mac copy was v4.8 (Google profile products, IndiaMART P2 record) while the project copy was a separate v5.0; both merged into this file. COPIES RULE fixed by Jabs (section 0): project copy is always the latest; folder copy overwritten at the end of the session; then git; no addendum or pending-notes files.
 - 2026-11-10 (end of session): SOP v5.1 synced to project, Mac and git (89f7d88); CLAUDE.md note pushed (b473740); old addendum files deleted; share image check finished (nothing to fix). Next: indexing resumes 11 Nov at the all-geared lathe subcategory.
-- 2026-11-11: Product snippets structured data email repeated (WNC-10030322): NO ACTION, same old-crawl notice already accepted (section 25.4). Never add fake prices or copy the 43 business reviews onto products.
-- 2026-11-11 (evening): Search Console indexing resumed: 11 Indexing requests made, all "Indexing requested" (list in section 25.3). HABA Extra Heavy Duty all-geared lathe bed 26 was already on Google and skipped. Stopped at 11 (quota stopped the 12th on 10 Nov).
-- 2026-11-11 (22:40 IST): Vercel ISR Writes check DONE: 53,888 of 200,000 (27%), healthy. Sanity API usage not checked (Jabs: no need now).
-- 2026-11-11 (Jabs): MONTHLY LIMITS CHECK added (section 16): Vercel, Sanity, Upstash, GitHub once a month; Vercel emails at 90% (confirmed); Sanity and Upstash email warnings NOT confirmed; make sure these emails do not land in spam. First check about 11 Dec 2026.
-- 2026-11-11 (end of session): SOP v5.2 saved in the project, then synced to the Mac folder (late, after the Mac folder was linked).
+- 2026-11-11: Product snippets structured data email repeated (WNC-10030322, "Either offers, review or aggregateRating should be specified"): NO ACTION, same old-crawl notice already accepted (section 25.4). Never add fake prices or copy the 43 business reviews onto products.
+- 2026-11-11 (evening): Search Console indexing resumed (quota reset): 11 Indexing requests made, all showed "Indexing requested" (list in section 25.3). One page (HABA Extra Heavy Duty all-geared lathe bed 26) was already on Google and skipped. Stopped at 11 because the quota stopped the 12th request on 10 Nov.
+- 2026-11-11 (22:40 IST): Vercel ISR Writes check DONE: 53,888 of 200,000 (27%), healthy (section 7). Sanity API usage not checked (Jabs: no need now).
+- 2026-11-11 (Jabs): MONTHLY LIMITS CHECK added: once a month check usage and limits on Vercel, Sanity, Upstash and GitHub (section 16). Vercel emails at 90% (confirmed, it emailed at 77% earlier); email warnings from Sanity and Upstash are NOT confirmed, so do not rely on them alone; also make sure these emails do not land in spam. First check about 11 Dec 2026.
+- 2026-11-11 (end of session): SOP v5.2 saved in the project (the Mac copy found on 13 Nov was also v5.2). Next: indexing resumes 12 Nov at the MODI Medium Duty belt lathe.
+- 2026-11-12 (evening, GA4 review, DONE in Jabs's Chrome): post-redirect window 28 Oct - 12 Nov (16 days) compared with the 28 Oct baseline; full numbers in claude/ga-review-2026-11-12.md and a summary in section 16. Result: the brochure redirect works (404 views from 377 in the baseline window to about 4 old /shop addresses); Direct share 83% to 45%; overall engagement rate 19.1% to 41.6%; Organic Search steady (about 5.3 sessions a day, 68% engaged); brochure / pdf 69 sessions; Google Business Profile UTM link 10 sessions; AI Assistant 9 sessions (ChatGPT 5, Gemini 4). Google's own monthly email (16 Oct - 12 Nov) showed users -55%: that is the junk traffic leaving, not real visitors lost. Key events still 0.
+- 2026-11-12: AI assistant detail (1 Oct - 12 Nov, 21 sessions): ChatGPT 17 (Home 10, PRG Impact Press 3, Contact 1, Bradma Stamp Marks 1, not set 2) spread over 11 different days; Gemini 4, all 30 Oct - 2 Nov (3 on /contact with 0 seconds, 1 on Home): GA cannot say whether these were Jabs's own tests. Jabs's 6 Nov Gemini research left no visit, so a visit only counts when a link in an AI answer is clicked. Possible Apps Script referral (26 sessions from a script.googleusercontent.com address) is probably the instant-reply email/WhatsApp link: NOT confirmed; if true, add UTM tags to that link.
+- 2026-11-12 (Jabs): GA4 KEY EVENTS setup left for another day (explained to Jabs: key events = actions marked as wins, such as form submitted, WhatsApp click, call click, catalogue request).
+- 2026-11-12: Brevo notice (API key "Zoho WA email alert" unused 3 months) belongs to the Zoho automation, not the website; Jabs says that automation stopped because of an issue and he will check it. Nothing to do on the site (section 11).
+- 2026-11-12 (night): Search Console indexing resumed: 10 requests, all "Indexing requested": MODI Medium Duty belt lathe, MODI Heavy Duty belt bed 13-15, HABA Heavy Duty belt bed 13-15, MODI Extra Heavy Duty belt beds 20, 22, 24, 26, 30, marking-solutions/stamp-marks, marking-solutions/rotary-numerators. Skipped (already on Google): MODI EHD belt bed 18 ("on Google but has issues", the old Product snippets notice) and the lathe-machine category page. marking-solutions/hydro-pneumatic-marking-presses failed twice with "Oops: Something went wrong" (temporary Google error, not the quota message): retry next time. Lathe pages are now finished.
+- 2026-11-12 (23:30 IST): HOME/ABOUT META FIX LIVE and checked by curl. Commit 746db1c changed the description and openGraph.description in app/layout.tsx; a second commit (hash not noted) changed twitter:description. Both old texts wrongly listed "Milling" and "Laser" as categories and said "Max Machines"; the old twitter line only said "Industrial machinery supplier based in Chennai and Ahmedabad since 1963." New text everywhere: "Max Machine Tools: manufacturer, supplier and exporter of industrial machines including Lathe, Drilling, Power Press, Bandsaw and Marking. Since 1963." About has no meta of its own, it inherits the root layout. Rule: only live categories are named; "including" keeps it from being a full list; review every 15 days and add new categories when they go live (summary point 18, section 16 step 8, decision 43).
+- 2026-11-12 (Jabs, 23:53): HOME TITLE DECIDED: Option A "Max Machine Tools | Max Machines: Industrial Machinery" (54 characters), because many customers say or search "Max Machine" or "Max Machines" (domain maxmachines.in). Also: change the root openGraph title, give About its own title, add "Max Machines" as alternateName in the Organization JSON-LD. NOT BUILT YET: planned for 13 Nov (section 22A). Today the title and openGraph title still say "Max Machines — Legacy of Precision Since 1963" (old name, em dash).
+- 2026-11-12 (Jabs): HOMEPAGE DESIGN DECISION: when the site width is changed and the new design is tried, on the Home page About Us moves below and Products comes above (section 20 point 42, section 22C).
+- 2026-11-12 (end of session): SOP v5.3 saved in the project. Next, 13 Nov: Home title change and the Studio work for the bandsaw subcategories (section 22A).
+- 2026-11-13 (00:10 IST, Jabs): Mac linked; Mac folder copy (found at v5.2, newer than nothing, older than the project) overwritten with v5.3. Both copies now v5.3. Git commit of the SOP file is the only step left. Jabs: "lets not keep SOP work pending, let it be up to date".
 
 ---
 
@@ -295,8 +313,11 @@ Max Machine Tools (MMT), group since 1963, MMT since 2012, ISO 9001:2015, Chenna
 - Dropbox photo path: `/Users/jabeshbagdy/Dropbox/01 Max Machine Tools - Shared/001 Sales Coordinator - Shared/0001 Machine Photos and Catalogue/001 Edited pic for Catalogue 2.0/www.maxmachines.in - Photo uploads and related/Ready for upload`.
 - Product JSON-LD: Google rejects offers.price = "Request Quote" and then asks for offers, review or aggregateRating; final decision is Product block with no offers (section 25).
 - A page that is a client component cannot export metadata: use a layout.tsx next to it (done for /about).
+- Page meta lives in THREE places in app/layout.tsx: description, openGraph.description and twitter.description (the third was found on 12 Nov by curl after the first two were fixed). When changing site-wide wording check all three, plus the title and openGraph title. The Home and About pages have no meta of their own: they inherit app/layout.tsx.
 - Blog edits drift: a blog edit made in another chat never reached scripts/blog-posts.json (cause unknown), and the live page then looked stale because the webhook filter missed blogPost. Both fixed 10 Nov. Lesson: after a blog edit check the live page AND grep the JSON.
 - SOP copies drift: see section 0 (the 10 Nov mix-up).
+- Search Console inspection can show the PREVIOUS URL's result while a "Retrieving data from Google Index" box is still loading (11 Nov): wait until the box is gone and the address at the top matches the URL you typed before clicking Request indexing. Request indexing can take 20 to 40 seconds to show "Indexing requested". A request can also fail with "Oops: Something went wrong ... try again later" (12 Nov, one page twice): that is a temporary Google error, not the quota; do not keep retrying, leave the page for the next sitting.
+- GA4 (12 Nov): the report URL date parameter that works is `...explorer?params=_u.date00%3D20261028%26_u.date01%3D20261112&r=<report>` (without dateOption). Session source / medium needs the Traffic acquisition table dimension changed by hand; the table search box only searches the first dimension. A channel called Unassigned is the "brochure / pdf" source.
 
 ## 16. Google: Search Console, Business Profile, Analytics (single plan)
 
@@ -316,8 +337,9 @@ Google Business Profile (Chennai only, decided 29 Oct; owner account max@maxmach
 
 Google Analytics 4 (property 367500154)
 - Baseline taken 28 Oct (30 Sep to 27 Oct): 1,328 views, 820 users, 963 sessions; Direct 800 sessions (11.75% engaged), Organic Search 132 (57.58%), AI Assistant 12 (all chatgpt.com), Referral 11; 404 page 377 views (28%). The baseline files are `claude/ga-baseline-2026-10-28.md` and `claude/ga-ai-traffic-2026-10-28.md`.
-- Review now due (checklist: 404 views fallen and "brochure / pdf" source visible; Direct down and engagement up; /products views up; do brochure visitors reach product or contact pages; who links to /blog and /our-clients; new 404 addresses; is the WhatsApp number in the old brochure answered).
-- Key events to create: contact form submitted, WhatsApp click, call click, catalogue requested. Not done, so enquiries are not measured in GA.
+- REVIEW DONE 12 Nov (28 Oct to 12 Nov, 16 days after the redirect; file `claude/ga-review-2026-11-12.md`, the new comparison point): 361 sessions (about 23 a day against about 34 a day in the baseline); Direct 164 (45%, was 83%); Organic Search 85 (about 5.3 a day, 68% engaged, was 57.6%); brochure / pdf 69 sessions (33% engaged, 55 s, about 4 a day); google / business_profile 10 sessions (60% engaged, 47 s); a script.googleusercontent.com referral 26 sessions (probably the instant-reply link, not confirmed); AI Assistant 9 (ChatGPT 5, Gemini 4). Overall engagement rate 41.55% (was 19.11%). 404: about 4 old /shop addresses in 16 days (was 377 in 28 days). Top pages: Home 167 views, /products 138, /contact 53, PRG Pillar Drilling 31 (2m 14s), graphite blog post 22, HABA R vertical 20. Jabs's own /studio visits (about 12 views) are counted in GA (an internal-traffic filter is optional). Key events 0.
+- Open points from the review: (1) confirm what the script.googleusercontent.com referral is and tag that link with UTM; (2) /products has 138 views but 9 s average: do brochure visitors reach product pages? (not measured); (3) who links to /blog and /our-clients; (4) new 404 addresses; (5) Gemini and other AI sources after 2 Nov.
+- Key events to create: contact form submitted, WhatsApp click, call click, catalogue requested. Not done (Jabs left it for another day, 12 Nov), so enquiries are not measured in GA.
 - Tag every link placed outside the site with UTM (utm_source, utm_medium): brochure/pdf, google/business_profile, youtube/video, indiamart/listing, whatsapp/channel, instagram/reel, catalogue/pdf. Untagged clicks land in Direct and hide what works.
 - In GA4 the 404 breakdown needs the Pages and screens report switched from "Page title and screen class" to "Page path and screen class".
 
@@ -325,26 +347,28 @@ FORTNIGHTLY VISIBILITY CHECK (every 15 days; decided by Jabs 6 Nov; first due 21
 1. Search Console: Pages report (new and changed pages Indexed; "Crawled - currently not indexed"); URL Inspection on 2 or 3 key URLs, Request indexing only if "not on Google"; Performance (impressions, clicks, average position, top queries and pages; any "bandsaw", "Chennai", "Ahmedabad" or competitor query; which of the retrofitted bandsaw pages gained).
 2. Own Google searches (private window): "horizontal bandsaw machine Chennai", "vertical bandsaw Ahmedabad", "bandsaw machine manufacturer India", "Made in India alternative to <approved competitor> bandsaw", "power press machine price India", "pillar drilling machine Chennai", and `site:maxmachines.in bandsaw`. Note whether maxmachines.in appears, which page, what position.
 3. Ask the AI tools (ChatGPT, Gemini, Perplexity, Claude) the same 5 buyer questions each time, e.g. "Who supplies bandsaw machines in Chennai?", "Best Made in India horizontal bandsaw manufacturer", "Which company exports power presses from India to UAE?". Note whether Max Machine Tools is named, whether maxmachines.in is cited, and any wrong facts (fix them at the source: site, IndiaMART, Business Profile). Perplexity shows sources most clearly.
-4. GA4 against the 28 Oct baseline: Organic Search sessions, AI Assistant sessions (chatgpt.com, perplexity.ai, gemini.google.com, claude.ai, copilot.microsoft.com), Direct share, 404 views, /products and bandsaw page views; once key events exist: contact form, WhatsApp click, call click.
+4. GA4 against the 28 Oct baseline and the 12 Nov review (claude/ga-review-2026-11-12.md): Organic Search sessions, AI Assistant sessions (chatgpt.com, perplexity.ai, gemini.google.com, claude.ai, copilot.microsoft.com), Direct share, 404 views, brochure / pdf sessions, /products and bandsaw page views; once key events exist: contact form, WhatsApp click, call click.
 5. Enquiries: count real enquiries since the last check (Sheet, WhatsApp, calls) and ask each new customer "How did you find us?"; note any that mention Google, ChatGPT or a competitor.
 6. Reality check: Google needs 2 to 8 weeks to show changes on updated pages; AI tools are slower and less predictable. Keywords in the Sheet do not rank a page alone; titles, content, FAQs, structured data and links from other sites do. Judge only after 4 weeks.
 7. Share image test: run the og:image check (section 27) on 2 or 3 key links.
+8. HOME META REVIEW (Jabs, 12 Nov): check the Home page title and meta description (curl: `curl -s https://www.maxmachines.in | grep -o '<meta [^>]*description[^>]*>'`). Does the list in the description match the categories that are live now? When a new category (Blades, Chucks, Automation and so on) has gone live, add it the same day through Claude Code (app/layout.tsx: description, openGraph.description and twitter.description; show the diff, wait for "go", curl check). Name only live categories.
 
 MONTHLY LIMITS CHECK (Jabs, 11 Nov 2026; first due about 11 Dec 2026, then 11 Jan, 11 Feb). Claude opens each usage page in Jabs's logged-in Chrome (Browser 1) and writes one dated line in section 13 with the numbers and the percentage of the limit:
-1. Vercel: team Usage page (vercel.com/maxmachines-6712s-projects/~/usage), Incremental Static Regeneration > Writes (limit 200,000 a month) and Reads; also Fast Data Transfer and Function usage. The chart needs a few seconds to load. 11 Nov baseline: 53,888 of 200,000 (27%).
-2. Sanity: manage.sanity.io usage page for project p72ubifi: API requests and API CDN requests against the free-plan limits, dataset size, assets, bandwidth. Not yet checked: the first check sets the baseline (storage 22 MB of 100 GB).
-3. Upstash (enquiry rate limit): commands per day and monthly total against the free plan.
-4. GitHub: normally nothing to check; confirm no warning or billing email.
-5. Confirm warning emails (Vercel, Sanity, Upstash, Search Console) are not landing in spam or promotions. Vercel emails at 90% (confirmed); Sanity and Upstash warnings are NOT confirmed, so this monthly check is the safety net.
+1. Vercel: team Usage page (vercel.com/maxmachines-6712s-projects/~/usage), Incremental Static Regeneration > Writes (limit 200,000 a month) and Reads; also Fast Data Transfer and Function usage on the same page. The Writes chart needs a few seconds to load. 11 Nov baseline: 53,888 of 200,000 (27%).
+2. Sanity: manage.sanity.io usage page for project p72ubifi: API requests and API CDN requests against the free-plan limits, dataset size, assets and bandwidth. Not yet checked: the first check sets the baseline (storage was 22 MB of 100 GB).
+3. Upstash (enquiry rate limit): commands per day and the monthly total against the free plan. (The Upstash newsletter of Nov 2026 needed no action: its new features are for paid plans and larger apps; it announced no change to free-plan limits.)
+4. GitHub: normally nothing to check; just confirm no warning or billing email.
+5. Also confirm the warning emails (Vercel, Sanity, Upstash, Google Search Console) are not landing in spam or promotions in max@maxmachines.in and the owner mailbox. Vercel emails at 90% (confirmed); Sanity and Upstash email warnings are NOT confirmed, so the monthly check is the safety net.
 
 ## 17. AI visibility (the golden rule in practice)
 
 - Built: robots.txt allows all AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended); llms.txt generated from Sanity (one phone/WhatsApp line since 9 Nov; blog posts included); JSON-LD Organization, LocalBusiness, Product (areaServed, sku/model, category, no offers), FAQPage, BreadcrumbList, Article (blog); specs as text tables; consistent facts everywhere.
-- Measuring: GA4 channel "AI Assistant". 28 Oct: 12 sessions, all chatgpt.com, landing on Home (5), PRG Impact Press (3), not set (2), Contact (1), Bradma Stamp Marks (1). Counts clicks only; mentions without a click and no-referrer visits are invisible (some sit in Direct).
+- Measuring: GA4 channel "AI Assistant". 28 Oct baseline: 12 sessions, all chatgpt.com, landing on Home (5), PRG Impact Press (3), not set (2), Contact (1), Bradma Stamp Marks (1). 12 Nov review: 21 AI sessions from 1 Oct to 12 Nov (ChatGPT 17, Gemini 4); see section 13 for the detail. Counts clicks only; mentions without a click and no-referrer visits are invisible (some sit in Direct).
 - Every 15 days ask ChatGPT, Gemini, Perplexity and Claude the buyer questions (section 16 step 3). Fix the facts they get wrong at the source.
 - Every video needs a text summary and every picture alt text (video summaries still to do).
 - The future MAXIMUS chatbot (WhatsApp, number 91760 61514) is expected to read these product pages; keep specs in plain text.
 - Blog posts (section 26) are also AI food: plain text, clear question headings, real facts only.
+- Names: customers say "Max Machine", "Max Machines" and "Max Machine Tools". Decided 12 Nov: the Home title carries both names, and "Max Machines" is added as alternateName in the Organization JSON-LD (to build 13 Nov, section 22A).
 
 ## 18. Marketing and off-site
 
@@ -384,7 +408,7 @@ MONTHLY LIMITS CHECK (Jabs, 11 Nov 2026; first due about 11 Dec 2026, then 11 Ja
 15. Our Clients page stays hidden until new customers and logos are added (section 26 customer list).
 16. Main web address is www.maxmachines.in (people type www); maxmachines.in redirects with a permanent 308 (set in Vercel Settings, Domains, 5 Nov night). Do not touch Hostinger DNS (section 11).
 17. Vikrant Machinery (vikrantmachinery.com, Ahmedabad) is a SUPPLIER: MMT gets some machines from them but sells them under MMT's own brand (HABA, PRG), never under Vikrant's brand. Nobody writes that a machine is made by Vikrant on the website. Their site is a reference for ideas only (never copy text or pictures). Refined by point 25.
-18. Full-width layout planned (the site uses a centred 1280 px box, `max-w-7xl mx-auto`, while Vikrant-style sites run edge to edge with left-aligned text). Separate sitting: 2 or 3 design options first, then a 113-page before/after check. The blog widens with the rest of the site.
+18. Full-width layout planned (the site uses a centred 1280 px box, `max-w-7xl mx-auto`, while Vikrant-style sites run edge to edge with left-aligned text). Separate sitting: 2 or 3 design options first, then a 113-page before/after check. The blog widens with the rest of the site. See point 42 for the Home page section order in the new design.
 19. Language and design: decide later; Claude proposes 2 or 3 homepage design options (or template sites to learn from) first; one redesign in a single go so the site does not look like a generic AI-built site. Adobe Express Premium available for design assets.
 20. Studio address is www.maxmachines.in/studio; April colours blue steel and orange superseded by black and gold. CLAUDE.md revalidate wording and redirect status were corrected by an appended note.
 21. Late Mr. P.R. Garg tribute on the About page: leave as it is.
@@ -407,10 +431,14 @@ MONTHLY LIMITS CHECK (Jabs, 11 Nov 2026; first due about 11 Dec 2026, then 11 Ja
 39. (8-9 Nov, Jabs) Google profile: one photo per machine, same sitting as the website; reply to every new review within 1 to 2 days; never delete a product entry without asking; QR card dropped; VMCB16RSE sold in India and exported; nothing negative about any machine; do not repeat the same sentence across descriptions (section 4 and 16).
 40. (10 Nov, Jabs) Copies rule: project copy is always the latest; folder copy overwritten at the end; then git; no addendum or pending-notes files (section 0).
 41. (11 Nov, Jabs) Monthly limits check of Vercel, Sanity, Upstash and GitHub (section 16). Sanity API usage need not be checked right now.
+42. (12 Nov, Jabs) HOMEPAGE DESIGN: when the site width is updated and the new design is tried, on the Home page the About Us section moves below and the Products section comes above it.
+43. (12 Nov, Jabs) HOME META: description (and openGraph and twitter descriptions) = "Max Machine Tools: manufacturer, supplier and exporter of industrial machines including Lathe, Drilling, Power Press, Bandsaw and Marking. Since 1963." Only live categories are named; "including" keeps the list open; reviewed every 15 days (section 16 step 8); new categories (Blades, Chucks, Automation and so on) are added when they go live, not before. Live since 12 Nov.
+44. (12 Nov, Jabs) HOME TITLE (decided, not yet built): "Max Machine Tools | Max Machines: Industrial Machinery" (Option A, 54 characters), because many customers use "Max Machine" or "Max Machines". Same for the root openGraph title; About gets its own title (for example "About Max Machine Tools | Industrial Machinery Since 1963", wording to confirm when built); "Max Machines" added as alternateName in the Organization JSON-LD. Risk noted: Google may show brand-name searches differently for a while after a title change; Google may also rewrite titles.
+45. (12 Nov, Jabs) GA4 key events setup left for another day (section 16, section 22C).
 
 ---
 
-## 21. MASTER STATUS REGISTER (condensed; updated 10 Nov 2026)
+## 21. MASTER STATUS REGISTER (condensed; updated 13 Nov 2026)
 
 Status key: DONE = built and live. PARTLY = started. PENDING = not started. CHECK = needs verifying.
 
@@ -438,8 +466,10 @@ Status key: DONE = built and live. PARTLY = started. PENDING = not started. CHEC
 | 6-7 Nov | Google and AI research; GET-TO-THE-TOP PLAN; GBP category, description, hours, link changed and approved. |
 | 8 Nov | GBP products: six entries with own photos and new-site links; review approach; GBP closed for now. IndiaMART P2 on the 44 active listings (average 88). SOP v4.8 (Mac only). |
 | 9 Nov | Canonical tags; offers and price display removed; WhatsApp number unified; Search Console work; 13 IndiaMART listings; blog built on Sanity and first post live; SOP v5.0 (project only). |
-| 10 Nov | Blog share image fix; whole-site price wording removed; webhook covers blogPost; graphite post restored; IndiaMART 24-hour check passed; indexing continued; SOP full merge v5.1 and copies rule. |
+| 10 Nov | Blog share image fix; whole-site price wording removed; webhook covers blogPost; graphite post restored; IndiaMART 24-hour check passed; indexing continued; share image check finished; SOP full merge v5.1 and copies rule; CLAUDE.md note. |
 | 11 Nov | Product snippets email repeat (no action); 11 indexing requests (lathes); Vercel ISR Writes 27%; monthly limits check added; SOP v5.2. |
+| 12 Nov | GA4 review against the 28 Oct baseline (redirect works, engagement up, claude/ga-review-2026-11-12.md); 10 indexing requests (belt lathes, marking); Home/About meta description fixed and live (746db1c plus the twitter commit); Home title decided (Option A), homepage design decision; SOP v5.3. |
+| 13 Nov (00:10) | Mac linked; Mac SOP copy overwritten with v5.3; project and Mac both v5.3. |
 
 ### 21B. Status by area
 
@@ -457,15 +487,16 @@ Website build
 | Picture watermark + right-click block | DONE (revert with git revert 28a1fcd) |
 | Webhook instant refresh (category, subcategory, product, blogPost) | DONE |
 | Single-product subcategory skips to the product | DONE |
-| Brochure redirect, Hostinger CDN fix | DONE |
+| Brochure redirect, Hostinger CDN fix | DONE (redirect confirmed working by the GA review of 12 Nov) |
 | Price, availability and pricing wording removed (whole site) | DONE 9-10 Nov |
 | WhatsApp chat number unified to 99620 61514 | DONE 9 Nov |
 | Blog share image = cover picture | DONE 10 Nov (d7fbe0d) |
 | Share image check on other page types | DONE 10 Nov: product, category, subcategory use own picture; /products uses logo (accepted); home, about, contact, export, blog list assumed logo (accepted, not curled) |
+| Home and About meta DESCRIPTION (description, openGraph, twitter) | DONE 12 Nov (746db1c plus the twitter commit); curl check passed 23:33 IST |
+| Home and About TITLE and openGraph title; own About title; alternateName "Max Machines" in Organization JSON-LD | PENDING (decided 12 Nov, point 44; build 13 Nov) |
 | Custom helpful 404 page; homepage LocalBusiness JSON-LD | CHECK |
-| GA4 key events | PENDING |
+| GA4 key events | PENDING (left for another day, 12 Nov) |
 | "Fill Form" buttons feed the same Sheet (report only) | PENDING |
-| Home and About meta mention Milling and Laser | PENDING |
 | About page edits (Kerdoss, Laser Unlimited, Maldives) | PENDING (decided) |
 | Contact page: 91760 61514 as "coming soon" | PENDING |
 | Navigation consistency | CHECK |
@@ -476,7 +507,7 @@ Website build
 | /our-clients real content | PENDING (section 26) |
 | Display Order fix per subcategory | PENDING |
 | Privacy policy page (form collects names and phones) | PENDING, optional |
-| Full-width layout and homepage redesign | PENDING (Claude proposes options first) |
+| Full-width layout and homepage redesign (Products above About Us, point 42) | PENDING (Claude proposes options first) |
 | Brand pages, area pages, export-country pages | PENDING |
 | Windows office setup for code work | PENDING |
 
@@ -505,7 +536,7 @@ SEO, Google, AI
 | Keyword, SEO title, meta, geo SOPs on all 69 products | DONE |
 | Competitor FAQs + tags | DONE for bandsaws, pillar, radial, impact, toggle, mechanical; other types pending |
 | Search Console verified, sitemap submitted and resubmitted | DONE |
-| Indexing requests (11 on 9 Nov; more on 10 Nov until the quota; list in section 25.3) | PARTLY |
+| Indexing requests (11 on 9 Nov; more on 10 Nov until the quota; 11 on 11 Nov; 10 on 12 Nov; list in section 25.3) | PARTLY (all lathe pages and two marking pages requested; rest in section 25.3) |
 | Duplicate canonical fix validated | STARTED 9 Nov, result about 21 Nov |
 | Google Business Profile: category, description, hours, link | DONE and approved |
 | GBP products: six entries with own photos and new-site links | DONE 8 Nov |
@@ -514,29 +545,32 @@ SEO, Google, AI
 | Customer Google reviews | PENDING (Jabs collects; review link g.page/r/CShu8ROgwJ_FEBM/review) |
 | IndiaMART P2: 44 active listings, average score 88 | DONE 9 Nov (open items in 24.5); 13 new listings 9 Nov, check passed 10 Nov |
 | JustDial, TradeIndia and other portals (P3, P4) | PENDING |
-| GA4 baseline 28 Oct | DONE; review due now |
-| UTM tags on all outside links | PARTLY |
-| Fortnightly visibility check | first due 21 Nov |
+| GA4 baseline 28 Oct; GA4 review 12 Nov | DONE (review file claude/ga-review-2026-11-12.md); next comparison at the 21 Nov check |
+| UTM tags on all outside links | PARTLY (check the script.googleusercontent.com referral link, section 16) |
+| Fortnightly visibility check (now includes step 8, Home meta review) | first due 21 Nov |
+| Monthly limits check (Vercel, Sanity, Upstash, GitHub) | first due about 11 Dec |
 
 Marketing and off-site: YouTube links, IndiaMART/TradeIndia/Alibaba/JustDial listings, backlinks, new catalogues: see section 26. Posting itself lives in the separate marketing project.
 
-Connected systems (must not break; separate projects): contact form > Google Form > Sheet > instant email + WhatsApp > Magic CRM (tenant MMT_001) > IndiaMART automation. MAXIMUS WhatsApp chatbot (number 91760 61514, architecture decision open). Zoho Books/Flow automation. Quotation Pro (section 26 point 6).
+Connected systems (must not break; separate projects): contact form > Google Form > Sheet > instant email + WhatsApp > Magic CRM (tenant MMT_001) > IndiaMART automation. MAXIMUS WhatsApp chatbot (number 91760 61514, architecture decision open). Zoho Books/Flow automation (one Zoho alert via Brevo stopped earlier; Jabs to check, section 11). Quotation Pro (section 26 point 6).
 
-Infrastructure: Sanity free plan (22 MB of 100 GB used); Vercel Hobby (ISR Writes 27% on 11 Nov, healthy; Vercel emails at 90%; usage re-checked monthly, section 16); Upstash free; Brevo and Resend DNS in place; GitHub backup.
+Infrastructure: Sanity free plan (storage 22 MB of 100 GB; API request count not yet checked); Vercel Hobby (ISR Writes 27% on 11 Nov, healthy; Vercel emails at 90%); Upstash free; Brevo and Resend DNS in place; GitHub backup. Usage of all of these is re-checked monthly (section 16).
 
 ---
 
 ## 22. MASTER TO-DO LIST (single list; tick and date items here; replaces all older lists)
 
 ### A. Date-locked (do on or after the date)
-- 12 Nov (quota reset): Search Console indexing, inspect first, 10 to 11 a day. Resume at the MODI Medium Duty belt lathe (section 25.3 remaining list).
+- TODAY 13 Nov (Jabs, 12 Nov): (1) Home title change, Option A (point 44): Claude Code edits app/layout.tsx (title and openGraph title), app/about/layout.tsx (own About title) and the Organization JSON-LD alternateName; show the diff, wait for "go", then curl check. (2) Studio work for the six bandsaw subcategories without card pictures (Horizontal Semi Auto, Fully Auto, Double Column, Special Application, Wood Cutting, AAC Block): Display Order, description, SEO fields done by Claude in Studio; Jabs supplies the card pictures (Special Application has no Display Order). (3) Search Console indexing resumes (about 10 a day, section 25.3).
+- 13 Nov onward (quota reset): Search Console indexing, inspect first, 10 to 11 a day. Resume at marking-solutions/hydro-pneumatic-marking-presses (failed twice on 12 Nov), then the rest of section 25.3.
 - About 13-14 Nov: Google profile extra phone 93828 61514 check (Google says up to 7 days); then follow the GBP list in section 16.
-- About 16 Nov: re-check the pages requested on 9, 10 and 11 Nov. Judge only after 4 weeks.
-- 21 Nov: duplicate canonical validation result; FIRST fortnightly visibility check (section 16). Then 6 Dec (with the first 30-day review), 21 Dec.
+- About 16 Nov: re-check the pages requested on 9, 10, 11 and 12 Nov. Judge only after 4 weeks.
+- 21 Nov: duplicate canonical validation result; FIRST fortnightly visibility check (section 16, now with step 8 Home meta review). Then 6 Dec (with the first 30-day review), 21 Dec.
 - Early Dec: Google profile November report against October.
 - About 11 Dec: FIRST monthly limits check (Vercel, Sanity, Upstash, GitHub; section 16). Then 11 Jan, 11 Feb.
-- DONE 11 Nov: Vercel ISR Writes check (27%).
 - DONE 10 Nov: IndiaMART 24-hour approval check.
+- DONE 11 Nov: Vercel ISR Writes check (27%).
+- DONE 12 Nov: GA4 analytics review against the 28 Oct baseline; Home/About meta description fix.
 
 ### B. New workstreams (Jabs, 9 Nov; plan and order in section 26)
 1. Blog: more posts (how to select a lathe, how to measure marking punch height, more). Jabs pastes text or rough points; each needs a cover picture first.
@@ -549,19 +583,21 @@ Infrastructure: Sanity free plan (22 MB of 100 GB used); Vercel Hobby (ISR Write
 
 ### C. Website to build or fix (in suggested order)
 1. SHARE IMAGE CHECK: DONE 10 Nov (section 27). Nothing to fix.
-2. Studio: Display Order, card picture, description and SEO fields for bandsaw subcategories without pictures (Horizontal Semi Auto, Fully Auto, Double Column, Special Application, Wood Cutting, AAC Block); Special Application has no Display Order. Then Display Order on the other subcategories. Build the Horizontal Fully Auto page (HABA Automatic Bandsaw, HMA9RE) so IndiaMART and Google can be updated after it.
+2. Studio: Display Order, card picture, description and SEO fields for bandsaw subcategories without pictures (Horizontal Semi Auto, Fully Auto, Double Column, Special Application, Wood Cutting, AAC Block); Special Application has no Display Order. Then Display Order on the other subcategories. Build the Horizontal Fully Auto page (HABA Automatic Bandsaw, HMA9RE) so IndiaMART and Google can be updated after it. (Planned for 13 Nov, see A.)
 3. About page edits (decisions 10 and 22). Contact page "coming soon" number (decision 2).
-4. GA4 key events (contact form, WhatsApp click, call click, catalogue request) and the analytics review against the 28 Oct baseline.
-5. Full-width layout and homepage design: Claude proposes 2 or 3 options; no code until Jabs picks one; one build.
+4. GA4 key events (contact form, WhatsApp click, call click, catalogue request); left for another day by Jabs on 12 Nov. The analytics review against the 28 Oct baseline is DONE (12 Nov).
+5. Full-width layout and homepage design: Claude proposes 2 or 3 options; no code until Jabs picks one; one build. In the new design About Us goes below and Products above on the Home page (point 42).
 6. Test the enquiry-form success message with a test enquiry.
 7. Optional polish: "More in" card box 130 to 160 px; uneven video row.
 8. Header Products dropdown; Download Brochure link (after the new catalogue); Service page (installation, maintenance, spares, training: only what Jabs confirms is true); real machine photo in hero; "Talk to an engineer" button; language (Phase 1 Google Translate widget about 12 languages: Hindi, Tamil, Telugu, Gujarati, Marathi, Bengali, Arabic, French, Russian, Spanish, Portuguese, Swahili; check GA4 language and country reports first; Phase 2 real translated pages only if data supports it; note ISR limit and Arabic right-to-left; decide together later); "Don't see your machine? Ask us"; text summaries for videos; blog video field; brand pages, area pages, export-country pages; privacy policy page; Windows office setup.
-9. Home and About meta: mention Milling and Laser; fix.
+9. Home and About meta DESCRIPTION: DONE 12 Nov (point 43). Home and About TITLE: build 13 Nov (point 44). Then the 15-day Home meta review (section 16 step 8) and adding each new category when it goes live.
+10. Optional: internal-traffic filter in GA4 so Jabs's own /studio and site visits are not counted.
+11. Find out what the script.googleusercontent.com referral is (probably the instant-reply link) and add UTM tags to that link.
 
 ### D. Catalogue
 1. Next product when photos arrive: "let's update product" (then its Google profile entry in the same sitting).
 2. Pictures and cards: Mechanical Press PMC5, PMC80, PMC100; Hydraulic and Pneumatic Power Press; Lathe and Marking cards; other Drilling subcategories; Special Application, Wood and AAC vertical bandsaws; four missing YouTube videos.
-3. New products: VELSE Dot Pin Marking Machine, Bradma Label Marker page, Die Tools for Press, Feeder and Automation, Air Compressor (Airdas), cutting blades (Kopis; then update blog links), further categories (decision 13).
+3. New products: VELSE Dot Pin Marking Machine, Bradma Label Marker page, Die Tools for Press, Feeder and Automation, Air Compressor (Airdas), cutting blades (Kopis; then update blog links and the Home meta list), further categories (decision 13).
 4. Mechanical Press: which of the 10 accessories are standard and which optional.
 5. Competitor FAQ method for the remaining machine types.
 6. Factory: VMCB16RSE maximum cutting size and blade width for a 400 mm wheel (until confirmed no post states a cutting size).
@@ -576,7 +612,9 @@ Infrastructure: Sanity free plan (22 MB of 100 GB used); Vercel Hobby (ISR Write
 ### F. Housekeeping and SOP
 - CLAUDE.md: DONE 10 Nov (commit b473740, appended corrections note). Append only, never overwrite.
 - DONE 10 Nov: pending-notes and the two addendum files deleted from the project; pending-notes removed from the Mac folder and git (commit 89f7d88).
+- DONE 13 Nov 00:10 IST: v5.3 synced to the Mac folder. ONLY LEFT: Jabs (or Claude Code after his "go") commits the SOP file in git (section 0).
 - Empty folders in "Mechanical Press - NOT USABLE" and files in "_to_delete" for Jabs to bin. Project doc `plan-2026-10-29.md` is superseded by this file.
+- Jabs to check the stopped Zoho alert that used the Brevo key (section 11); not a website task.
 
 ## 23. GET-TO-THE-TOP PLAN (research of 6 Nov 2026, about 23:00 IST; Jabs's Chennai Chrome; Claude web search)
 
@@ -599,9 +637,9 @@ PURPOSE: Max Machine Tools must show up when a buyer searches Google or asks an 
 ### 23B. The plan (layers, in order of effort and payoff)
 LAYER 1 - ONE IDENTITY: name Max Machine Tools; address No 84, Armenian Street, Parrys, Chennai 600001; phone and email as in section 12. List EVERY listing (GBP, IndiaMART, JustDial, TradeIndia, ExportersIndia, Aajjo, Dial4Trade, IndiaTradeBird, Indian Yellow Pages, Kompass, Facebook, LinkedIn, YouTube, Bing Places) with link and status in a table; fix every mismatch. IndiaMART shows a virtual number (+91 80476 84394): normal, but keep the same business name and address. Old Modi listings: decision 28 (find each, record the address on it, decide with Jabs: update to "now part of Max Machine Tools, 84 Armenian Street" with a link to maxmachines.in, or leave).
 LAYER 2 - GOOGLE BUSINESS PROFILE (Chennai only, decision 6): category, description with the three lines, website link with UTM, hours, Products and Services entries with photos (done 8 Nov for six; rest follows website updates), photos (machines, shop, team), a post for each new machine, answers to common questions. Jabs approves every edit.
-LAYER 3 - DIRECTORIES (AI tools copy these): IndiaMART (fix wrong prices, complete every spec field, photos and videos, correct categories, response time and rate, reply to reviews, GST and TrustSEAL, link to maxmachines.in where allowed); JustDial (right categories for power press, bandsaw, marking machine dealers and manufacturers, photos, products with prices or ranges, reply to reviews, keep rating above 4.5); TradeIndia, ExportersIndia, Aajjo, Dial4Trade, IndiaTradeBird, Indian Yellow Pages, Kompass: claim or create, make them match, add the product list; TradeIndia is cited by Perplexity for bandsaws.
+LAYER 3 - DIRECTORIES (AI tools copy these): IndiaMART (fix wrong prices, complete every spec field, photos and videos, correct categories, response time and rate, reply to reviews, GST and TrustSEAL, link to maxmachines.in where allowed); JustDial (right categories for power press, bandsaw and marking machine dealers and manufacturers, photos, products with prices or ranges, reply to reviews, keep rating above 4.5); TradeIndia, ExportersIndia, Aajjo, Dial4Trade, IndiaTradeBird, Indian Yellow Pages, Kompass: claim or create, make them match, add the product list; TradeIndia is cited by Perplexity for bandsaws.
 LAYER 4 - REVIEWS ENGINE: every delivered order gets a review request within 3 days (Google first, then JustDial or IndiaMART). Targets: Google 43 to 100 reviews; reviews that name the machine. Rules in decision 29. Track counts every 15 days.
-LAYER 5 - OUR WEBSITE: pages "Power press machine in Chennai", "bandsaw machine in Chennai", "marking machines in Chennai" and the Ahmedabad versions, each with spec tables, models, photos, video, FAQs and proof; describe the Marking Solutions section (brands and technologies); proof on the site (review counts with links to Google, JustDial and IndiaMART, ISO 9001:2015, named clients with permission, years); buyer guides (now the blog, section 26); fix Home and About meta (Milling and Laser wording); clean up old WordPress URLs still in Google (remove or redirect `maxmachines.in/shop/...`).
+LAYER 5 - OUR WEBSITE: pages "Power press machine in Chennai", "bandsaw machine in Chennai", "marking machines in Chennai" and the Ahmedabad versions, each with spec tables, models, photos, video, FAQs and proof; describe the Marking Solutions section (brands and technologies); proof on the site (review counts with links to Google, JustDial and IndiaMART, ISO 9001:2015, named clients with permission, years); buyer guides (now the blog, section 26); fix Home and About meta (DONE 12 Nov for the description; title 13 Nov); clean up old WordPress URLs still in Google (remove or redirect `maxmachines.in/shop/...`).
 LAYER 6 - OFF-SITE LINKS AND VIDEO: YouTube descriptions and pinned comments link to the matching product page (UTM tagged), old high-view PRG videos first; ask brand suppliers (Bradma, Velse, Morse, Bahco, Lenox where applicable) to list us as a dealer with a link; link from www.modimachines.in to the relevant maxmachines.in pages; LinkedIn and Facebook post per new machine with the site link.
 LAYER 7 - OPTIONAL ADS: a small Google Ads test for 2 or 3 high-intent searches with a monthly cap; only if Jabs decides (the credit offer is ignored for now).
 LAYER 8 - MEASURE: the 15-day check (section 16) with this fixed query set. Google searches: power press machine manufacturers in Chennai; stamp marking machine dealers Chennai; horizontal bandsaw machine manufacturer Chennai; vertical bandsaw machine Chennai; PRG mechanical power press Made in India; impact marking machine Chennai; power press machine Ahmedabad; pneumatic power press price India; Max Machine Tools Chennai; site:maxmachines.in. AI questions (ChatGPT, Gemini, Perplexity, Claude): "Who are the best power press machine manufacturers and suppliers in Chennai? Give a short list with names, and cite sources." and the same for bandsaw and marking machines, plus "Is Max Machine Tools Chennai a good supplier?". Record position, whether we are named, sources used. Baseline = 23A. Expect changes in weeks; AI tools slower; judge only after 4 weeks.
@@ -718,8 +756,8 @@ OPEN ITEMS (Jabs):
 
 ## 25. Search Console, indexing and structured data
 
-### 25.1 Emails read 9-10 Nov (baselines for 21 Nov and 6 Dec)
-Numbers are in section 16 (Search Console October and Business Profile October). The Search Console "Duplicate without user-selected canonical" email (WNC-20237597) led to section 25.2. The Product snippets (WNC-10030322) and Merchant listings emails of 10 Nov are stale-crawl notices: no action (25.4).
+### 25.1 Emails read 9-11 Nov (baselines for 21 Nov and 6 Dec)
+Numbers are in section 16 (Search Console October and Business Profile October). The Search Console "Duplicate without user-selected canonical" email (WNC-20237597) led to section 25.2. The Product snippets (WNC-10030322) and Merchant listings emails of 10 Nov, and the Product snippets email again on 11 Nov, are stale-crawl notices: no action (25.4).
 
 ### 25.2 Duplicate canonical: cause and fix (DONE, live)
 - The one affected URL: /products?utm_source=brochure&utm_medium=pdf (last crawled 31 Oct), the brochure redirect target.
@@ -729,15 +767,16 @@ Numbers are in section 16 (Search Console October and Business Profile October).
 
 ### 25.3 Indexing status
 - Report numbers (Pages report last updated 6 Nov, STALE): 27 indexed, 95 not indexed: 85 "Discovered - currently not indexed", 6 page with redirect (old /shop links, expected), 2 excluded by noindex (/products/power-press and /products/hydraulic-press: old addresses that no longer exist, no action), 1 duplicate canonical (validation started), 1 crawled - currently not indexed.
-- Sitemap /sitemap.xml: 113 URLs, all www, fresh lastmod; now also lists blog posts. RESUBMITTED 9 Nov (type just `sitemap.xml` in the Sitemaps box).
+- Sitemap /sitemap.xml: 113 URLs, all www, fresh lastmod (10 Nov); also lists blog posts. RESUBMITTED 9 Nov (type just `sitemap.xml` in the Sitemaps box).
 - The Pages report lags. Live inspection showed several pages the report calls "not indexed" are already indexed. RULE: inspect first; click Request indexing ONLY if the inspection says "URL is not on Google". Inspection has no tight limit; only Request indexing is capped.
-- Request indexing quota: about 10 to 12 per day per property. "Quota exceeded" appeared on 9 Nov after 11 requests and on 10 Nov at the 12th request; it resets the next day. Not a site problem. The sitemap is the main route; manual requests only speed up priority pages.
+- Request indexing quota: about 10 to 12 per day per property. "Quota exceeded" appeared on 9 Nov after 11 requests and on 10 Nov at the 12th request; it resets the next day. On 11 Nov 11 requests were made and Claude stopped (no quota message seen). On 12 Nov 10 requests were made (no quota message; one page failed with a temporary error). Not a site problem. The sitemap is the main route; manual requests only speed up priority pages.
 - Requested 9 Nov (all showed "Indexing requested"): HABA Standard, R and Eco horizontal bandsaws; HABA R, PRG Standard and PRG Eco vertical bandsaws; PRG Impact Press; PRG Mechanical Power Press; PRG Pillar Drilling; Press Machines category; Toggle Press category.
-- 10 Nov: indexing continued in Search Console (inspect first) until the quota stopped it at the 12th request, in the order of the list below (/blog, the graphite post and the pneumatic URLs first). The all-geared lathe subcategory was where the quota stopped. The exact per-URL results are in Search Console URL Inspection; not copied here.
+- 10 Nov: indexing continued in Search Console (inspect first) until the quota stopped it at the 12th request, in the order of the list below (/blog, the graphite post and the pneumatic URLs first). Exact per-URL results are in Search Console URL Inspection; not copied here.
+- REQUESTED 11 Nov (all "Indexing requested"; each said "URL is not on Google"): lathe-machine/all-geared-lathe-machine (subcategory); lathe-machine/belt-drive-lathe-machine (subcategory); haba-light-duty-all-geared-lathe-machine; haba-medium-duty-all-geared-lathe-machine; haba-heavy-duty-all-geared-lathe-machine-bed-13; haba-heavy-duty-all-geared-lathe-machine-bed-15; haba-extra-heavy-duty-all-geared-lathe-machine-bed-18; haba-extra-heavy-duty-all-geared-lathe-machine-bed-22; haba-light-duty-belt-lathe-machine; haba-medium-duty-belt-lathe-machine; modi-light-duty-belt-lathe-machine. SKIPPED 11 Nov (already on Google, "on Google but has issues" = the Product snippets notice): haba-extra-heavy-duty-all-geared-lathe-machine-bed-26.
+- REQUESTED 12 Nov (all "Indexing requested"; each said "URL is not on Google"): modi-medium-duty-belt-lathe-machine; modi-heavy-duty-belt-lathe-machine-bed-13-15; haba-heavy-duty-belt-lathe-machine-bed-13-15; modi-extra-heavy-duty-belt-lathe-machine-bed-20, -22, -24, -26, -30 (all under /products/lathe-machine/belt-drive-lathe-machine/); /products/marking-solutions/stamp-marks; /products/marking-solutions/rotary-numerators. SKIPPED 12 Nov (already on Google): modi-extra-heavy-duty-belt-lathe-machine-bed-18 ("on Google but has issues") and /products/lathe-machine (category page, "URL is on Google"). FAILED 12 Nov (twice, "Oops: Something went wrong", a temporary Google error): /products/marking-solutions/hydro-pneumatic-marking-presses.
 - Checked indexed on 9 Nov, no request needed: /export-and-uae, horizontal bandsaw subcategory, PRG toggle press product, hydraulic press category, drilling machine category.
-- REQUESTED 11 Nov (all "Indexing requested"; each said "URL is not on Google"): lathe-machine/all-geared-lathe-machine and lathe-machine/belt-drive-lathe-machine (subcategories); haba-light-duty-all-geared-lathe-machine; haba-medium-duty-all-geared-lathe-machine; haba-heavy-duty-all-geared-lathe-machine-bed-13 and -15; haba-extra-heavy-duty-all-geared-lathe-machine-bed-18 and -22; haba-light-duty-belt-lathe-machine; haba-medium-duty-belt-lathe-machine; modi-light-duty-belt-lathe-machine. SKIPPED (already on Google): haba-extra-heavy-duty-all-geared-lathe-machine-bed-26.
-- REMAINING TO INSPECT AND REQUEST (10 to 11 a day, resume 12 Nov at modi-medium-duty-belt-lathe-machine): modi-heavy-duty-belt-lathe-machine-bed-13-15; haba-heavy-duty-belt-lathe-machine-bed-13-15; modi-extra-heavy-duty-belt-lathe-machine-bed-18, -20, -22, -24, -26, -30; the lathe-machine category page; marking solutions subcategories and products (Bradma/Velse); special application, wood and AAC vertical bandsaws; double column, fully auto and semi auto horizontal bandsaw subcategories; PRG drilling products under radial, tapping and multi-head; any hydraulic press products and pneumatic URLs not confirmed on 10 Nov. Full list: https://www.maxmachines.in/sitemap.xml.
-- Method: click the top inspection box (about [450, 19]), type the full URL, press Enter, wait about 7-8 seconds, take a screenshot (the Request indexing button sits at about [1114, 235] or [1110, 221] depending on state); if "not on Google" click Request indexing and WAIT about 25 seconds for "Indexing requested" before dismissing (dismissing early at about [918, 330] cancels it). Guessed deep-link inspect URLs give 404. Judge results only after 4 weeks (21 Nov check).
+- REMAINING TO INSPECT AND REQUEST (10 to 11 a day, resume 13 Nov at the hydro-pneumatic marking presses page): the rest of the marking solutions subcategories and products (Bradma/Velse; marking-solutions category itself, bradma-hydro-pneumatic-press, bradma-rotary-type-numerator, bradma-stamp-marks product pages and others in the sitemap); special application, wood and AAC vertical bandsaw subcategories; double column, fully auto and semi auto horizontal bandsaw subcategories; PRG drilling products under radial, tapping and multi-head; any hydraulic press products and pneumatic URLs not confirmed on 10 Nov (pneumatic-power-press/prg-pneumatic-power-press was seen in GA with a visit). Full list: https://www.maxmachines.in/sitemap.xml.
+- Method: click the top inspection box (about [450, 19]), type the full URL, press Enter, wait about 8 to 10 seconds, take a screenshot; confirm the address shown at the top matches the URL typed and no "Retrieving data" box is showing (it can show the previous URL's result while loading; wait longer); if "URL is not on Google" click Request indexing (about [1110, 222]) and WAIT 25 to 40 seconds for "Indexing requested" before dismissing (dismiss button about [917, 330]; dismissing early cancels it). If it says "URL is on Google", do not request. Guessed deep-link inspect URLs give 404. Judge results only after 4 weeks (21 Nov check).
 - Honest note: indexing requests are a minor lever (max about 10 minutes a day). The bigger levers are section 23 (profiles, directories, reviews) and real content (section 26 blog).
 
 ### 25.4 Price and availability decision and structured data (DONE, live)
@@ -747,7 +786,7 @@ Numbers are in section 16 (Search Console October and Business Profile October).
 - Wording removed 10 Nov: commit a8b21d3: product page heading "Models and Variants" (was "Variants & Pricing") and subcategory page text "Click a machine to view full specifications and variants." Live check of all 114 URLs: 0 offers, 0 price, 0 rupee.
 - Left alone on purpose: Sanity fields price and availability, import script references, priceRange in LocalBusiness JSON-LD in app/layout.tsx, Home/Contact "pricing, or logistical support", the export quotation line. Sheet Price and Availability columns stay in the template, blank.
 - When online selling starts: add offers (numeric price, INR, availability) for orderable items only, show the same price on the page, add return/shipping policy pages if Google Merchant listings are wanted.
-- Old crawled copies in Google still show the original structured data error until Google recrawls; the emails of 10 Nov are about those.
+- Old crawled copies in Google still show the original structured data error until Google recrawls; the emails of 10 and 11 Nov are about those. The email repeats whenever Google recrawls a page: IGNORE it (11 Nov, asked by Jabs).
 
 ### 25.5 WhatsApp number (DONE on website, live)
 - Commit 26d481e (7 files, 7 insertions, 8 deletions): the 6 waLink() numbers in components/WhatsAppButton.tsx, components/Contact.tsx, app/products/page.tsx, app/products/[slug]/page.tsx, app/products/[slug]/[subcategorySlug]/page.tsx and the product page file; plus app/llms.txt/route.ts (one line "Phone / WhatsApp: +91 99620 61514"). Already correct: components/ContactEnquiryCTA.tsx and app/export-and-uae/page.tsx. Verified live on /products and /llms.txt.
@@ -761,7 +800,7 @@ Jabs's note: some of this is not website work, but it is recorded here so everyt
 
 ### 26.1 Blog - STATUS: BUILT AND LIVE (9 Nov), one post
 - Built on Sanity: document type blogPost (Studio > Blog Posts). Pages /blog and /blog/[slug]. Navbar and Footer carry a Blog link. Sitemap and llms.txt include posts. Share buttons, category filter, More guides strip, Article/Breadcrumb/FAQ structured data. Posts are form-based (sections, bullets, steps, FAQs, related machines), not rich text. Commit a16c2f0.
-- Post 1 LIVE: how-to-cut-graphite-on-a-vertical-bandsaw, with cover picture. Recommends KOPIS Pluto Pro (carbide, first choice) and KOPIS Fighter (bi-metal, budget). Pitch "2/3 or 3/4 TPI depending on block size". No speeds stated. Sections: clean-up and support, which bandsaw (HABA VMCB16RSE with link). Related box links the VMCB16RSE page. Updated 2026-11-10 (868ac1e). Graphite dust damages the VFD and electrical cabinet: seal them.
+- Post 1 LIVE: how-to-cut-graphite-on-a-vertical-bandsaw, with cover picture. Recommends KOPIS Pluto Pro (carbide, first choice) and KOPIS Fighter (bi-metal, budget). Pitch "2/3 or 3/4 TPI depending on block size". No speeds stated. Sections: clean-up and support, which bandsaw (HABA VMCB16RSE with link). Related box links the VMCB16RSE page. Updated 2026-11-10 (868ac1e). Graphite dust damages the VFD and electrical cabinet: seal them. 12 Nov GA: 22 views, 8 users, 55 s average.
 - Import: `npm run import-blog` reads scripts/blog-posts.json (createOrReplace) and KEEPS an existing cover image. Safe to re-run. Sanity is the truth once a post is live; if text is edited in Studio the JSON must be updated to match (and vice versa), then the live page checked.
 - Facts for each post come from Jabs (he has the knowledge) or from the Sheet and site; no invented numbers. Plain text with question-style headings, a short "Related machines" link block to our product pages, one Enquire button.
 - STILL TO WRITE: how to select a lathe; how to measure marking punch height (Jabs supplies old text or rough points); they link to HABA and MODI lathes and Bradma/Velse marking products. Each new post: upload the cover picture in Studio FIRST (share image rule), draft in simple words, Jabs corrects facts, import, check live page and og:image, request indexing, share with UTM (whatsapp/channel) using a fresh ?v= link.
